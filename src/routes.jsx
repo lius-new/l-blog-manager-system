@@ -7,9 +7,8 @@ import {
   RectangleStackIcon,
   NoSymbolIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Blogs, Notifications, Editor } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
-// import { NotFound } from "./pages/errors";
 import NotFound from "@/pages/errors/not-found";
 
 const icon = {
@@ -34,15 +33,21 @@ export const routes = [
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
-        element: <Tables />,
+        name: "Blogs Manager",
+        path: "/blogs",
+        element: <Blogs />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,
         name: "notifications",
         path: "/notifications",
         element: <Notifications />,
+      },
+      {
+        icon: <NoSymbolIcon {...icon} />,
+        name: "editor",
+        path: "/editor",
+        element: <Editor />,
       },
       {
         icon: <NoSymbolIcon {...icon} />,

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import {
   ChartPieIcon,
   UserIcon,
@@ -38,10 +38,15 @@ export function Auth() {
         {routes.map(
           ({ layout, pages }) =>
             layout === "auth" &&
-            pages.map(({ path, element }) => 
-               <Route exact path={path} element={element} />
-            )
+            pages.map(({ path, element }) => (
+              <Route exact path={path} element={element} />
+            ))
         )}
+        <Route
+          exact
+          path="*"
+          element={<Navigate to="/errors/not-found" replace={true} />}
+        />
       </Routes>
     </div>
   );
