@@ -48,9 +48,7 @@ export function Dashboard() {
             element={<Navigate to="/dashboard/not-found" replace={true} />}
           />
         </Routes>
-        <div className="text-blue-gray-600">
-          <Footer />
-        </div>
+        <div className="text-blue-gray-600"></div>
       </div>
     </div>
   );

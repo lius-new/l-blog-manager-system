@@ -67,9 +67,6 @@ export function DashboardNavbar() {
               {page}
             </Typography>
           </Breadcrumbs>
-          <Typography variant="h6" color="blue-gray">
-            {page}
-          </Typography>
         </div>
         <div className="flex items-center">
           <div className="mr-auto md:mr-4 md:w-56">
