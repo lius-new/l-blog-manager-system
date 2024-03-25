@@ -24,9 +24,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
         openSidenav ? "translate-x-0" : "-translate-x-80"
       } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
     >
-      <div
-        className={`relative`}
-      >
+      <div className={`relative`}>
         <Link to="/" className="py-6 px-8 text-center">
           <Typography
             variant="h6"
@@ -68,7 +66,9 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       variant={isActive ? "gradient" : "text"}
                       color={
                         isActive
-                          ? sidenavColor
+                          ? sidenavColor === "dark"
+                            ? "deep-purple"
+                            : sidenavColor
                           : sidenavType === "dark"
                           ? "white"
                           : "blue-gray"

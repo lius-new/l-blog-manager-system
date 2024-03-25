@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
 import {
@@ -42,6 +42,11 @@ export function Dashboard() {
                 <Route exact path={path} element={element} />
               ))
           )}
+          <Route
+            exact
+            path={"*"}
+            element={<Navigate to="/dashboard/not-found" replace={true} />}
+          />
         </Routes>
         <div className="text-blue-gray-600">
           <Footer />

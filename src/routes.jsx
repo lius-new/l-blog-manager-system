@@ -5,9 +5,12 @@ import {
   InformationCircleIcon,
   ServerStackIcon,
   RectangleStackIcon,
+  NoSymbolIcon,
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
+// import { NotFound } from "./pages/errors";
+import NotFound from "@/pages/errors/not-found";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -41,6 +44,12 @@ export const routes = [
         path: "/notifications",
         element: <Notifications />,
       },
+      {
+        icon: <NoSymbolIcon {...icon} />,
+        name: "Not Found",
+        path: "/not-found",
+        element: <NotFound />,
+      },
     ],
   },
   {
@@ -58,6 +67,18 @@ export const routes = [
         name: "sign up",
         path: "/sign-up",
         element: <SignUp />,
+      },
+    ].filter((item) => !["/sign-up"].includes(item.path)),
+  },
+  {
+    title: "errors pages",
+    layout: "errors",
+    pages: [
+      {
+        icon: <NoSymbolIcon {...icon} />,
+        name: "Not Found",
+        path: "/not-found",
+        element: <NotFound />,
       },
     ],
   },
