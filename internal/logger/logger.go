@@ -25,3 +25,24 @@ func Distribute(level int, content string) {
 		log.Println("panic", content)
 	}
 }
+
+func Debug(content string) {
+	Distribute(LevelDebug, content)
+}
+
+func Info(content string) {
+	Distribute(LevelInfo, content)
+}
+
+func Warn(content string) {
+	Distribute(LevelWarn, content)
+}
+func Error(content string) {
+	Distribute(LevelError, content)
+}
+func Fatal(content string) {
+	Distribute(LevelFatal, content)
+}
+func Panic(content string) {
+	Distribute(LevelPanic, content)
+}
