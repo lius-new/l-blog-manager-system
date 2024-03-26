@@ -5,8 +5,15 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/joho/godotenv"
 	"github.com/lius-new/liusnew-blog-backend-server/internal/middlewares"
 )
+
+func init() {
+	if err := godotenv.Load("../.env"); err != nil {
+		panic("No .env file")
+	}
+}
 
 func Server() {
 	app := fiber.New(fiber.Config{ErrorHandler: middlewares.ErrorMiddleware})
