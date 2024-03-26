@@ -1,19 +1,12 @@
-package internal
+package routers
 
 import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/joho/godotenv"
 	"github.com/lius-new/liusnew-blog-backend-server/internal/middlewares"
 )
-
-func init() {
-	if err := godotenv.Load("../.env"); err != nil {
-		panic("No .env file")
-	}
-}
 
 func Server() {
 	app := fiber.New(fiber.Config{ErrorHandler: middlewares.ErrorMiddleware})
@@ -25,9 +18,8 @@ func Server() {
 		return c.SendString(time.Now().String())
 	})
 
-	app.Get("/errors", func(c *fiber.Ctx) error {
-		panic("this is test")
-	})
+	// 注册路由
+	RegisterUserHanlder(app)
 
 	app.Listen(":8080")
 }

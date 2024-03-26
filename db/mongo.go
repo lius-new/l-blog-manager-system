@@ -12,7 +12,6 @@ import (
 )
 
 type MongoDBPool struct {
-	Ctx  context.Context
 	pool *sync.Pool
 }
 
@@ -44,7 +43,7 @@ func NewMongoDBPool() *MongoDBPool {
 		},
 	}
 
-	return &MongoDBPool{ctx, pool}
+	return &MongoDBPool{pool}
 }
 
 // GetClient: 获取连接池中的mongodb client

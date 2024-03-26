@@ -1,6 +1,9 @@
 package logger
 
-import "log"
+import (
+	"fmt"
+	"log"
+)
 
 const (
 	LevelDebug int = iota
@@ -26,16 +29,16 @@ func Distribute(level int, content string) {
 	}
 }
 
-func Debug(content string) {
-	Distribute(LevelDebug, content)
+func Debug(content ...interface{}) {
+	Distribute(LevelDebug, fmt.Sprintln(content))
 }
 
-func Info(content string) {
-	Distribute(LevelInfo, content)
+func Info(content interface{}) {
+	Distribute(LevelInfo, fmt.Sprintln(content))
 }
 
-func Warn(content string) {
-	Distribute(LevelWarn, content)
+func Warn(content interface{}) {
+	Distribute(LevelWarn, fmt.Sprintln(content))
 }
 func Error(content string) {
 	Distribute(LevelError, content)

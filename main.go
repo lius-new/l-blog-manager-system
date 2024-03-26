@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/lius-new/liusnew-blog-backend-server/internal"
+	"github.com/lius-new/liusnew-blog-backend-server/internal/routers"
 )
 
 func main() {
-	internal.Server()
+	routers.Server()
 }
