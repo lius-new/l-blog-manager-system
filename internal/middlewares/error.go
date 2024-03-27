@@ -5,12 +5,14 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/lius-new/liusnew-blog-backend-server/internal/errors"
+	"github.com/lius-new/liusnew-blog-backend-server/internal/logger"
 )
 
-func ErrorMiddleware(ctx *fiber.Ctx, err error) error {
+func FiberConfigErrorHandler(ctx *fiber.Ctx, err error) error {
 	if err == nil {
 		return nil
 	}
+	logger.Error(err)
 
 	switch true {
 	case strings.Contains(err.Error(), "Cannot "):
