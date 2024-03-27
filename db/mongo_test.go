@@ -23,7 +23,8 @@ func TestMongo(t *testing.T) {
 
 	pool := db.NewMongoDBPool()
 
-	mongoClient, ctx := pool.GetClient()
+	mongoClient := pool.GetClient()
+	ctx := context.Background()
 
 	err := mongoClient.Ping(ctx, readpref.Primary())
 
@@ -47,7 +48,8 @@ func TestMongoInserUser(t *testing.T) {
 
 	pool := db.NewMongoDBPool()
 
-	client, ctx := pool.GetClient()
+	client := pool.GetClient()
+	ctx := context.Background()
 
 	coll := client.Database("liusnew-blog").Collection("user")
 

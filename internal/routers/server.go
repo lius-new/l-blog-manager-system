@@ -13,6 +13,7 @@ func Server() {
 
 	app.Use(recover.New())
 	app.Use(middlewares.BaseLoggerMiddleware)
+	app.Use(middlewares.AuthMiddleware)
 
 	app.Get("/time", func(c *fiber.Ctx) error {
 		return c.SendString(time.Now().String())

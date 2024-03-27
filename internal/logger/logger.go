@@ -46,6 +46,6 @@ func Error(content string) {
 func Fatal(content string) {
 	Distribute(LevelFatal, content)
 }
-func Panic(content string) {
-	Distribute(LevelPanic, content)
+func Panic(content ...string) {
+	Distribute(LevelPanic, fmt.Sprintln(content))
 }

@@ -31,7 +31,7 @@ func init() {
 	Pool.ReleaseClient(client)
 }
 
-func Login(username, password string) []string {
+func Login(username, password string) ([]string, error) {
 	client := Pool.GetClient()
 	defer Pool.ReleaseClient(client)
 
@@ -43,8 +43,8 @@ func Login(username, password string) []string {
 		{"username", username},
 		{"password", utils.MD5(password)},
 	}).Raw(); err != nil {
-		panic(err)
+		return []string{}, err
 	} else {
-		return []string{r.Lookup("_id").String(), r.Lookup("username").String()}
+		return []string{r.Lookup("_id").String(), r.Lookup("username").String()}, nil
 	}
 }

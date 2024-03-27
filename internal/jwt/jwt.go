@@ -9,7 +9,7 @@ import (
 
 var JWT *jwtStruct = &jwtStruct{}
 
-const TokenExpireDuration = time.Hour * 24 * 3
+const TokenExpireDuration = time.Hour * 12
 
 type Claims struct {
 	UserID   string `json:"userID"`
@@ -59,7 +59,7 @@ func (j jwtStruct) ParseJwtToken(secret, tokenStr string) (Claims, error) {
 }
 
 func (j jwtStruct) GenerateJwtTokenSecond(
-	issuer string, expiresAt time.Time,
+	secret, issuer string, expiresAt time.Time,
 	username, tokenString string,
 ) (string, error) {
 	claims := Claims{
@@ -74,5 +74,5 @@ func (j jwtStruct) GenerateJwtTokenSecond(
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// TODO: salt
-	return token.SignedString([]byte("salt"))
+	return token.SignedString([]byte(secret))
 }
