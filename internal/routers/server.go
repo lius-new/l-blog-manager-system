@@ -4,14 +4,13 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/lius-new/liusnew-blog-backend-server/internal/middlewares"
 )
 
 func Server() {
 	app := fiber.New(fiber.Config{ErrorHandler: middlewares.ErrorMiddleware})
 
-	app.Use(recover.New())
+	// app.Use(recover.New())
 	app.Use(middlewares.BaseLoggerMiddleware)
 	app.Use(middlewares.AuthMiddleware)
 
@@ -21,6 +20,7 @@ func Server() {
 
 	// 注册路由
 	RegisterUserHanlder(app)
+	RegisterArticlesHanlder(app)
 
 	app.Listen(":8080")
 }

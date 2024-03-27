@@ -47,8 +47,8 @@ func Info(content interface{}) {
 func Warn(content interface{}) {
 	Distribute(LevelWarn, fmt.Sprintln(content))
 }
-func Error(content string) {
-	Distribute(LevelError, content)
+func Error(content ...interface{}) {
+	Distribute(LevelError, fmt.Sprintln(content))
 }
 func Fatal(content string) {
 	Distribute(LevelFatal, content)

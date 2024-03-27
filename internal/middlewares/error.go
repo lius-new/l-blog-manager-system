@@ -20,7 +20,7 @@ func ErrorMiddleware(ctx *fiber.Ctx, err error) error {
 	case strings.Contains(err.Error(), errors.ErrorBlocked):
 		return ctx.Status(fiber.StatusTooManyRequests).SendString(errors.ErrorBlocked)
 	default:
-		return ctx.Status(fiber.StatusInternalServerError).SendString("Internal Server Error!!!")
+		return ctx.Status(fiber.StatusInternalServerError).SendString("Internal Server Error: " + err.Error())
 	}
 
 }

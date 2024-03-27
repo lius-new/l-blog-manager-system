@@ -9,10 +9,10 @@ import (
 )
 
 // 普通资源访问ViewCountOfBlocked的次数被禁止访问
-const VISIT_COMMONPAGE_TO_BLACKLIST = 20
+const VISIT_COMMONPAGE_TO_BLACKLIST = 2000
 
 // 受保护资源访问ViewCountStrictOfBlocked的次数被禁止访问
-const VISIT_STRICTPAGE_TO_BLACKLIST = 5
+const VISIT_STRICTPAGE_TO_BLACKLIST = 500
 
 // 每次被blocked的时间
 const BlockedTime = 12.0
