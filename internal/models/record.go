@@ -9,10 +9,10 @@ import (
 )
 
 // 普通资源访问ViewCountOfBlocked的次数被禁止访问
-const ViewCountOfBlocked = 20
+const VISIT_COMMONPAGE_TO_BLACKLIST = 20
 
 // 受保护资源访问ViewCountStrictOfBlocked的次数被禁止访问
-const ViewCountStrictOfBlocked = 5
+const VISIT_STRICTPAGE_TO_BLACKLIST = 5
 
 // 每次被blocked的时间
 const BlockedTime = 12.0
@@ -81,9 +81,9 @@ func Trace(ip, path string) {
 		}
 	}
 
-	if count > ViewCountOfBlocked {
+	if count > VISIT_COMMONPAGE_TO_BLACKLIST {
 		blockHandler()
-	} else if strict(path) && count > ViewCountStrictOfBlocked {
+	} else if strict(path) && count > VISIT_STRICTPAGE_TO_BLACKLIST {
 		blockHandler()
 	}
 }

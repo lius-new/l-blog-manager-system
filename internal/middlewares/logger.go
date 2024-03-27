@@ -19,17 +19,17 @@ func BaseLoggerMiddleware(ctx *fiber.Ctx) error {
 	logInfoCotennt := fmt.Sprintf("[form]:%s:%s [target]:%s", ctx.IP(), ctx.Port(), ctx.Request().URI().FullURI())
 	logger.Distribute(logger.LevelInfo, logInfoCotennt)
 
+	// 是否存在blocked, 如果在就阻止
+	if blockStatus := models.IsBlocked(ctx.IP()); blockStatus {
+		return errors.New(Err.ErrorBlocked)
+	}
+
 	path := string(ctx.Request().URI().Path())
 	for _, v := range NotRecordTraceIntercepts {
 		if v != path {
 			models.Trace(ctx.IP(), path)
 			break
 		}
-	}
-
-	// 是否存在blocked, 如果在就组织
-	if blockStatus := models.IsBlocked(ctx.IP()); blockStatus {
-		return errors.New(Err.ErrorBlocked)
 	}
 
 	return ctx.Next()
