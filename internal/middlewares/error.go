@@ -16,7 +16,9 @@ func ErrorMiddleware(ctx *fiber.Ctx, err error) error {
 	case strings.Contains(err.Error(), "Cannot "):
 		return ctx.Status(fiber.StatusNotFound).SendString("Page Not Found")
 	case strings.Contains(err.Error(), errors.ErrorUnauthorized):
-		return ctx.Status(fiber.StatusUnauthorized).SendString("Unauthorized")
+		return ctx.Status(fiber.StatusUnauthorized).SendString(errors.ErrorUnauthorized)
+	case strings.Contains(err.Error(), errors.ErrorBlocked):
+		return ctx.Status(fiber.StatusTooManyRequests).SendString(errors.ErrorBlocked)
 	default:
 		return ctx.Status(fiber.StatusInternalServerError).SendString("Internal Server Error!!!")
 	}

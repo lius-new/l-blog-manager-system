@@ -10,6 +10,7 @@ import (
 
 func init() {
 	client := Pool.GetClient()
+	defer Pool.ReleaseClient(client)
 	ctx := context.Background()
 
 	coll := client.Database("liusnew-blog").Collection("user")
@@ -28,7 +29,6 @@ func init() {
 		{"password", utils.MD5("14569636547")},
 	})
 
-	Pool.ReleaseClient(client)
 }
 
 func Login(username, password string) ([]string, error) {

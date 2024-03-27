@@ -6,7 +6,8 @@ import (
 )
 
 const (
-	LevelDebug int = iota
+	LevelTrace int = iota
+	LevelDebug
 	LevelInfo
 	LevelWarn
 	LevelError
@@ -16,6 +17,8 @@ const (
 
 func Distribute(level int, content string) {
 	switch level {
+	case LevelTrace:
+		log.Println("trace", content)
 	case LevelDebug:
 		log.Println("debug", content)
 	case LevelInfo:
@@ -29,6 +32,10 @@ func Distribute(level int, content string) {
 	}
 }
 
+// 记录访问信息
+func Trace(content ...string) {
+	Distribute(LevelTrace, fmt.Sprintln(content))
+}
 func Debug(content ...interface{}) {
 	Distribute(LevelDebug, fmt.Sprintln(content))
 }
