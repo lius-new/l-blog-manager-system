@@ -27,8 +27,8 @@ export const articlesView = async (page_size, page_num) => {
     return await request.post('/api/articles/view', { page_size, page_num })
 }
 
-export const postSave = async () => {
-    return await request.post('/post/save', {})
+export const articleSave = async (title, content, tags, covers, status) => {
+    return await request.post('/api/articles/create', { title, tags, content, covers, status })
 }
 
 export const postUpdate = async () => {
@@ -39,8 +39,8 @@ export const postDisable = async () => {
     return await request.post('/post/disable', {})
 }
 
-export const tagSave = async () => {
-    return await request.post('/tag/save', {})
+export const tagView = async () => {
+    return await request.get('/api/tag/view')
 }
 
 export const tagUpdate = async () => {
