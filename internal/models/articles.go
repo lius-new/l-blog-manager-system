@@ -23,7 +23,8 @@ type Article struct {
 
 func BsonToArticle(b bson.M) *Article {
 
-	primitiveASlcieToStringSlice := func(pSlice primitive.A) (s []string) {
+	primitiveASlcieToStringSlice := func(pSlice primitive.A) []string {
+		s := make([]string, 0)
 
 		for _, v := range pSlice {
 			if itemStr, ok := v.(string); ok {
@@ -31,7 +32,7 @@ func BsonToArticle(b bson.M) *Article {
 			}
 		}
 
-		return
+		return s
 	}
 
 	a := &Article{}

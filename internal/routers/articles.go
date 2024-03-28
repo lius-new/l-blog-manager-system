@@ -38,7 +38,7 @@ func createHander(ctx *fiber.Ctx) error {
 
 	article_.Tags = a.Tags
 
-	return ctx.JSON(fiber.Map{"data": article_})
+	return ctx.JSON(fiber.Map{"data": article_, "status": true})
 }
 
 func modifyHander(ctx *fiber.Ctx) error {

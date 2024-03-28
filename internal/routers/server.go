@@ -26,6 +26,7 @@ func Server() {
 	// 注册路由
 	RegisterUserHanlder(app)
 	RegisterArticlesHanlder(app)
+	RegisterTagsHanlder(app)
 
 	app.Listen(":8080")
 }

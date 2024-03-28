@@ -10,13 +10,21 @@ import (
 )
 
 type Tag struct {
-	name   string
-	status bool
+	Name   string
+	Status bool
+}
+
+func BsonToTags(b bson.M) *Tag {
+	t := &Tag{}
+
+	t.Name = b["name"].(string)
+	t.Status = b["status"].(bool)
+	return t
 }
 
 func (t *Tag) ToBson() (d bson.D) {
-	d = append(d, bson.E{Key: "name", Value: t.name})
-	d = append(d, bson.E{Key: "status", Value: t.status})
+	d = append(d, bson.E{Key: "name", Value: t.Name})
+	d = append(d, bson.E{Key: "status", Value: t.Status})
 	return
 }
 
@@ -41,8 +49,8 @@ func SaveTags(tagStrs []string) []string {
 	tagsId := make([]string, 0)
 	for _, v := range tagStrs {
 		tag := Tag{
-			name:   v,
-			status: true,
+			Name:   v,
+			Status: true,
 		}
 
 		tagsId = append(tagsId, save(tag))
@@ -71,4 +79,34 @@ func DeleteTags(tagStrs []string) {
 			panic(err)
 		}
 	}
+}
+
+func ViewTags() []string {
+	client := Pool.GetClient()
+	defer Pool.ReleaseClient(client)
+	coll := client.Database("liusnew-blog").Collection("tags")
+	ctx := context.Background()
+
+	view := func() (tags []string) {
+		cur, err := coll.Find(ctx, bson.D{{}})
+		if err != nil {
+			panic(err)
+		}
+
+		for cur.Next(ctx) {
+			var tempResult bson.M
+			err := cur.Decode(&tempResult)
+
+			if err != nil {
+				logger.Debug(err)
+			}
+			tag := *BsonToTags(tempResult)
+			if tag.Status {
+				tags = append(tags, tag.Name)
+			}
+		}
+		return
+	}
+
+	return view()
 }

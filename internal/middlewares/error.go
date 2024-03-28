@@ -17,6 +17,8 @@ func FiberConfigErrorHandler(ctx *fiber.Ctx, err error) error {
 	switch true {
 	case strings.Contains(err.Error(), "Cannot "):
 		return ctx.Status(fiber.StatusNotFound).SendString("Page Not Found")
+	case strings.Contains(err.Error(), "cannot unmarshal object"):
+		return ctx.Status(fiber.StatusBadRequest).SendString("params error")
 	case strings.Contains(err.Error(), errors.ErrorUnauthorized):
 		return ctx.Status(fiber.StatusUnauthorized).SendString(errors.ErrorUnauthorized)
 	case strings.Contains(err.Error(), errors.ErrorBlocked):
