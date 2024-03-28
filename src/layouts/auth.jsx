@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { Navbar, Footer } from "@/widgets/layout";
 import routes from "@/routes";
+import { useEffect } from "react";
 
 export function Auth() {
   const navbarRoutes = [
@@ -31,6 +32,10 @@ export function Auth() {
       icon: ArrowRightOnRectangleIcon,
     },
   ];
+
+  useEffect(() => {
+    document.cookie = "secret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }, []);
 
   return (
     <div className="relative w-full">

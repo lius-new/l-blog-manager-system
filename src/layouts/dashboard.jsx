@@ -9,10 +9,20 @@ import {
 } from "@/widgets/layout";
 import routes from "@/routes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
+import { useEffect } from "react";
+import { auth } from "@/libs/action";
+import { useNavigate } from "react-router-dom";
 
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    auth().catch((err) => {
+      navigate("/auth/sign-in");
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">

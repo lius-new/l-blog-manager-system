@@ -9,8 +9,10 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function SignIn() {
+  const navigate = useNavigate();
   const [errOpen, setErrOpen] = useState(false);
   const [loginForm, setLoginForm] = useState({
     username: "",
@@ -20,14 +22,15 @@ export function SignIn() {
   const loginHandle = async () => {
     try {
       const res = await login(loginForm.username, loginForm.password);
-      console.log(res);
+      if (res.status) navigate("/dashboard/home");
+      else errOpenHandle();
     } catch (err) {
-      console.log(err);
       errOpenHandle();
     }
   };
 
   const errOpenHandle = () => {
+    document.cookie = "secret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     setErrOpen(!errOpen);
   };
 

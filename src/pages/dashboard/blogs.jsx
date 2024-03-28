@@ -8,12 +8,49 @@ import {
   CardFooter,
   IconButton,
   Button,
-  ButtonGroup,
 } from "@material-tailwind/react";
-import { authorsTableData } from "@/data";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import { useEffect } from "react";
+import { useState } from "react";
+import { articlesView } from "@/libs/action";
+import { useSearchParams, NavLink } from "react-router-dom";
+import ArticlesTableSkeletions from "@/widgets/skeletons/articles-table";
 
 export function Blogs() {
+  const pageNum = useSearchParams()[0].getAll("page");
+
+  const [articles, setArticless] = useState([]);
+  const [total, setTotal] = useState(1);
+  const [pageList, setPageList] = useState([]);
+
+  const geneartePageList = (n) => {
+    let tempList = [];
+
+    for (let index = 1; index <= n; index++) {
+      tempList.push(index);
+    }
+    return tempList;
+  };
+
+  const update = () => {
+    let pn = 1;
+    if (pageNum.length != 0) pn = parseInt(pageNum[0]);
+
+    articlesView(14, pn).then((res) => {
+      setArticless(res.data);
+      setTotal(res.total);
+      setPageList([...geneartePageList(res.total)]);
+    });
+  };
+
+  useEffect(() => {
+    update();
+  }, []);
+
+  useEffect(() => {
+    update();
+  }, [pageNum]);
+
   return (
     <div className="mt-10 mb-8 flex flex-col gap-12">
       <Card>
@@ -26,92 +63,106 @@ export function Blogs() {
           <table className="w-full min-w-[640px] table-auto ">
             <thead>
               <tr>
-                {["标题", "标签", "状态", "统计", "操作"].map((el) => (
-                  <th
-                    key={el}
-                    className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                  >
-                    <Typography
-                      variant="small"
-                      className="text-[11px] font-bold uppercase text-blue-gray-400"
+                {["", "标题", "内容", "标签", "状态", "时间", "操作"].map(
+                  (el) => (
+                    <th
+                      key={el}
+                      className="border-b border-blue-gray-50 py-3 px-5 text-left"
                     >
-                      {el}
-                    </Typography>
-                  </th>
-                ))}
+                      <Typography
+                        variant="small"
+                        className="text-[11px] font-bold uppercase text-blue-gray-400"
+                      >
+                        {el}
+                      </Typography>
+                    </th>
+                  )
+                )}
               </tr>
             </thead>
             <tbody>
-              {authorsTableData.map(
-                ({ img, name, email, job, online, date }, key) => {
-                  const className = `py-3 px-5 ${
-                    key === authorsTableData.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
-                  }`;
-
-                  return (
-                    <tr key={name}>
-                      <td className={className}>
-                        <div className="flex items-center gap-4">
-                          <Avatar
-                            src={img}
-                            alt={name}
-                            size="sm"
-                            variant="rounded"
-                          />
+              {articles.length > 0 ? (
+                articles.map(
+                  ({ Id, Title, Content, Tags, Status, Time, Covers }) => {
+                    const className = `py-3 px-5 border-b border-blue-gray-50"`;
+                    return (
+                      <tr key={Id}>
+                        <td className={className}>
+                          <div className="flex items-center gap-4">
+                            {Covers.map((item) => (
+                              <Avatar
+                                key={item}
+                                src={item}
+                                alt={item}
+                                size="sm"
+                                variant="rounded"
+                              />
+                            ))}
+                          </div>
+                        </td>
+                        <td className={className}>
                           <div>
                             <Typography
                               variant="small"
                               color="blue-gray"
                               className="font-semibold"
                             >
-                              {name}
-                            </Typography>
-                            <Typography className="text-xs font-normal text-blue-gray-500">
-                              {email}
+                              {Title}
                             </Typography>
                           </div>
-                        </div>
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {job[0]}
-                        </Typography>
-                        <Typography className="text-xs font-normal text-blue-gray-500">
-                          {job[1]}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <Chip
-                          variant="gradient"
-                          color={online ? "green" : "blue-gray"}
-                          value={online ? "online" : "offline"}
-                          className="py-0.5 px-2 text-[11px] font-medium w-fit"
-                        />
-                      </td>
-                      <td className={className}>
-                        <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {date}
-                        </Typography>
-                      </td>
-                      {/* TODO:  w-32 和 w-64: 该库当我设置w-32时会使button被隐藏 , 当我设置内部为64外部32就不会了*/}
-                      <td className={`${className} w-32`}>
-                        <div className="w-64 flex gap-x-2">
-                          <Button size="sm" color="blue">
-                            Change
-                          </Button>
-                          <Button size="sm" color="amber">
-                            Edit
-                          </Button>
-                          <Button size="sm" color="red">
-                            Disable
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                }
+                        </td>
+                        <td className={className}>
+                          <div>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-semibold"
+                            >
+                              {Content}
+                            </Typography>
+                          </div>
+                        </td>
+                        <td className={className}>
+                          <Typography className="text-xs font-semibold text-blue-gray-600">
+                            {Tags}
+                          </Typography>
+                          <Typography className="text-xs font-normal text-blue-gray-500">
+                            {Tags}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Chip
+                            variant="gradient"
+                            color={Status ? "green" : "blue-gray"}
+                            value={Status ? "online" : "offline"}
+                            className="py-0.5 px-2 text-[11px] font-medium w-fit"
+                          />
+                        </td>
+                        <td className={className}>
+                          <Typography className="text-xs font-semibold text-blue-gray-600">
+                            {Time}
+                          </Typography>
+                        </td>
+                        {/* TODO:  w-32 和 w-64: 该库当我设置w-32时会使button被隐藏 , 当我设置内部为64外部32就不会了*/}
+                        <td className={`${className} w-32`}>
+                          <div className="w-64 flex gap-x-2">
+                            <Button size="sm" color="blue">
+                              Change
+                            </Button>
+                            <Button size="sm" color="amber">
+                              Edit
+                            </Button>
+                            <Button size="sm" color="red">
+                              Disable
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )
+              ) : (
+                <ArticlesTableSkeletions />
               )}
             </tbody>
           </table>
@@ -126,11 +177,11 @@ export function Blogs() {
               <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
             </Button>
             <div className="flex items-center gap-2">
-              <IconButton>1</IconButton>
-              <IconButton>2</IconButton>
-              <IconButton>3</IconButton>
-              <IconButton>4</IconButton>
-              <IconButton>5</IconButton>
+              {pageList.map((item) => (
+                <NavLink to={`/dashboard/blogs?page=${item}`} key={item}>
+                  <IconButton>{item}</IconButton>
+                </NavLink>
+              ))}
             </div>
             <Button
               variant="text"
