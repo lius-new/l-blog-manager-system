@@ -98,5 +98,5 @@ func viewHander(ctx *fiber.Ctx) error {
 
 	articles, count := models.ViewArticles(a.PageSize, a.PageNum)
 
-	return ctx.JSON(fiber.Map{"data": articles, "total": count})
+	return ctx.JSON(fiber.Map{"data": articles, "total": count, "status": true})
 }

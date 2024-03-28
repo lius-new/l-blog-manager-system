@@ -13,6 +13,7 @@ func RegisterUserHanlder(app *fiber.App) {
 	api := app.Group("/api/user")
 
 	api.Post("/login", loginHandler)
+	api.Post("/auth", authHandler)
 
 }
 
@@ -32,6 +33,7 @@ func loginHandler(c *fiber.Ctx) error {
 	if err != nil || len(res) != 2 {
 		return c.JSON(fiber.Map{
 			"message": "Login Failed",
+			"status":  false,
 		})
 	}
 
@@ -52,5 +54,13 @@ func loginHandler(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"message": "Login Successed",
+		"status":  true,
+	})
+}
+
+func authHandler(ctx *fiber.Ctx) error {
+	return ctx.JSON(fiber.Map{
+		"message": "Auth Successed",
+		"status":  true,
 	})
 }

@@ -21,6 +21,31 @@ type Article struct {
 	Time    int64
 }
 
+func BsonToArticle(b bson.M) *Article {
+
+	primitiveASlcieToStringSlice := func(pSlice primitive.A) (s []string) {
+
+		for _, v := range pSlice {
+			if itemStr, ok := v.(string); ok {
+				s = append(s, itemStr)
+			}
+		}
+
+		return
+	}
+
+	a := &Article{}
+
+	a.Id = b["_id"].(primitive.ObjectID).Hex()
+	a.Title = b["title"].(string)
+	a.Content = b["content"].(string)
+	a.Tags = primitiveASlcieToStringSlice(b["tags"].(primitive.A))
+	a.Covers = primitiveASlcieToStringSlice(b["covers"].(primitive.A))
+	a.Status = b["status"].(bool)
+	a.Time = b["time"].(int64)
+	return a
+}
+
 func (a *Article) ToBson() (d bson.D) {
 	d = append(d, bson.E{Key: "title", Value: a.Title})
 	d = append(d, bson.E{Key: "content", Value: a.Content})
@@ -136,7 +161,16 @@ func ViewArticles(pageSize, pageNumber int64) ([]Article, int64) {
 			panic(err)
 		}
 
-		cur.All(ctx, &articles)
+		for cur.Next(ctx) {
+			var tempResult bson.M
+			err := cur.Decode(&tempResult)
+
+			if err != nil {
+				logger.Debug(err)
+			}
+			articles = append(articles, *BsonToArticle(tempResult))
+		}
+
 		return
 	}
 
