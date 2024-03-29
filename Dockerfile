@@ -8,12 +8,15 @@ ENV GO111MODULE=on \
     GOARCH=amd64
 
 WORKDIR $GOPATH/src/github.com/lius-new/liusnew-blog-backend-server
-COPY . $GOPATH/src/github.com/lius-new/liusnew-blog-backend-server
+COPY . .
 
 RUN go build -o liusnew-blog-backend-server .
 
 FROM debian:stretch-slim
 
-COPY --from=builder $GOPATH/src/github.com/lius-new/liusnew-blog-backend-server/liusnew-blog-backend-server /
+# /go/src/github.com/lius-new/liusnew-blog-backend-server/liusnew-blog-backend-server
+# 为什么不是$GOPATH/src/github.com, 因为一直报错,发现GOPATH就是/go
+COPY --from=builder /go/src/github.com/lius-new/liusnew-blog-backend-server/liusnew-blog-backend-server /
+COPY --from=builder /go/src/github.com/lius-new/liusnew-blog-backend-server/.env.example /.env
 
 ENTRYPOINT ["./liusnew-blog-backend-server"]
