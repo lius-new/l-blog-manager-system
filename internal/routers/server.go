@@ -8,6 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/lius-new/liusnew-blog-backend-server/internal/logger"
 	"github.com/lius-new/liusnew-blog-backend-server/internal/middlewares"
 )
 
@@ -32,5 +33,7 @@ func Server() {
 	RegisterArticlesHanlder(app)
 	RegisterTagsHanlder(app)
 
-	app.Listen(strings.Join([]string{":", os.Getenv("SEVER_PORT")}, ""))
+	if err := app.Listen(strings.Join([]string{":", os.Getenv("SEVER_PORT")}, "")); err != nil {
+		logger.Panic(err.Error())
+	}
 }

@@ -28,7 +28,7 @@ func Distribute(level int, content string) {
 	case LevelFatal:
 		log.Println("fatal", content)
 	case LevelPanic:
-		log.Println("panic", content)
+		log.Panic("panic", content)
 	}
 }
 
