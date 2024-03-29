@@ -48,10 +48,19 @@ func BsonToArticle(b bson.M) *Article {
 }
 
 func (a *Article) ToBson() (d bson.D) {
-	d = append(d, bson.E{Key: "title", Value: a.Title})
-	d = append(d, bson.E{Key: "content", Value: a.Content})
-	d = append(d, bson.E{Key: "tags", Value: a.Tags})
-	d = append(d, bson.E{Key: "covers", Value: a.Covers})
+	if len(a.Title) != 0 {
+		d = append(d, bson.E{Key: "title", Value: a.Title})
+	}
+	if len(a.Content) != 0 {
+		d = append(d, bson.E{Key: "content", Value: a.Content})
+	}
+	if len(a.Tags) != 0 {
+		d = append(d, bson.E{Key: "tags", Value: a.Tags})
+	}
+	if len(a.Covers) != 0 {
+		d = append(d, bson.E{Key: "covers", Value: a.Covers})
+	}
+
 	d = append(d, bson.E{Key: "status", Value: a.Status})
 	d = append(d, bson.E{Key: "time", Value: a.Time})
 	return
@@ -119,7 +128,7 @@ func ModifyArticles(id, title, content string, tags, covers []string, status boo
 
 	err := modify(&a)
 
-	return &a, err
+	return ViewArticle(id), err
 }
 
 func DeleteArticles(id string) {
@@ -139,8 +148,25 @@ func DeleteArticles(id string) {
 	delete(id)
 }
 
-func ViewArticles(pageSize, pageNumber int64) ([]Article, int64) {
+func ViewArticle(id string) *Article {
+	client := Pool.GetClient()
+	defer Pool.ReleaseClient(client)
+	coll := client.Database("liusnew-blog").Collection("articles")
+	ctx := context.Background()
 
+	view := func() *Article {
+		objectId, _ := primitive.ObjectIDFromHex(id)
+		res := coll.FindOne(ctx, bson.D{{"_id", objectId}})
+		if res.Err() != nil {
+			panic(res.Err())
+		}
+		var tempResult bson.M
+		res.Decode(&tempResult)
+		return BsonToArticle(tempResult)
+	}
+	return view()
+}
+func ViewArticles(pageSize, pageNumber int64) ([]Article, int64) {
 	client := Pool.GetClient()
 	defer Pool.ReleaseClient(client)
 	coll := client.Database("liusnew-blog").Collection("articles")

@@ -110,3 +110,40 @@ func ViewTags() []string {
 
 	return view()
 }
+
+func ViewArticlesTags(tagIds []string) (tagNames []string) {
+	client := Pool.GetClient()
+	defer Pool.ReleaseClient(client)
+	coll := client.Database("liusnew-blog").Collection("tags")
+	ctx := context.Background()
+
+	objectIds := make([]primitive.ObjectID, 0)
+	for _, v := range tagIds {
+		objectId, _ := primitive.ObjectIDFromHex(v)
+		objectIds = append(objectIds, objectId)
+	}
+
+	view := func() []string {
+		tags := make([]string, 0)
+		cur, err := coll.Find(ctx, bson.D{{"_id", bson.D{{"$in", objectIds}}}})
+		if err != nil {
+			panic(err)
+		}
+
+		for cur.Next(ctx) {
+			var tempResult bson.M
+			err := cur.Decode(&tempResult)
+
+			if err != nil {
+				logger.Debug(err)
+			}
+			tag := *BsonToTags(tempResult)
+			if tag.Status {
+				tags = append(tags, tag.Name)
+			}
+		}
+		return tags
+	}
+
+	return view()
+}

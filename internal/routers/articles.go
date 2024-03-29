@@ -2,6 +2,7 @@ package routers
 
 import (
 	"log"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/lius-new/liusnew-blog-backend-server/internal/models"
@@ -11,8 +12,9 @@ func RegisterArticlesHanlder(app *fiber.App) {
 	api := app.Group("/api/articles")
 
 	api.Post("/create", createHander)
-	api.Post("/modify", modifyHander)
-	api.Post("/delete", deleteHander)
+	api.Put("/modify", modifyHander)
+	api.Delete("/delete", deleteHander)
+	api.Post("/views", viewsHander)
 	api.Post("/view", viewHander)
 }
 
@@ -43,7 +45,7 @@ func createHander(ctx *fiber.Ctx) error {
 
 func modifyHander(ctx *fiber.Ctx) error {
 	type article struct {
-		Id      string   `json:"id"`
+		Id      string   `json:"id" bind:"required"`
 		Title   string   `json:"title"`
 		Content string   `json:"content"`
 		Tags    []string `json:"tags"`
@@ -56,7 +58,6 @@ func modifyHander(ctx *fiber.Ctx) error {
 		log.Println(err)
 		return err
 	}
-
 	tags := models.SaveTags(a.Tags)
 
 	article_, err := models.ModifyArticles(a.Id, a.Title, a.Content, tags, a.Covers, a.Status)
@@ -64,9 +65,10 @@ func modifyHander(ctx *fiber.Ctx) error {
 		return ctx.JSON(fiber.Map{"message": "article not found"})
 	}
 
-	article_.Tags = a.Tags
+	tags = models.ViewArticlesTags(article_.Tags)
+	article_.Tags = tags
 
-	return ctx.JSON(fiber.Map{"data": article_})
+	return ctx.JSON(fiber.Map{"data": article_, "status": true})
 }
 
 func deleteHander(ctx *fiber.Ctx) error {
@@ -85,7 +87,7 @@ func deleteHander(ctx *fiber.Ctx) error {
 
 	return ctx.JSON(fiber.Map{"message": "delete success"})
 }
-func viewHander(ctx *fiber.Ctx) error {
+func viewsHander(ctx *fiber.Ctx) error {
 	type article struct {
 		PageSize int64 `json:"page_size"`
 		PageNum  int64 `json:"page_num"`
@@ -98,5 +100,30 @@ func viewHander(ctx *fiber.Ctx) error {
 
 	articles, count := models.ViewArticles(a.PageSize, a.PageNum)
 
+	// 获取每个文章的标签名
+	for index := range articles {
+		tags := models.ViewArticlesTags(articles[index].Tags)
+		articles[index].Tags = tags
+		if len(articles[index].Content) > 20 {
+			articles[index].Content = strings.Join([]string{articles[index].Content[:20], "..."}, "")
+		}
+	}
+
 	return ctx.JSON(fiber.Map{"data": articles, "total": count, "status": true})
+}
+
+func viewHander(ctx *fiber.Ctx) error {
+	type article struct {
+		Id string `json:"id"`
+	}
+	a := new(article)
+	if err := ctx.BodyParser(a); err != nil {
+		return err
+	}
+	article_ := models.ViewArticle(a.Id)
+
+	tags := models.ViewArticlesTags(article_.Tags)
+	article_.Tags = tags
+
+	return ctx.JSON(fiber.Map{"data": article_, "status": true})
 }

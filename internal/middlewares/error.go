@@ -19,6 +19,10 @@ func FiberConfigErrorHandler(ctx *fiber.Ctx, err error) error {
 		return ctx.Status(fiber.StatusNotFound).SendString("Page Not Found")
 	case strings.Contains(err.Error(), "cannot unmarshal object"):
 		return ctx.Status(fiber.StatusBadRequest).SendString("params error")
+	case strings.Contains(err.Error(), " no documents in result"):
+		return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": false, "message": "资源不存在"})
+	case strings.Contains(err.Error(), "Method Not Allowed"):
+		return ctx.Status(fiber.StatusBadRequest).SendString("Method Not Allowed")
 	case strings.Contains(err.Error(), errors.ErrorUnauthorized):
 		return ctx.Status(fiber.StatusUnauthorized).SendString(errors.ErrorUnauthorized)
 	case strings.Contains(err.Error(), errors.ErrorBlocked):

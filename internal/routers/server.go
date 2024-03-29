@@ -10,7 +10,9 @@ import (
 )
 
 func Server() {
-	app := fiber.New(fiber.Config{ErrorHandler: middlewares.FiberConfigErrorHandler})
+	app := fiber.New(fiber.Config{
+		ErrorHandler: middlewares.FiberConfigErrorHandler,
+	})
 
 	app.Use(recover.New())
 	app.Use(csrf.New(csrf.Config{ErrorHandler: middlewares.CrosErrrHandler}))

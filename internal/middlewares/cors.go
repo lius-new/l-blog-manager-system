@@ -1,6 +1,8 @@
 package middlewares
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 func CorsMiddlware(c *fiber.Ctx) error {
 	c.Set("Access-Control-Allow-Origin", "http://localhost:5173")
@@ -11,5 +13,4 @@ func CorsMiddlware(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusOK)
 	}
 	return c.Next()
-
 }
