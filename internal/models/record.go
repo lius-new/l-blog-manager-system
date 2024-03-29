@@ -2,20 +2,13 @@ package models
 
 import (
 	"context"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/lius-new/liusnew-blog-backend-server/internal/logger"
 	"go.mongodb.org/mongo-driver/bson"
 )
-
-// 普通资源访问ViewCountOfBlocked的次数被禁止访问
-const VISIT_COMMONPAGE_TO_BLACKLIST = 2000
-
-// 受保护资源访问ViewCountStrictOfBlocked的次数被禁止访问
-const VISIT_STRICTPAGE_TO_BLACKLIST = 500
-
-// 每次被blocked的时间
-const BlockedTime = 12.0
 
 // 记录访问和将其添加或删除到Block collections中
 func Trace(ip, path string) {
@@ -67,8 +60,10 @@ func Trace(ip, path string) {
 			// 如果被block, 那么就获得时间
 			blockTime := res.Lookup("time").Int64()
 			hours := float64((now.UnixNano() - blockTime)) / float64(time.Hour)
+
+			BLOCKED_TIME, _ := strconv.Atoi(os.Getenv("BLOCKED_TIME"))
 			// 判断block时间和当前时间的差，如果时间差大于BlockedTime常量时间那么就移除出Blcoked
-			if hours > BlockedTime {
+			if hours > float64(BLOCKED_TIME) {
 				blockColl.DeleteOne(ctx, bson.D{
 					{"ip", ip},
 				})
@@ -81,9 +76,12 @@ func Trace(ip, path string) {
 		}
 	}
 
-	if count > VISIT_COMMONPAGE_TO_BLACKLIST {
+	VISIT_COMMONPAGE_TO_BLACKLIST, _ := strconv.Atoi(os.Getenv("VISIT_COMMONPAGE_TO_BLACKLIST"))
+	VISIT_STRICTPAGE_TO_BLACKLIST, _ := strconv.Atoi(os.Getenv("VISIT_STRICTPAGE_TO_BLACKLIST"))
+
+	if count > int64(VISIT_COMMONPAGE_TO_BLACKLIST) {
 		blockHandler()
-	} else if strict(path) && count > VISIT_STRICTPAGE_TO_BLACKLIST {
+	} else if strict(path) && count > int64(VISIT_STRICTPAGE_TO_BLACKLIST) {
 		blockHandler()
 	}
 }

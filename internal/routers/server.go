@@ -1,6 +1,8 @@
 package routers
 
 import (
+	"os"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -30,5 +32,5 @@ func Server() {
 	RegisterArticlesHanlder(app)
 	RegisterTagsHanlder(app)
 
-	app.Listen(":8080")
+	app.Listen(strings.Join([]string{":", os.Getenv("SEVER_PORT")}, ""))
 }

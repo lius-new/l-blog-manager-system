@@ -15,7 +15,6 @@ var NotRecordTraceIntercepts []string = []string{
 }
 
 func BaseLoggerMiddleware(ctx *fiber.Ctx) error {
-
 	logInfoCotennt := fmt.Sprintf("[form]:%s:%s [target]:%s", ctx.IP(), ctx.Port(), ctx.Request().URI().FullURI())
 	logger.Distribute(logger.LevelInfo, logInfoCotennt)
 
