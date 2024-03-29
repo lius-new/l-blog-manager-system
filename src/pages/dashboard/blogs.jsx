@@ -16,10 +16,29 @@ import {
 } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { useState } from "react";
-import { articlesView } from "@/libs/action";
-import { useSearchParams, NavLink } from "react-router-dom";
+import { articleModify, articlesViews } from "@/libs/action";
+import { useSearchParams } from "react-router-dom";
 import ArticlesTableSkeletions from "@/widgets/skeletons/articles-table";
 import { useNavigate } from "react-router-dom";
+
+const dateFormat = (time) => {
+  time = time + "";
+  let date = new Date(parseInt(time.substring(0, time.length - 6)));
+
+  return (
+    date.getFullYear() +
+    "/" +
+    (date.getMonth() + 1) +
+    "/" +
+    date.getDate() +
+    " " +
+    date.getHours() +
+    ":" +
+    date.getMinutes() +
+    ":" +
+    date.getSeconds()
+  );
+};
 
 export function Blogs() {
   const navigate = useNavigate();
@@ -41,9 +60,11 @@ export function Blogs() {
   const update = (n = 0) => {
     let pn = 1;
     if (n != 0) pn = n;
+    else if (typeof pageNum == "string")
+      pn = navigate(`/dashboard/blogs?page=1`);
     else if (pageNum) pn = parseInt(pageNum[0]);
 
-    articlesView(14, pn).then((res) => {
+    articlesViews(14, pn).then((res) => {
       if (res.status) {
         setArticless(res.data);
         setTotal(res.total);
@@ -55,6 +76,17 @@ export function Blogs() {
   useEffect(() => {
     update();
   }, []);
+
+  const modifyHandle = (id, status) => {
+    articleModify(id, "", "", [], [], status).then((res) => {
+      if (res.status) {
+        update();
+      }
+    });
+  };
+  const editorHandle = (id) => {
+    navigate(`/dashboard/editor/${id}`);
+  };
 
   return (
     <div className="mt-10 mb-8 flex flex-col gap-12">
@@ -74,7 +106,7 @@ export function Blogs() {
             <table className="w-full min-w-[640px] table-auto ">
               <thead>
                 <tr>
-                  {["", "标题", "内容", "标签", "状态", "时间", "操作"].map(
+                  {["图片", "标题", "内容", "标签", "状态", "时间", "操作"].map(
                     (el) => (
                       <th
                         key={el}
@@ -134,12 +166,14 @@ export function Blogs() {
                             </div>
                           </td>
                           <td className={className}>
-                            <Typography className="text-xs font-semibold text-blue-gray-600">
-                              {Tags}
-                            </Typography>
-                            <Typography className="text-xs font-normal text-blue-gray-500">
-                              {Tags}
-                            </Typography>
+                            {Tags.map((item) => (
+                              <Typography
+                                className="text-xs font-semibold text-blue-gray-600"
+                                key={item}
+                              >
+                                {item}
+                              </Typography>
+                            ))}
                           </td>
                           <td className={className}>
                             <Chip
@@ -151,20 +185,25 @@ export function Blogs() {
                           </td>
                           <td className={className}>
                             <Typography className="text-xs font-semibold text-blue-gray-600">
-                              {Time}
+                              {dateFormat(Time)}
                             </Typography>
                           </td>
                           {/* TODO:  w-32 和 w-64: 该库当我设置w-32时会使button被隐藏 , 当我设置内部为64外部32就不会了*/}
                           <td className={`${className} w-32`}>
                             <div className="w-64 flex gap-x-2">
-                              <Button size="sm" color="blue">
-                                Change
-                              </Button>
-                              <Button size="sm" color="amber">
+                              <Button
+                                size="sm"
+                                color="amber"
+                                onClick={() => editorHandle(Id)}
+                              >
                                 Edit
                               </Button>
-                              <Button size="sm" color="red">
-                                Disable
+                              <Button
+                                size="sm"
+                                color={Status ? "red" : "green"}
+                                onClick={() => modifyHandle(Id, !Status)}
+                              >
+                                {Status ? "Disable" : "Enable"}
                               </Button>
                             </div>
                           </td>
@@ -185,12 +224,22 @@ export function Blogs() {
             <Button
               variant="text"
               className="flex items-center gap-2 rounded-full"
+              disabled={pageNum == 1 || !pageNum}
+              onClick={() => {
+                navigate(`/dashboard/blogs?page=${pageNum - 1}`);
+                update(pageNum - 1);
+              }}
             >
               <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
             </Button>
             <div className="flex items-center gap-2">
               {pageList.map((item) => (
                 <IconButton
+                  className={`${
+                    pageNum == item || (!pageNum && item == 1)
+                      ? "bg-blue-gray-600"
+                      : "bg-blue-gray-300"
+                  }`}
                   key={item}
                   onClick={() => {
                     navigate(`/dashboard/blogs?page=${item}`);
@@ -204,6 +253,16 @@ export function Blogs() {
             <Button
               variant="text"
               className="flex items-center gap-2 rounded-full"
+              disabled={pageNum == pageList.length}
+              onClick={() => {
+                if (!pageNum) {
+                  navigate(`/dashboard/blogs?page=2`);
+                  update(2);
+                } else {
+                  navigate(`/dashboard/blogs?page=${parseInt(pageNum) + 1}`);
+                  update(parseInt(pageNum) + 1);
+                }
+              }}
             >
               Next
               <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />

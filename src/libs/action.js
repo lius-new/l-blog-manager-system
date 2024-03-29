@@ -23,16 +23,19 @@ export const login = async (username, password) => {
 export const auth = async () => {
     return await request.post('/api/user/auth',)
 }
-export const articlesView = async (page_size, page_num) => {
-    return await request.post('/api/articles/view', { page_size, page_num })
+export const articlesViews = async (page_size, page_num) => {
+    return await request.post('/api/articles/views', { page_size, page_num })
+}
+export const articlesView = async (id) => {
+    return await request.post('/api/articles/view', { id })
 }
 
 export const articleSave = async (title, content, tags, covers, status) => {
     return await request.post('/api/articles/create', { title, tags, content, covers, status })
 }
 
-export const postUpdate = async () => {
-    return await request.put('/post/update', {})
+export const articleModify = async (id, title, content, tags, covers, status) => {
+    return await request.put('/api/articles/modify', { id, title, content, tags, covers, status })
 }
 
 export const postDisable = async () => {

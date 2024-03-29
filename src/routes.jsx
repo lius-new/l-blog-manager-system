@@ -46,7 +46,7 @@ export const routes = [
       {
         icon: <NoSymbolIcon {...icon} />,
         name: "editor",
-        path: "/editor",
+        path: "/editor/:id?",
         element: <Editor />,
       },
       {

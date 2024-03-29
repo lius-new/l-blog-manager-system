@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import {
   Input,
@@ -15,22 +15,37 @@ import {
 } from "@material-tailwind/react";
 import "react-quill/dist/quill.snow.css";
 import { getFileContent } from "@/libs/utils";
-import { articleSave, tagView } from "@/libs/action";
+import {
+  articleSave,
+  articlesView,
+  tagView,
+  articleModify,
+} from "@/libs/action";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { useParams, useNavigate } from "react-router-dom";
 
 export function Editor() {
+  const navigate = useNavigate();
+  const parapms = useParams();
+
   const [contentInfo, setContentInfo] = useState({
     title: "",
     content: "",
   });
   const [imageUploads, setImageUploads] = React.useState([]);
 
+  const [outMaxFile, setOutMaxFile] = useState(false);
   const uploadImage = () => {
     let inputFile = document.createElement(`input`);
     inputFile.accept = "image/*";
     inputFile.type = "file";
     inputFile.click();
     inputFile.addEventListener("change", async () => {
+      if (inputFile.files[0].size > 3 * 1024 * 1024) {
+        setOutMaxFile(true);
+        return;
+      }
+
       if (inputFile.files && inputFile.files.length > 0) {
         let fileContent = await getFileContent(inputFile.files[0]);
         if (imageUploads.findIndex((item) => item == fileContent) == -1) {
@@ -56,20 +71,49 @@ export function Editor() {
 
   const [uploadStauts, setUploadStauts] = useState("");
   const uploadHandler = async () => {
+    let id = parapms["id"];
     try {
-      const res = await articleSave(
-        contentInfo.title,
-        contentInfo.content,
-        tagInfo.tags,
-        imageUploads,
-        true
-      );
+      const res = id
+        ? await articleModify(
+            id,
+            contentInfo.title,
+            contentInfo.content,
+            tagInfo.tags,
+            imageUploads,
+            true
+          )
+        : await articleSave(
+            contentInfo.title,
+            contentInfo.content,
+            tagInfo.tags,
+            imageUploads,
+            true
+          );
+
       if (res.status) setUploadStauts("success");
       else setUploadStauts("error");
     } catch (err) {
       setUploadStauts("error");
     }
   };
+
+  const [resourceNotFound, setResourceNotFound] = useState(false);
+  useEffect(() => {
+    let id = parapms["id"];
+    if (id) {
+      articlesView(id)
+        .then((res) => {
+          if (!res.status) setResourceNotFound(true);
+          const { Id, Title, Content, Covers, Tags } = res.data;
+          setContentInfo({ title: Title, content: Content });
+          setImageUploads(Covers);
+          setTagInfo({ ...tagInfo, tags: Tags });
+        })
+        .catch(() => {
+          setResourceNotFound(true);
+        });
+    }
+  }, []);
 
   return (
     <div className="flex flex-col justify-center py-4 gap-y-4 gap-x-4">
@@ -78,7 +122,7 @@ export function Editor() {
           <div className="flex gap-x-4 gap-y-2 flex-wrap sm:flex-nowrap">
             <Input
               label="Post Title"
-              value={contentInfo.value}
+              value={contentInfo.title}
               onChange={(e) =>
                 setContentInfo({ ...contentInfo, title: e.target.value })
               }
@@ -243,6 +287,42 @@ export function Editor() {
             variant="gradient"
             color={uploadStauts == "success" ? "green" : "red"}
             onClick={() => setUploadStauts("")}
+          >
+            <span>知晓</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+      <Dialog
+        open={resourceNotFound}
+        size="xs"
+        handler={() => {
+          setResourceNotFound(false);
+          navigate("/dashboard/blogs");
+        }}
+      >
+        <DialogHeader>资源不存在</DialogHeader>
+        <DialogBody>你查找的资源不存在</DialogBody>
+        <DialogFooter>
+          <Button
+            variant="gradient"
+            color="red"
+            onClick={() => {
+              setResourceNotFound(false);
+              navigate("/dashboard/blogs");
+            }}
+          >
+            <span>知晓</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+      <Dialog open={outMaxFile} size="xs" handler={() => setOutMaxFile(false)}>
+        <DialogHeader>文件超出大小</DialogHeader>
+        <DialogBody>选择的图片大小不应该大于3MB</DialogBody>
+        <DialogFooter>
+          <Button
+            variant="gradient"
+            color="red"
+            onClick={() => setOutMaxFile(false)}
           >
             <span>知晓</span>
           </Button>
