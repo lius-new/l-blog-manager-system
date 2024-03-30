@@ -24,6 +24,9 @@ func Server() {
 	app.Use(middlewares.BaseLoggerMiddleware)
 	app.Use(middlewares.AuthMiddleware)
 
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendStatus(fiber.ErrBadGateway.Code)
+	})
 	app.Get("/time", func(c *fiber.Ctx) error {
 		return c.SendString(time.Now().String())
 	})
