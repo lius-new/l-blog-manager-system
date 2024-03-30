@@ -5,5 +5,7 @@ import (
 )
 
 func main() {
-	routers.Server()
+	go routers.Server1()
+	go routers.Server2()
+	select {}
 }

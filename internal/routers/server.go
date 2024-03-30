@@ -12,7 +12,7 @@ import (
 	"github.com/lius-new/liusnew-blog-backend-server/internal/middlewares"
 )
 
-func Server() {
+func buildServer() *fiber.App {
 	app := fiber.New(fiber.Config{
 		ErrorHandler: middlewares.FiberConfigErrorHandler,
 	})
@@ -24,6 +24,28 @@ func Server() {
 	app.Use(middlewares.BaseLoggerMiddleware)
 	app.Use(middlewares.AuthMiddleware)
 
+	return app
+}
+
+func Server1() {
+	app := buildServer()
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendStatus(fiber.ErrBadGateway.Code)
+	})
+
+	// 注册路由
+	RegisterUserHanlder(app)
+	RegisterArticlesHanlder(app)
+	RegisterTagsHanlder(app)
+
+	if err := app.Listen(strings.Join([]string{":", os.Getenv("SEVER_PORT_1")}, "")); err != nil {
+		logger.Panic(err.Error())
+	}
+}
+func Server2() {
+	app := buildServer()
+
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.ErrBadGateway.Code)
 	})
@@ -32,11 +54,10 @@ func Server() {
 	})
 
 	// 注册路由
-	RegisterUserHanlder(app)
-	RegisterArticlesHanlder(app)
+	RegisterArticlesHanlder2(app)
 	RegisterTagsHanlder(app)
 
-	if err := app.Listen(strings.Join([]string{":", os.Getenv("SEVER_PORT")}, "")); err != nil {
+	if err := app.Listen(strings.Join([]string{":", os.Getenv("SEVER_PORT_2")}, "")); err != nil {
 		logger.Panic(err.Error())
 	}
 }

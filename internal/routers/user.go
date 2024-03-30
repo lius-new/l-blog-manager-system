@@ -14,7 +14,6 @@ func RegisterUserHanlder(app *fiber.App) {
 
 	api.Post("/login", loginHandler)
 	api.Post("/auth", authHandler)
-
 }
 
 func loginHandler(c *fiber.Ctx) error {

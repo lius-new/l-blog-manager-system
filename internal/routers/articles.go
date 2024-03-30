@@ -17,6 +17,12 @@ func RegisterArticlesHanlder(app *fiber.App) {
 	api.Post("/views", viewsHander)
 	api.Post("/view", viewHander)
 }
+func RegisterArticlesHanlder2(app *fiber.App) {
+	api := app.Group("/api/articles")
+
+	api.Post("/views", viewsHander)
+	api.Post("/view", viewHander)
+}
 
 func createHander(ctx *fiber.Ctx) error {
 	type article struct {
