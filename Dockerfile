@@ -14,6 +14,7 @@ RUN npm install -g pnpm \
 FROM nginx
 
 COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/nginx.example.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
