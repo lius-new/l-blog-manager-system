@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const SERVER_URL = "http://localhost:8080"
+const SERVER_URL = import.meta.env.VITE_API_SERVER_URI
 
 const request = axios.create({
     withCredentials: true,

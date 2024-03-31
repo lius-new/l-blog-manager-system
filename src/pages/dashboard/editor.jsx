@@ -75,20 +75,20 @@ export function Editor() {
     try {
       const res = id
         ? await articleModify(
-            id,
-            contentInfo.title,
-            contentInfo.content,
-            tagInfo.tags,
-            imageUploads,
-            true
-          )
+          id,
+          contentInfo.title,
+          contentInfo.content,
+          tagInfo.tags,
+          imageUploads,
+          true
+        )
         : await articleSave(
-            contentInfo.title,
-            contentInfo.content,
-            tagInfo.tags,
-            imageUploads,
-            true
-          );
+          contentInfo.title,
+          contentInfo.content,
+          tagInfo.tags,
+          imageUploads,
+          true
+        );
 
       if (res.status) setUploadStauts("success");
       else setUploadStauts("error");
