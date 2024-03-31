@@ -20,8 +20,9 @@ func RegisterArticlesHanlder(app *fiber.App) {
 func RegisterArticlesHanlder2(app *fiber.App) {
 	api := app.Group("/api/articles")
 
-	api.Post("/views", viewsHander)
+	api.Post("/views", viewsHander2)
 	api.Post("/view", viewHander)
+	api.Post("/search", searchHander2)
 }
 
 func createHander(ctx *fiber.Ctx) error {
@@ -117,6 +118,31 @@ func viewsHander(ctx *fiber.Ctx) error {
 
 	return ctx.JSON(fiber.Map{"data": articles, "total": count, "status": true})
 }
+func viewsHander2(ctx *fiber.Ctx) error {
+	type article struct {
+		PageSize int64 `json:"page_size"`
+		PageNum  int64 `json:"page_num"`
+	}
+
+	a := new(article)
+	if err := ctx.BodyParser(a); err != nil {
+		return err
+	}
+
+	articles, count := models.ViewArticles(a.PageSize, a.PageNum)
+
+	// 获取每个文章的标签名
+	for index := range articles {
+		tags := models.ViewArticlesTags(articles[index].Tags)
+		articles[index].Tags = tags
+		articles[index].Covers = make([]string, 0)
+		if len(articles[index].Content) > 300 {
+			articles[index].Content = strings.Join([]string{articles[index].Content[:300], "..."}, "")
+		}
+	}
+
+	return ctx.JSON(fiber.Map{"data": articles, "total": count, "status": true})
+}
 
 func viewHander(ctx *fiber.Ctx) error {
 	type article struct {
@@ -132,4 +158,22 @@ func viewHander(ctx *fiber.Ctx) error {
 	article_.Tags = tags
 
 	return ctx.JSON(fiber.Map{"data": article_, "status": true})
+}
+
+func searchHander2(ctx *fiber.Ctx) error {
+	type article struct {
+		Title string `json:"title"`
+	}
+	a := new(article)
+	if err := ctx.BodyParser(a); err != nil {
+		return err
+	}
+	articles := models.SearchArticle(a.Title)
+	for index := range articles {
+		articles[index].Tags = make([]string, 0)
+		articles[index].Covers = make([]string, 0)
+		articles[index].Content = ""
+	}
+
+	return ctx.JSON(fiber.Map{"data": articles, "status": true})
 }

@@ -21,6 +21,14 @@ type Article struct {
 	Time    int64
 }
 
+func getItemWithBson(b bson.M, item string) (interface{}, error) {
+	res := b[item]
+	if res != nil {
+		return res, nil
+	}
+	return nil, errors.New("key not found")
+
+}
 func BsonToArticle(b bson.M) *Article {
 
 	primitiveASlcieToStringSlice := func(pSlice primitive.A) []string {
@@ -36,14 +44,31 @@ func BsonToArticle(b bson.M) *Article {
 	}
 
 	a := &Article{}
-
-	a.Id = b["_id"].(primitive.ObjectID).Hex()
-	a.Title = b["title"].(string)
-	a.Content = b["content"].(string)
-	a.Tags = primitiveASlcieToStringSlice(b["tags"].(primitive.A))
-	a.Covers = primitiveASlcieToStringSlice(b["covers"].(primitive.A))
-	a.Status = b["status"].(bool)
-	a.Time = b["time"].(int64)
+	if value, err := getItemWithBson(b, "_id"); err == nil {
+		a.Id = value.(primitive.ObjectID).Hex()
+	}
+	if value, err := getItemWithBson(b, "title"); err == nil {
+		a.Title = value.(string)
+	}
+	if value, err := getItemWithBson(b, "content"); err == nil {
+		a.Content = value.(string)
+	}
+	if value, err := getItemWithBson(b, "tags"); err == nil {
+		a.Tags = primitiveASlcieToStringSlice(value.(primitive.A))
+	} else {
+		a.Tags = make([]string, 0)
+	}
+	if value, err := getItemWithBson(b, "covers"); err == nil {
+		a.Covers = primitiveASlcieToStringSlice(value.(primitive.A))
+	} else {
+		a.Covers = make([]string, 0)
+	}
+	if value, err := getItemWithBson(b, "status"); err == nil {
+		a.Status = value.(bool)
+	}
+	if value, err := getItemWithBson(b, "time"); err == nil {
+		a.Time = value.(int64)
+	}
 	return a
 }
 
@@ -210,4 +235,36 @@ func ViewArticles(pageSize, pageNumber int64) ([]Article, int64) {
 	}
 
 	return view(), count()
+}
+
+func SearchArticle(title string) []Article {
+	// {title: {$regex: /go/i}}
+	client := Pool.GetClient()
+	defer Pool.ReleaseClient(client)
+	coll := client.Database("liusnew-blog").Collection("articles")
+	ctx := context.Background()
+
+	view := func() (articles []Article) {
+
+		regex := primitive.Regex{Pattern: title, Options: "i"}
+
+		cur, err := coll.Find(ctx, bson.D{{"title", regex}})
+		if err != nil {
+			panic(err)
+		}
+
+		for cur.Next(ctx) {
+			var tempResult bson.M
+			err := cur.Decode(&tempResult)
+
+			if err != nil {
+				logger.Debug(err)
+			}
+			articles = append(articles, *BsonToArticle(tempResult))
+		}
+
+		return
+	}
+
+	return view()
 }

@@ -11,7 +11,7 @@ import (
 )
 
 var NotIntercepts []string = []string{
-	"/api/user/login", "/api/articles/view", "/api/articles/views", "/time", "/favicon.ico", "/",
+	"/api/user/login", "/api/articles/view", "/api/articles/views", "/api/articles/search", "/time", "/favicon.ico", "/",
 }
 
 func AuthMiddleware(c *fiber.Ctx) error {
