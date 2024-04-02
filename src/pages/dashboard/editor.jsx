@@ -32,7 +32,11 @@ export function Editor() {
     title: "",
     content: "",
   });
+
+  // 上传的图片文件,提交到后台
   const [imageUploads, setImageUploads] = React.useState([]);
+  // 上传的图片文件,临时显示
+  const [imageShowUploads, setImageShowUploads] = React.useState([]);
 
   const [outMaxFile, setOutMaxFile] = useState(false);
   const uploadImage = () => {
@@ -49,8 +53,9 @@ export function Editor() {
       if (inputFile.files && inputFile.files.length > 0) {
         let fileContent = await getFileContent(inputFile.files[0]);
         if (imageUploads.findIndex((item) => item == fileContent) == -1) {
-          setImageUploads([...imageUploads, fileContent]);
+          setImageShowUploads([...imageShowUploads, fileContent]);
         }
+        setImageUploads([...imageUploads, inputFile.files[0]]);
       }
     });
   };
@@ -80,14 +85,12 @@ export function Editor() {
           contentInfo.content,
           tagInfo.tags,
           imageUploads,
-          true
         )
         : await articleSave(
           contentInfo.title,
           contentInfo.content,
           tagInfo.tags,
           imageUploads,
-          true
         );
 
       if (res.status) setUploadStauts("success");
@@ -105,8 +108,10 @@ export function Editor() {
         .then((res) => {
           if (!res.status) setResourceNotFound(true);
           const { Id, Title, Content, Covers, Tags } = res.data;
+          console.log(Covers);
           setContentInfo({ title: Title, content: Content });
           setImageUploads(Covers);
+          setImageShowUploads(Covers);
           setTagInfo({ ...tagInfo, tags: Tags });
         })
         .catch(() => {
@@ -214,12 +219,14 @@ export function Editor() {
         </div>
         <div className="flex gap-2 flex-wrap flex-auto 4xl:justify-end">
           <div className="flex gap-x-4 flex-wrap">
-            {imageUploads.map((item, index) => (
+            {imageShowUploads.map((item, index) => (
               <Badge
                 content={
                   <XMarkIcon
                     onClick={() => {
-                      setImageUploads(imageUploads.filter((i) => i != item));
+                      setImageShowUploads(imageShowUploads.filter((i) => i != item));
+                      imageUploads.splice(index, 1)
+                      setImageUploads(imageUploads);
                     }}
                     className="h-4 w-4 text-white  cursor-pointer"
                     strokeWidth={2.5}
@@ -229,7 +236,7 @@ export function Editor() {
                 key={index}
               >
                 <img
-                  src={item}
+                  src={item.includes('data:image/') ? item : `${import.meta.env.VITE_API_SERVER_URI}/api/file/${item}`}
                   className="w-10 h-10 rounded-md object-cover"
                 ></img>
               </Badge>
@@ -237,7 +244,7 @@ export function Editor() {
 
             <Button
               className="whitespace-nowrap"
-              disabled={!(imageUploads.length < 2)}
+              disabled={!(imageShowUploads.length < 2)}
               onClick={uploadImage}
             >
               Upload Cover Image

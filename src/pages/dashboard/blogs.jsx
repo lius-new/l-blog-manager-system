@@ -64,7 +64,7 @@ export function Blogs() {
       pn = navigate(`/dashboard/blogs?page=1`);
     else if (pageNum) pn = parseInt(pageNum[0]);
 
-    articlesViews(14, pn).then((res) => {
+    articlesViews(12, pn).then((res) => {
       if (res.status) {
         setArticless(res.data);
         setTotal(res.total);
@@ -77,8 +77,8 @@ export function Blogs() {
     update();
   }, []);
 
-  const modifyHandle = (id, status) => {
-    articleModify(id, "", "", [], [], status).then((res) => {
+  const modifyHandle = (id, title, content, tags, covers, status) => {
+    articleModify(id, title, content, tags, covers, status).then((res) => {
       if (res.status) {
         update();
       }
@@ -135,7 +135,7 @@ export function Blogs() {
                               {Covers.map((item) => (
                                 <Avatar
                                   key={item}
-                                  src={item}
+                                  src={`${import.meta.env.VITE_API_SERVER_URI}/api/file/${item}`}
                                   alt={item}
                                   size="sm"
                                   variant="rounded"
@@ -201,7 +201,7 @@ export function Blogs() {
                               <Button
                                 size="sm"
                                 color={Status ? "red" : "green"}
-                                onClick={() => modifyHandle(Id, !Status)}
+                                onClick={() => modifyHandle(Id, Title, Content, Tags, Covers, !Status)}
                               >
                                 {Status ? "Disable" : "Enable"}
                               </Button>
@@ -235,11 +235,10 @@ export function Blogs() {
             <div className="flex items-center gap-2">
               {pageList.map((item) => (
                 <IconButton
-                  className={`${
-                    pageNum == item || (!pageNum && item == 1)
-                      ? "bg-blue-gray-600"
-                      : "bg-blue-gray-300"
-                  }`}
+                  className={`${pageNum == item || (!pageNum && item == 1)
+                    ? "bg-blue-gray-600"
+                    : "bg-blue-gray-300"
+                    }`}
                   key={item}
                   onClick={() => {
                     navigate(`/dashboard/blogs?page=${item}`);
