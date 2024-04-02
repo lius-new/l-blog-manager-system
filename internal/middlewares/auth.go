@@ -27,11 +27,13 @@ func AuthMiddleware(c *fiber.Ctx) error {
 
 	tokenClaims, err := jwt.JWT.ParseJwtToken(os.Getenv("SECRET_VALUE_2"), string(secret))
 	if err != nil {
+		c.ClearCookie()
 		logger.Panic("AuthPanic", err.Error())
 		return errors.New(Err.ErrorUnauthorized)
 	}
 
 	if _, err := jwt.JWT.ParseJwtToken(os.Getenv("SECRET_VALUE"), tokenClaims.Token); err != nil {
+		c.ClearCookie()
 		logger.Panic("AuthPanic", err.Error())
 		return errors.New(Err.ErrorUnauthorized)
 	}

@@ -24,11 +24,11 @@ func FiberConfigErrorHandler(ctx *fiber.Ctx, err error) error {
 	case strings.Contains(err.Error(), " no documents in result"): // 资源不存在
 		return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{"status": false, "message": "资源不存在"})
 	case strings.Contains(err.Error(), "Method Not Allowed"): //请求不被允许
-		return ctx.Status(fiber.StatusBadRequest).SendString("Method Not Allowed")
+		return ctx.Status(fiber.StatusBadRequest).SendStatus(fiber.ErrMethodNotAllowed.Code)
 	case strings.Contains(err.Error(), errors.ErrorUnauthorized):
-		return ctx.Status(fiber.StatusUnauthorized).SendString(errors.ErrorUnauthorized)
+		return ctx.Status(fiber.StatusUnauthorized).SendStatus(fiber.ErrUnauthorized.Code)
 	case strings.Contains(err.Error(), errors.ErrorBlocked):
-		return ctx.Status(fiber.StatusTooManyRequests).SendString(errors.ErrorBlocked)
+		return ctx.SendStatus(fiber.StatusTooManyRequests)
 	default:
 		return ctx.Status(fiber.StatusInternalServerError).SendString("Internal Server Error: " + err.Error())
 	}

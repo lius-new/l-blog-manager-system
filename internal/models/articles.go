@@ -100,7 +100,7 @@ func CreateArticles(title, content string, tags, covers []string) (*Article, err
 
 		ctx := context.Background()
 
-		if count, err := coll.CountDocuments(ctx, a.ToBson()); err != nil {
+		if count, err := coll.CountDocuments(ctx, bson.D{{"title", a.Title}, {"content", a.Content}}); err != nil {
 			panic(err)
 		} else if count > 0 {
 			return "", errors.New("article exist")

@@ -10,8 +10,14 @@ import (
 	"github.com/lius-new/liusnew-blog-backend-server/internal/models"
 )
 
-var NotRecordTraceIntercepts []string = []string{
+// 该链接不记录. 资源白名单
+var NotRecordPathTraceIntercepts []string = []string{
 	"/time",
+}
+
+// 该IP不记录不记录. Ip白名单
+var NotRecordIPTraceIntercepts []string = []string{
+	"101.42.173.48",
 }
 
 func BaseLoggerMiddleware(ctx *fiber.Ctx) error {
@@ -24,12 +30,19 @@ func BaseLoggerMiddleware(ctx *fiber.Ctx) error {
 	}
 
 	path := string(ctx.Request().URI().Path())
-	for _, v := range NotRecordTraceIntercepts {
-		if v != path {
-			models.Trace(ctx.IP(), path)
-			break
-		}
+	if !isExist(path, NotRecordPathTraceIntercepts) || !isExist(ctx.IP(), NotRecordIPTraceIntercepts) {
+		models.Trace(ctx.IP(), path)
 	}
 
 	return ctx.Next()
+}
+
+// 判断是否存在
+func isExist(current string, array []string) bool {
+	for _, v := range array {
+		if v == current {
+			return true
+		}
+	}
+	return false
 }

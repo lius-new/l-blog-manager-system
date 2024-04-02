@@ -48,6 +48,9 @@ func SaveTags(tagStrs []string) []string {
 
 	tagsId := make([]string, 0)
 	for _, v := range tagStrs {
+		if len(v) == 0 {
+			continue
+		}
 		tag := Tag{
 			Name:   v,
 			Status: true,
