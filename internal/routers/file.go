@@ -10,9 +10,6 @@ import (
 func RegisterFileHanlder(app *fiber.App) {
 	api := app.Group("/api/file")
 	api.Get("/:hash", viewFileHandle)
-	api.Get("/hello", func(c *fiber.Ctx) error {
-		return c.SendString("hello")
-	})
 }
 
 func viewFileHandle(ctx *fiber.Ctx) error {

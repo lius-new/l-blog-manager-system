@@ -48,6 +48,7 @@ func Server1() {
 	RegisterUserHanlder(app)
 	RegisterArticlesHanlder(app)
 	RegisterTagsHanlder(app)
+	RegisterFileHanlder(app)
 
 	if err := app.Listen(strings.Join([]string{":", os.Getenv("SEVER_PORT_1")}, "")); err != nil {
 		logger.Panic(err.Error())

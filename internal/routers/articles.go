@@ -2,7 +2,6 @@ package routers
 
 import (
 	"fmt"
-	"log"
 	"mime/multipart"
 	"os"
 	"strings"
@@ -16,7 +15,7 @@ func RegisterArticlesHanlder(app *fiber.App) {
 	api := app.Group("/api/articles")
 
 	api.Post("/create", createHander)
-	api.Put("/modify", modifyHander)
+	api.Post("/modify", modifyHander)
 	api.Delete("/delete", deleteHander)
 	api.Post("/views", viewsHander)
 	api.Post("/view", viewHander)
@@ -98,29 +97,82 @@ func createHander(ctx *fiber.Ctx) error {
 }
 
 func modifyHander(ctx *fiber.Ctx) error {
-	type article struct {
-		Id      string   `json:"id" bind:"required"`
-		Title   string   `json:"title"`
-		Content string   `json:"content"`
-		Tags    []string `json:"tags"`
-		Covers  []string `json:"covers"`
-		Status  bool     `json:"status"`
-	}
+	var (
+		form *multipart.Form
+		err  error
+	)
 
-	a := new(article)
-	if err := ctx.BodyParser(a); err != nil {
-		log.Println(err)
+	if form, err = ctx.MultipartForm(); err != nil {
 		return err
 	}
-	tags := models.SaveTags(a.Tags)
 
-	article_, err := models.ModifyArticles(a.Id, a.Title, a.Content, tags, a.Covers, a.Status)
+	var id, title, content string
+	var tags []string
+	var status bool
+
+	if tempValue := form.Value["id"]; len(tempValue) > 0 {
+		id = tempValue[0]
+	}
+	if tempValue := form.Value["title"]; len(tempValue) > 0 {
+		title = tempValue[0]
+	}
+	if tempValue := form.Value["content"]; len(tempValue) > 0 {
+		content = tempValue[0]
+	}
+	if tempValue := form.Value["tags"]; len(tempValue) > 0 {
+		tags = tempValue
+	}
+	if tempValue := form.Value["status"]; len(tempValue) > 0 {
+		if tempValue[0] == "true" {
+			status = true
+		} else {
+			status = false
+		}
+	}
+
+	// 文件
+	files := form.File["covers"]
+
+	if len(id) == 0 {
+		return ctx.SendStatus(fiber.ErrBadRequest.Code)
+	}
+
+	covers := make([]string, 0)
+	for _, v := range files {
+		file, err := v.Open()
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+		hash, err := utils.Hash(file)
+		if err != nil {
+			return err
+		}
+		covers = append(covers, hash)
+	}
+	if tempValue := form.Value["covers"]; len(tempValue) > 0 {
+		covers = append(covers, tempValue...)
+	}
+	tags = models.SaveTags(tags)
+
+	article_, err := models.ModifyArticles(id, title, content, tags, covers, status)
 	if err != nil && err.Error() == "article not found" {
-		return ctx.JSON(fiber.Map{"message": "article not found"})
+		return ctx.SendStatus(fiber.ErrNotFound.Code)
 	}
 
 	tags = models.ViewArticlesTags(article_.Tags)
 	article_.Tags = tags
+
+	// 保存文件到本地, 为什么不放在上面for一起呢? 因为有可能保存失败
+	for i, file := range files {
+		// save to example : COVER_PATH/文件hash.后缀 =>./data/covers/hsdjf24hjsfh283sf.png
+		savePath := fmt.Sprintf("%s/%s.%s", os.Getenv("COVER_PATH"), covers[i], utils.GetFileSuffix(file.Filename))
+		if exist, _ := utils.FileExist(savePath, os.Getenv("COVER_PATH")); len(exist) == 0 { // 不存在就保存
+			if err := ctx.SaveFile(file, savePath); err != nil {
+				return err
+			}
+		}
+	}
 
 	return ctx.JSON(fiber.Map{"data": article_, "status": true})
 }
@@ -152,7 +204,7 @@ func viewsHander(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	articles, count := models.ViewArticles(a.PageSize, a.PageNum)
+	articles, count := models.ViewArticles(a.PageSize, a.PageNum, true)
 
 	// 获取每个文章的标签名
 	for index := range articles {
@@ -176,7 +228,7 @@ func viewsHander2(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	articles, count := models.ViewArticles(a.PageSize, a.PageNum)
+	articles, count := models.ViewArticles(a.PageSize, a.PageNum, false)
 
 	// 获取每个文章的标签名
 	for index := range articles {

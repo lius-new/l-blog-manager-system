@@ -8,6 +8,7 @@ import (
 	"github.com/lius-new/liusnew-blog-backend-server/internal/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -73,19 +74,10 @@ func BsonToArticle(b bson.M) *Article {
 }
 
 func (a *Article) ToBson() (d bson.D) {
-	if len(a.Title) != 0 {
-		d = append(d, bson.E{Key: "title", Value: a.Title})
-	}
-	if len(a.Content) != 0 {
-		d = append(d, bson.E{Key: "content", Value: a.Content})
-	}
-	if len(a.Tags) != 0 {
-		d = append(d, bson.E{Key: "tags", Value: a.Tags})
-	}
-	if len(a.Covers) != 0 {
-		d = append(d, bson.E{Key: "covers", Value: a.Covers})
-	}
-
+	d = append(d, bson.E{Key: "title", Value: a.Title})
+	d = append(d, bson.E{Key: "content", Value: a.Content})
+	d = append(d, bson.E{Key: "tags", Value: a.Tags})
+	d = append(d, bson.E{Key: "covers", Value: a.Covers})
 	d = append(d, bson.E{Key: "status", Value: a.Status})
 	d = append(d, bson.E{Key: "time", Value: a.Time})
 	return
@@ -191,7 +183,7 @@ func ViewArticle(id string) *Article {
 	}
 	return view()
 }
-func ViewArticles(pageSize, pageNumber int64) ([]Article, int64) {
+func ViewArticles(pageSize, pageNumber int64, showDisable bool) ([]Article, int64) {
 	client := Pool.GetClient()
 	defer Pool.ReleaseClient(client)
 	coll := client.Database("liusnew-blog").Collection("articles")
@@ -208,7 +200,16 @@ func ViewArticles(pageSize, pageNumber int64) ([]Article, int64) {
 		findOptions.SetSkip(pageSize * (pageNumber - 1))
 		findOptions.SetSort(bson.M{"time": 1})
 
-		cur, err := coll.Find(ctx, bson.D{{}}, findOptions)
+		var (
+			cur *mongo.Cursor
+			err error
+		)
+		if showDisable {
+			cur, err = coll.Find(ctx, bson.D{{}}, findOptions)
+		} else {
+			cur, err = coll.Find(ctx, bson.D{{"status", true}}, findOptions)
+		}
+
 		if err != nil {
 			panic(err)
 		}
