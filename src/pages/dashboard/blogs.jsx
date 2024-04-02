@@ -16,7 +16,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { useState } from "react";
-import { articleModify, articlesViews } from "@/libs/action";
+import { articleModify, articleModifyStatus, articlesViews } from "@/libs/action";
 import { useSearchParams } from "react-router-dom";
 import ArticlesTableSkeletions from "@/widgets/skeletons/articles-table";
 import { useNavigate } from "react-router-dom";
@@ -77,8 +77,8 @@ export function Blogs() {
     update();
   }, []);
 
-  const modifyHandle = (id, title, content, tags, covers, status) => {
-    articleModify(id, title, content, tags, covers, status).then((res) => {
+  const modifyHandle = (id, status) => {
+    articleModifyStatus(id, status).then((res) => {
       if (res.status) {
         update();
       }
@@ -201,7 +201,7 @@ export function Blogs() {
                               <Button
                                 size="sm"
                                 color={Status ? "red" : "green"}
-                                onClick={() => modifyHandle(Id, Title, Content, Tags, Covers, !Status)}
+                                onClick={() => modifyHandle(Id, !Status)}
                               >
                                 {Status ? "Disable" : "Enable"}
                               </Button>
