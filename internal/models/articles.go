@@ -115,6 +115,34 @@ func CreateArticles(title, content string, tags, covers []string) (*Article, err
 
 	return &a, err
 }
+func ModifyArticleStatus(id string, status bool) (*Article, error) {
+	client := Pool.GetClient()
+	Pool.ReleaseClient(client)
+	coll := client.Database("liusnew-blog").Collection("articles")
+	ctx := context.Background()
+
+	modify := func() error {
+		objectId, _ := primitive.ObjectIDFromHex(id)
+
+		if count, err := coll.CountDocuments(ctx, bson.D{{"_id", objectId}}); err != nil {
+			panic(err)
+		} else if count == 0 {
+			return errors.New("article not found")
+		}
+
+		_, err := coll.UpdateOne(ctx, bson.D{{"_id", objectId}}, bson.D{{"$set", bson.D{{"status", status}, {"time", time.Now().UnixNano()}}}})
+
+		if err != nil {
+			panic(err)
+		}
+
+		return nil
+	}
+
+	err := modify()
+	return ViewArticle(id), err
+}
+
 func ModifyArticles(id, title, content string, tags, covers []string, status bool) (*Article, error) {
 	client := Pool.GetClient()
 	Pool.ReleaseClient(client)

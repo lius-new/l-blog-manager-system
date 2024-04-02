@@ -17,7 +17,7 @@ var NotRecordPathTraceIntercepts []string = []string{
 
 // 该IP不记录不记录. Ip白名单
 var NotRecordIPTraceIntercepts []string = []string{
-	"101.42.173.48",
+	"101.42.173.48", "120.228.39.39",
 }
 
 func BaseLoggerMiddleware(ctx *fiber.Ctx) error {

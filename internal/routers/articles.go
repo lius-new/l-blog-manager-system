@@ -16,6 +16,7 @@ func RegisterArticlesHanlder(app *fiber.App) {
 
 	api.Post("/create", createHander)
 	api.Post("/modify", modifyHander)
+	api.Post("/modify-status", modifyHanderStatus)
 	api.Delete("/delete", deleteHander)
 	api.Post("/views", viewsHander)
 	api.Post("/view", viewHander)
@@ -96,6 +97,23 @@ func createHander(ctx *fiber.Ctx) error {
 	return ctx.JSON(fiber.Map{"data": article_, "status": true})
 }
 
+func modifyHanderStatus(ctx *fiber.Ctx) error {
+	param := struct {
+		Id     string `json:"id"`
+		Status bool   `json:"status"`
+	}{}
+
+	if err := ctx.BodyParser(&param); err != nil {
+		return err
+	}
+	article, err := models.ModifyArticleStatus(param.Id, param.Status)
+
+	if err != nil && err.Error() == "article not found" {
+		return ctx.SendStatus(fiber.ErrNotFound.Code)
+	}
+
+	return ctx.JSON(fiber.Map{"data": article, "status": true})
+}
 func modifyHander(ctx *fiber.Ctx) error {
 	var (
 		form *multipart.Form
@@ -123,10 +141,10 @@ func modifyHander(ctx *fiber.Ctx) error {
 		tags = tempValue
 	}
 	if tempValue := form.Value["status"]; len(tempValue) > 0 {
-		if tempValue[0] == "true" {
-			status = true
-		} else {
+		if tempValue[0] == "false" {
 			status = false
+		} else {
+			status = true
 		}
 	}
 
