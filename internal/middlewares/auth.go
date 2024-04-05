@@ -3,6 +3,7 @@ package middlewares
 import (
 	"errors"
 	"os"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	Err "github.com/lius-new/liusnew-blog-backend-server/internal/errors"
@@ -11,7 +12,7 @@ import (
 )
 
 var NotIntercepts []string = []string{
-	"/api/user/login", "/api/articles/view", "/api/articles/views", "/api/articles/search", "/time", "/favicon.ico", "/",
+	"/api/user/login", "/api/articles/view", "/api/articles/views", "/api/articles/search", "/time", "/favicon.ico", "/api/file/:hash", "/",
 }
 
 func AuthMiddleware(c *fiber.Ctx) error {
@@ -20,6 +21,11 @@ func AuthMiddleware(c *fiber.Ctx) error {
 	for _, v := range NotIntercepts {
 		if v == path {
 			return c.Next()
+		} else if strings.Contains(v, ":") {
+			splits := strings.Split(v, ":")
+			if strings.HasPrefix(path, splits[0]) {
+				return c.Next()
+			}
 		}
 	}
 
