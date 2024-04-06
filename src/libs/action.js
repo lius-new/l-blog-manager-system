@@ -52,6 +52,14 @@ export const articleModify = async (id, title, content, tags, covers, status) =>
     })
 }
 
+export const uploadArticleInnerImages = async (images) => {
+    return await request.postForm('/api/file/upload-images', { images }, {
+        formSerializer: {
+            indexes: null
+        }
+    })
+}
+
 export const postDisable = async () => {
     return await request.post('/post/disable', {})
 }

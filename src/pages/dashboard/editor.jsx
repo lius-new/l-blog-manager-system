@@ -14,15 +14,18 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import "react-quill/dist/quill.snow.css";
-import { getFileContent } from "@/libs/utils";
+import { base64ToImageUrl, getContentImage, getFileContent, getFileImageContent } from "@/libs/utils";
 import {
   articleSave,
   articlesView,
   tagView,
   articleModify,
+  uploadArticleInnerImages,
 } from "@/libs/action";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useParams, useNavigate } from "react-router-dom";
+import { MdEditor, MdPreview, MdCatalog } from 'md-editor-rt';
+import 'md-editor-rt/lib/style.css';
 
 export function Editor() {
   const navigate = useNavigate();
@@ -51,7 +54,7 @@ export function Editor() {
       }
 
       if (inputFile.files && inputFile.files.length > 0) {
-        let fileContent = await getFileContent(inputFile.files[0]);
+        let fileContent = await getFileImageContent(inputFile.files[0]);
         if (imageUploads.findIndex((item) => item == fileContent) == -1) {
           setImageShowUploads([...imageShowUploads, fileContent]);
         }
@@ -73,10 +76,54 @@ export function Editor() {
       setRemoteTags(res.data);
     }
   };
+  const uploadFileHandle = () => {
+    let inputFile = document.createElement(`input`);
+    inputFile.accept = ".md";
+    inputFile.type = "file";
+    inputFile.click();
+    inputFile.addEventListener("change", async () => {
+      if (inputFile.files && inputFile.files.length > 0) {
+        let fileContent = await getFileContent(inputFile.files[0]);
+        setContentInfo({ ...contentInfo, content: contentInfo.content + fileContent })
+      }
+    });
+  }
+
+  const [contentImages, setContentImages] = useState([])
+  const markdownUpliadImage = async (files, callback) => {
+    const res = await Promise.all(
+      files.map(async (file) => {
+        return new Promise(async (rev, rej) => {
+          const imageBase64 = await getFileImageContent(file)
+          const url = base64ToImageUrl(imageBase64)
+          rev(url)
+          setContentImages([...contentImages, { key: url, value: file }])
+        });
+      })
+    );
+
+    callback(res.map((item) => item));
+  }
 
   const [uploadStauts, setUploadStauts] = useState("");
   const uploadHandler = async () => {
     let id = parapms["id"];
+
+    // 修改content中的images, 因为 contentImages 实际上在每次插入图片都会添加,但是删除就不删除. 而contentInfo中包含的![]()才是实际上的图片. cImages通过正则表达式获取到的所有的图片(blob url), 其中的每个对应contentImages中某个图片的key(blob url). 如果对应那么就说明图片是存在在content中的.
+    let cImages = getContentImage(contentInfo.content)
+    let contentImage = contentImages.filter(item =>
+      cImages.findIndex(i => i.includes(item.key)) != -1
+    )
+
+    // 先上传图片,更新contentInfo.content中所有原本blog url换成服务器实际上图片的地址
+    if (contentImage.length > 0) {
+      let contentImageUploadRes = await uploadArticleInnerImages(contentImage.map(item => item.value))
+      contentImageUploadRes = contentImageUploadRes.data.map((item, index) => { contentImage[index]["newKey"] = `${import.meta.env.VITE_API_SERVER_URI}/api/file/${item}`; return contentImage[index] })
+      contentImageUploadRes.forEach(element => {
+        setContentInfo({ title: contentInfo.title, content: contentInfo.content.replace(element.key, element.newKey) })
+      });
+    }
+
     try {
       const res = id
         ? await articleModify(
@@ -119,6 +166,7 @@ export function Editor() {
         });
     }
   }, []);
+
 
   return (
     <div className="flex flex-col justify-center py-4 gap-y-4 gap-x-4">
@@ -244,6 +292,12 @@ export function Editor() {
 
             <Button
               className="whitespace-nowrap"
+              onClick={uploadFileHandle}
+            >
+              读取文章
+            </Button>
+            <Button
+              className="whitespace-nowrap"
               disabled={!(imageShowUploads.length < 2)}
               onClick={uploadImage}
             >
@@ -271,12 +325,18 @@ export function Editor() {
           </Button>
         </div>
       </div>
-      <ReactQuill
-        className="flex-auto h-[24rem]  lg:h-[62rem] border"
-        theme="snow"
-        value={contentInfo.content}
+
+      <MdEditor
+        codeTheme={"atom"}
+        modelValue={contentInfo.content}
         onChange={(e) => setContentInfo({ ...contentInfo, content: e })}
+        onUploadImg={markdownUpliadImage}
+        className="flex-auto h-[24rem]  lg:h-[60rem] border rounded-md"
+        toolbars={['bold', 'italic', 'underline', '-', "strikeThrough", "title", "sub", "sup", "quote", 'unorderedList',
+          'orderedList', 'codeRow', 'code', 'link', 'image', 'table', 'mermaid', 'katex', 'task',
+          '=', 'revoke', 'next', 'prettier', 'pageFullscreen', 'fullscreen', 'preview', 'htmlPreview', 'catalog', 'github']}
       />
+
       <Dialog
         open={uploadStauts.length > 0}
         size="xs"
