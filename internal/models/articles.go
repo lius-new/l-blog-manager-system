@@ -13,13 +13,14 @@ import (
 )
 
 type Article struct {
-	Id      string
-	Title   string
-	Content string
-	Tags    []string
-	Covers  []string
-	Status  bool
-	Time    int64
+	Id          string
+	Title       string
+	Content     string
+	Description string
+	Tags        []string
+	Covers      []string
+	Status      bool
+	Time        int64
 }
 
 func getItemWithBson(b bson.M, item string) (interface{}, error) {
@@ -51,6 +52,9 @@ func BsonToArticle(b bson.M) *Article {
 	if value, err := getItemWithBson(b, "title"); err == nil {
 		a.Title = value.(string)
 	}
+	if value, err := getItemWithBson(b, "description"); err == nil {
+		a.Description = value.(string)
+	}
 	if value, err := getItemWithBson(b, "content"); err == nil {
 		a.Content = value.(string)
 	}
@@ -76,6 +80,7 @@ func BsonToArticle(b bson.M) *Article {
 func (a *Article) ToBson() (d bson.D) {
 	d = append(d, bson.E{Key: "title", Value: a.Title})
 	d = append(d, bson.E{Key: "content", Value: a.Content})
+	d = append(d, bson.E{Key: "description", Value: a.Description})
 	d = append(d, bson.E{Key: "tags", Value: a.Tags})
 	d = append(d, bson.E{Key: "covers", Value: a.Covers})
 	d = append(d, bson.E{Key: "status", Value: a.Status})
@@ -83,7 +88,7 @@ func (a *Article) ToBson() (d bson.D) {
 	return
 }
 
-func CreateArticles(title, content string, tags, covers []string) (*Article, error) {
+func CreateArticles(title, content, description string, tags, covers []string) (*Article, error) {
 	save := func(a *Article) (string, error) {
 		client := Pool.GetClient()
 		Pool.ReleaseClient(client)
@@ -108,7 +113,7 @@ func CreateArticles(title, content string, tags, covers []string) (*Article, err
 	}
 
 	a := Article{
-		"", title, content, tags, covers, true, time.Now().UnixNano(),
+		"", title, content, description, tags, covers, true, time.Now().UnixNano(),
 	}
 	id, err := save(&a)
 	a.Id = id
@@ -143,7 +148,7 @@ func ModifyArticleStatus(id string, status bool) (*Article, error) {
 	return ViewArticle(id), err
 }
 
-func ModifyArticles(id, title, content string, tags, covers []string, status bool) (*Article, error) {
+func ModifyArticles(id, title, content, description string, tags, covers []string, status bool) (*Article, error) {
 	client := Pool.GetClient()
 	Pool.ReleaseClient(client)
 	coll := client.Database("liusnew-blog").Collection("articles")
@@ -168,7 +173,7 @@ func ModifyArticles(id, title, content string, tags, covers []string, status boo
 	}
 
 	a := Article{
-		id, title, content, tags, covers, status, time.Now().UnixNano(),
+		id, title, content, description, tags, covers, status, time.Now().UnixNano(),
 	}
 
 	err := modify(&a)

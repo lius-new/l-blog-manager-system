@@ -40,7 +40,7 @@ func createHander(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	var title, content string
+	var title, content, description string
 	var tags []string
 
 	if tempValue := form.Value["title"]; len(tempValue) > 0 {
@@ -48,6 +48,9 @@ func createHander(ctx *fiber.Ctx) error {
 	}
 	if tempValue := form.Value["content"]; len(tempValue) > 0 {
 		content = tempValue[0]
+	}
+	if tempValue := form.Value["description"]; len(tempValue) > 0 {
+		description = tempValue[0]
 	}
 	if tempValue := form.Value["tags"]; len(tempValue) > 0 {
 		tags = tempValue
@@ -75,7 +78,7 @@ func createHander(ctx *fiber.Ctx) error {
 	}
 
 	tags = models.SaveTags(tags)
-	article_, err := models.CreateArticles(title, content, tags, covers)
+	article_, err := models.CreateArticles(title, content, description, tags, covers)
 
 	if err != nil && err.Error() == "article exist" {
 		return ctx.JSON(fiber.Map{"message": "article exist"})
@@ -124,7 +127,7 @@ func modifyHander(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	var id, title, content string
+	var id, title, content, description string
 	var tags []string
 	var status bool
 
@@ -136,6 +139,9 @@ func modifyHander(ctx *fiber.Ctx) error {
 	}
 	if tempValue := form.Value["content"]; len(tempValue) > 0 {
 		content = tempValue[0]
+	}
+	if tempValue := form.Value["description"]; len(tempValue) > 0 {
+		description = tempValue[0]
 	}
 	if tempValue := form.Value["tags"]; len(tempValue) > 0 {
 		tags = tempValue
@@ -173,7 +179,7 @@ func modifyHander(ctx *fiber.Ctx) error {
 	}
 	tags = models.SaveTags(tags)
 
-	article_, err := models.ModifyArticles(id, title, content, tags, covers, status)
+	article_, err := models.ModifyArticles(id, title, content, description, tags, covers, status)
 	if err != nil && err.Error() == "article not found" {
 		return ctx.SendStatus(fiber.ErrNotFound.Code)
 	}
@@ -228,9 +234,7 @@ func viewsHander(ctx *fiber.Ctx) error {
 	for index := range articles {
 		tags := models.ViewArticlesTags(articles[index].Tags)
 		articles[index].Tags = tags
-		if len(articles[index].Content) > 20 {
-			articles[index].Content = strings.Join([]string{articles[index].Content[:20], "..."}, "")
-		}
+		articles[index].Content = ""
 	}
 
 	return ctx.JSON(fiber.Map{"data": articles, "total": count, "status": true})
