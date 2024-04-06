@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
 import {
   Input,
   Select,
@@ -22,9 +21,9 @@ import {
   articleModify,
   uploadArticleInnerImages,
 } from "@/libs/action";
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import { BanknotesIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useParams, useNavigate } from "react-router-dom";
-import { MdEditor, MdPreview, MdCatalog } from 'md-editor-rt';
+import { MdEditor, NormalToolbar } from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
 
 export function Editor() {
@@ -341,8 +340,17 @@ export function Editor() {
         onUploadImg={markdownUpliadImage}
         className="flex-auto h-[24rem]  lg:h-[60rem] border rounded-md"
         toolbars={['bold', 'italic', 'underline', '-', "strikeThrough", "title", "sub", "sup", "quote", 'unorderedList',
-          'orderedList', 'codeRow', 'code', 'link', 'image', 'table', 'mermaid', 'katex', 'task',
+          'orderedList', 'codeRow', 'code', 'link', 'image', 'table', 'mermaid', 'katex', 'task', 0,
           '=', 'revoke', 'next', 'prettier', 'pageFullscreen', 'fullscreen', 'preview', 'htmlPreview', 'catalog', 'github']}
+        defToolbars={[
+          <NormalToolbar
+            title="标题"
+            onClick={() => setContentInfo({ ...contentInfo, content: contentInfo.content + "\n--! " })}
+            trigger={
+              <BanknotesIcon className="w-4 h-4" />
+            }
+          />
+        ]}
       />
 
       <Dialog
