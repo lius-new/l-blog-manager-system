@@ -34,6 +34,7 @@ export function Editor() {
   const [contentInfo, setContentInfo] = useState({
     title: "",
     content: "",
+    description: "",
   });
 
   // 上传的图片文件,提交到后台
@@ -115,6 +116,8 @@ export function Editor() {
       cImages.findIndex(i => i.includes(item.key)) != -1
     )
 
+
+
     // 先上传图片,更新contentInfo.content中所有原本blog url换成服务器实际上图片的地址
     if (contentImage.length > 0) {
       let contentImageUploadRes = await uploadArticleInnerImages(contentImage.map(item => item.value))
@@ -124,18 +127,23 @@ export function Editor() {
       });
     }
 
+    let description = contentInfo.content.match(/--!\s*\w+/g)
+    description = description.length > 0 ? description[0] : ""
+
     try {
       const res = id
         ? await articleModify(
           id,
           contentInfo.title,
-          contentInfo.content,
+          contentInfo.content.replace(description, ""),
+          description.replace("--!", ""),
           tagInfo.tags,
           imageUploads,
         )
         : await articleSave(
           contentInfo.title,
-          contentInfo.content,
+          contentInfo.content.replace(description, ""),
+          description.replace("--!", ""),
           tagInfo.tags,
           imageUploads,
         );
@@ -154,9 +162,9 @@ export function Editor() {
       articlesView(id)
         .then((res) => {
           if (!res.status) setResourceNotFound(true);
-          const { Id, Title, Content, Covers, Tags } = res.data;
+          const { Id, Title, Content, Description, Covers, Tags } = res.data;
           console.log(Covers);
-          setContentInfo({ title: Title, content: Content });
+          setContentInfo({ title: Title, content: "--!" + Description + "\n" + Content });
           setImageUploads(Covers);
           setImageShowUploads(Covers);
           setTagInfo({ ...tagInfo, tags: Tags });

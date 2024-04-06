@@ -126,7 +126,7 @@ export function Blogs() {
               <tbody>
                 {articles.length > 0 ? (
                   articles.map(
-                    ({ Id, Title, Content, Tags, Status, Time, Covers }) => {
+                    ({ Id, Title, Content, Description, Tags, Status, Time, Covers }) => {
                       const className = `py-3 px-5 border-b border-blue-gray-50"`;
                       return (
                         <tr key={Id}>
@@ -161,7 +161,7 @@ export function Blogs() {
                                 color="blue-gray"
                                 className="font-semibold"
                               >
-                                {Content}
+                                {Description}
                               </Typography>
                             </div>
                           </td>
