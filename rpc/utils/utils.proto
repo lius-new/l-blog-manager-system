@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package utils;
+option go_package="./utils";
+
+message MD5Reqeust {
+  string text = 1;
+}
+
+message MD5Reponse {
+  string text = 1;
+}
+
+service Utiler {
+  rpc MD5(MD5Reqeust) returns(MD5Reponse);
+}

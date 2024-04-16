@@ -1,0 +1,17 @@
+Name: authorization.rpc
+ListenOn: 0.0.0.0:8080
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: authorization.rpc
+
+User:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: user.rpc
+
+MongoURL: mongodb://lius:lsmima@127.0.0.1:27017
+DBName: liusnew-blog
+Cache:
+  - Host: 127.0.0.1:6379

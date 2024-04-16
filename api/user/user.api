@@ -1,0 +1,86 @@
+syntax = "v1"
+
+info (
+	title:  "user service"
+	desc:   "user manager service"
+	author: "lius-new"
+	email:  "liushui_new@126.com"
+)
+
+type (
+	loginRequest {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+	loginResponse {
+		token string `json:"token"`
+	}
+)
+
+@server (
+	prefix: /users
+)
+service user-api {
+	@handler Login
+	post /login (loginRequest) returns (loginResponse)
+}
+
+type (
+	UserBackend {
+		Id       string `json:"id"`
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Status   bool   `json:"status"`
+	}
+	createRequest {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+	idRequest {
+		Id string `path:"id"`
+	}
+	createResponse {
+		Data   UserBackend `json:"data"`
+		Status bool        `json:"status"`
+	}
+	deleteResponse {
+		Id     string `json:"id"`
+		Status bool   `json:"status"`
+	}
+	modifyRequest {
+		Id       string `json:"id"`
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Status   bool   `json:"status"`
+	}
+	selectPage {
+		PageNum  int64 `json:"page_num"`
+		PageSize int64 `json:"page_size"`
+	}
+	selectPageResponse {
+		Data   []UserBackend `json:"data"`
+		Status bool          `json:"status"`
+	}
+)
+
+@server (
+	prefix:     /articles
+	middleware: AuthMiddleware
+)
+service user-api {
+	@handler Create
+	post / (createRequest) returns (createResponse)
+
+	@handler Modify
+	put / (modifyRequest) returns (createResponse)
+
+	@handler Delete
+	delete /:id (idRequest) returns (deleteResponse)
+
+	@handler Select
+	get /:id (idRequest) returns (createResponse)
+
+	@handler SelectByPage
+	get / (selectPage) returns (selectPageResponse)
+}
+

@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package user;
+option go_package = "./user";
+
+// 添加用户参数
+message InsertUserRequest {
+  string username = 1;
+  string password = 2;
+}
+// 修改用户参数
+message ModifyUserRequest {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  bool status = 4;
+  string secretId = 5;
+}
+// 查询指定用户参数
+message SelectUserRequest { string uid = 1; }
+// 查询指定数量的用户参数
+message SelectUserByPageRequest {
+  int64 pageNum = 1;
+  int64 pageSize = 2;
+}
+// 删除用户参数
+message DeleteUserRequest { string uid = 1; }
+message LoginUserRequest {
+  string username = 1;
+  string password = 2;
+}
+
+// 响应结果
+message UserResponse {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  bool status = 4;
+  string secretId = 5;
+}
+// 用户更新返回的结果
+message ModifyUserResponse {
+  string username = 1;
+  string password = 2;
+  bool status = 3;
+  string secretId = 5;
+}
+// 查询指定数量返回的结果
+message UsersResponse { repeated UserResponse users = 1; }
+// 删除用户响应结果
+message DeleteUserResponse { string uid = 1; }
+// 登陆的返回结果
+message LoginResponse {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  bool status = 4;
+  string secretId = 5;
+}
+
+service Userer {
+  rpc Insert(InsertUserRequest) returns (UserResponse);       // 添加用户
+  rpc Modify(ModifyUserRequest) returns (ModifyUserResponse); // 修改用户
+  rpc Select(SelectUserRequest) returns (UserResponse);       // 查询指定id
+  rpc SelectByPage(SelectUserByPageRequest)
+      returns (UsersResponse); // 通过分页查询用户
+  rpc Delete(DeleteUserRequest) returns (DeleteUserResponse); // 删除用户
+  rpc Login(LoginUserRequest) returns (LoginResponse);        // 登陆
+}

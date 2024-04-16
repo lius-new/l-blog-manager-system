@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package authorization;
+option go_package = "./authorization";
+
+// 判断token的请求参数
+message judgeJwtRequestWithJwt {
+  string id = 1;    // secret的id
+  string token = 2; // 需要校验的token
+}
+// 判断token的响应结果
+message judgeJwtResponseWithJwt { string id = 1; }
+// 生成token的请求参数
+message generateJwtRequestWithJwt {
+  string id = 1;       // secret的id
+  string uid = 2;      // 用户id
+  string uesrname = 3; // 用户名
+}
+// 生成token的响应结果
+message generateJwtResponseWithJwt { string token = 1; }
+
+// 添加secret请求参数, 更新secret请求参数
+message insertAndUpdateSecretRequestWithSecret {
+  string id = 1;
+  string SecretInner = 2;
+  string SecretOuter = 3;
+  int64 Expire = 4;
+  string Issuer = 5;
+  string uid = 6;
+}
+// 为指定用户生成secret请求参数
+message generateSecretRequestWithSecret {
+  int64 Expire = 1;
+  string Issuer = 2;
+  string uid = 3;
+}
+// 删除secret的请求参数
+message deleteSecretRequestWithSecret { string id = 1; }
+// 查询secret的请求参数
+message selectSecretRequestWithSecret { string id = 1; }
+
+// 添加secret和管理secret和查询secret的响应
+message secretResponseWithSecret {
+  string id = 1;
+  string SecretInner = 2;
+  string SecretOuter = 3;
+  int64 Expire = 4;
+  string Issuer = 5;
+  string uid = 6;
+}
+// 删除secret的响应
+message deleteSecretResponseWithSecret { string id = 1; }
+
+service Auther {
+  // 校验token
+  rpc judgeToken(judgeJwtRequestWithJwt) returns (judgeJwtResponseWithJwt);
+  // 生成token
+  rpc generateToken(generateJwtRequestWithJwt)
+      returns (generateJwtResponseWithJwt);
+
+  // 新增secret
+  rpc insertSecret(insertAndUpdateSecretRequestWithSecret)
+      returns (secretResponseWithSecret);
+  // 更新secret
+  rpc updateSecret(insertAndUpdateSecretRequestWithSecret)
+      returns (secretResponseWithSecret);
+  // 为指定用户生成secret
+  rpc generateSecret(generateSecretRequestWithSecret)
+      returns (secretResponseWithSecret);
+  // 删除secret
+  rpc deleteSecret(deleteSecretRequestWithSecret)
+      returns (deleteSecretResponseWithSecret);
+  // 查询secret
+  rpc selectSecret(selectSecretRequestWithSecret)
+      returns (secretResponseWithSecret);
+}
