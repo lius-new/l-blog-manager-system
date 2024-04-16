@@ -1,0 +1,298 @@
+syntax = "proto3";
+
+package content;
+option go_package = "./content";
+
+//** article **
+//* article create *
+// 创建文章的参数
+message CreateArticleRequest {
+  string title = 1;
+  string desc = 2;
+  string content = 3;
+  repeated string tags = 4;
+  repeated string covers = 5;
+  string visiable = 6;
+}
+// 创建文章的响应内容
+message CreateArticleResponse {
+  string id = 1;
+  string title = 2;
+  string desc = 3;
+  string content = 4;
+  repeated string tags = 5;
+  repeated string covers = 6;
+  string visiable = 7;
+  int64 createAt = 9;
+  int64 updateAt = 10;
+}
+//* article select *
+message SelectArticle {
+  string id = 1;
+  string title = 2;
+  string desc = 3;
+  string content = 4;
+  repeated string tags = 5;
+  repeated string covers = 6;
+}
+// 根据id查找文章的参数
+message SelectArticleByIdRequest { string id = 1; }
+// 分页获取文章参数
+message SelectArticleByPageRequest {
+  int64 pageNum = 1;
+  int64 pageSize = 2;
+}
+// 分页获取文章响应
+message SelectArticleByPageResponse {
+  repeated SelectArticle articles = 1;
+  int64 total = 2;
+}
+// 根据tag获取文章
+message SelectArticleByTagRequest {
+  string tag = 1;
+  int64 pageNum = 2;
+  int64 pageSize = 3;
+}
+message SelectArticleByTagResponse {
+  repeated SelectArticle articles = 1;
+  int64 total = 2;
+}
+//* article saerch *
+// 根据文章标题|文章搜索文章
+message SearchArtilceRequest { string search = 1; }
+// 搜索的响应结果
+message SearchArtilce {
+  string id = 1;
+  string title = 2;
+  string desc = 3;
+  int64 pageNum = 4;
+  int64 pageSize = 5;
+}
+message SearchArtilceResponse {
+  repeated SearchArtilce articles = 1;
+  int64 total = 2;
+}
+//* article modify *
+// 修改文章标题参数
+message ModifyArticleTitleRequest {
+  string id = 1;
+  string title = 2;
+}
+// 修改文章标题响应
+message ModifyArticleTitleResponse {
+  string id = 1;
+  string title = 2;
+}
+// 修改文章描述参数
+message ModifyArticleDescRequest {
+  string id = 1;
+  string desc = 2;
+}
+// 修改文章描述响应
+message ModifyArticleDescResponse {
+  string id = 1;
+  string desc = 2;
+}
+// 修改文章内容参数
+message ModifyArticleContentRequest {
+  string id = 1;
+  string content = 2;
+}
+// 修改文章内容响应
+message ModifyArticleContentResponse {
+  string id = 1;
+  string content = 2;
+}
+// 修改文章tag参数
+message ModifyArticleTagRequest {
+  string id = 1;
+  repeated string tags = 2; // tag ids
+}
+// 修改文章tag响应
+message ModifyArticleTagResponse {
+  string id = 1;
+  repeated string tags = 2; // tag ids
+}
+//  修改文章cover的参数
+message ModifyArticleCoverRequest {
+  string id = 1;
+  repeated string covers = 2; // tag ids
+}
+// 修改文章cover响应
+message ModifyArticleCoverResponse {
+  string id = 1;
+  repeated string covers = 2; // tag ids
+}
+// 修改文章visiable的参数
+message ModifyArticleVisiableRequest {
+  string id = 1;
+  string visiable = 2; // tag ids
+}
+// 修改文章visiable的响应
+message ModifyArticleVisiableResponse {
+  string id = 1;
+  string visiable = 2; // tag ids
+}
+// 根据tag修改文章visiable的参数
+message ModifyArticleVisiableByTagRequest {
+  string id = 1;
+  string tag = 2;      // tag ids
+  string visiable = 3; // tag ids
+}
+// 根据tag修改文章visiable的响应
+message ModifyArticleVisiableByTagResponse {
+  string id = 1;
+  repeated string tag = 2; // tag ids
+  string visiable = 3;     // tag ids
+}
+
+// 删除文章的参数
+message DeleteArticleRequest {
+  string id = 1;
+  int64 comment = 2;          // tag ids
+  string CommentOperated = 3; // tag ids
+}
+// 删除文章的响应
+message DeleteArticleResponse {
+  string id = 1;
+  int64 comment = 2;          // tag ids
+  string CommentOperated = 3; // tag ids
+}
+
+//** tag **
+message CreateTagRequest {
+  string name = 1;
+  repeated string articles = 2;
+}
+message CreateTagResponse {
+  string id = 1;
+  string name = 2;
+  repeated string articles = 3;
+}
+message ModifyTagNameRequest {
+  string id = 1;
+  string name = 2;
+}
+message ModifyTagNameResponse {
+  string id = 1;
+  string name = 2;
+}
+message ModifyTagPushArticleRequest {
+  string id = 1;
+  string article = 2;
+}
+message ModifyTagPushArticleResponse {
+  string id = 1;
+  string articles = 2;
+}
+message ModifyTagRemoveArticleRequest {
+  string id = 1;
+  string article = 2;
+}
+message ModifyTagRemoveArticleResponse {
+  string id = 1;
+  string articles = 2;
+}
+message SelectTagWithPageRequest {
+  int64 pageNum = 1;
+  int64 pageSize = 2;
+}
+message SelectTagWithPageResponse {
+  string id = 1;
+  string name = 2;
+  repeated string articles = 3;
+}
+message DeleteTagRequest { string id = 1; }
+message DeleteTagResponse {}
+
+service Content {
+  //** article **
+
+  //* article create *
+  // 创建文章
+  rpc CreateArtilce(CreateArticleRequest) returns (CreateArticleResponse);
+
+  //* article select *
+  // 根据id查找文章
+  rpc SelectArtilceById(SelectArticleByIdRequest) returns (SelectArticle);
+  // 分页获取文章
+  rpc SelectArtilceByPage(SelectArticleByPageRequest)
+      returns (SelectArticleByPageResponse);
+  // 根据tag获取文章
+  rpc SelectArtilceByTag(SelectArticleByTagRequest)
+      returns (SelectArticleByTagResponse);
+
+  //* article search *
+  // 搜索文章: 标题或文章或Desc
+  rpc SearchArtilce(SearchArtilceRequest) returns (SearchArtilceResponse);
+
+  //* article modify *
+  // 修改文章标题
+  rpc ModifyArtilceTitle(ModifyArticleTitleRequest)
+      returns (ModifyArticleTitleResponse);
+  // 修改文章描述
+  rpc ModifyArtilceDesc(ModifyArticleDescRequest)
+      returns (ModifyArticleDescResponse);
+  // 修改文章内容
+  rpc ModifyArtilceContent(ModifyArticleContentRequest)
+      returns (ModifyArticleContentResponse);
+  // 修改文章标签
+  rpc ModifyArtilceTag(ModifyArticleTagRequest)
+      returns (ModifyArticleTagResponse);
+  // 修改文章Cover
+  rpc ModifyArtilceCover(ModifyArticleCoverRequest)
+      returns (ModifyArticleCoverResponse);
+  // 修改文章的可见性
+  rpc ModifyArtilceVisiable(ModifyArticleVisiableRequest)
+      returns (ModifyArticleVisiableResponse);
+  // 根据tag修改文章的可见性
+  rpc ModifyArtilceVisiableByTag(ModifyArticleVisiableByTagRequest)
+      returns (ModifyArticleVisiableByTagResponse);
+  // 根据删除文章
+  rpc DeleteArtilceById(DeleteArticleRequest) returns (DeleteArticleResponse);
+
+  //  TODO: 考虑放comment rpc service
+  // // 修改文章评论Visiable的参数
+  // message ModifyArticleCommentVisiableRequest {
+  //   string id = 1;
+  //   int64 comment = 2;          // tag ids
+  //   string CommentVisiable = 3; // tag ids
+  // }
+  // // 修改文章评论Visiable的响应
+  // message ModifyArticleCommentVisiableResponse {
+  //   string id = 1;
+  //   int64 comment = 2;          // tag ids
+  //   string CommentVisiable = 3; // tag ids
+  // }
+  // // 修改文章评论是否可操作的参数
+  // message ModifyArtilceCommentOperateRequest {
+  //   string id = 1;
+  //   int64 comment = 2;          // tag ids
+  //   string CommentOperated = 3; // tag ids
+  // }
+  // // 修改文章评论是否可操作的响应
+  // message ModifyArtilceCommentOperateResponse {
+  //   string id = 1;
+  //   int64 comment = 2;          // tag ids
+  //   string CommentOperated = 3; // tag ids
+  // }
+  // // 修改文章的评论是否可见
+  // rpc ModifyArtilceCommentVisiable(ModifyArticleCommentVisiableRequest)
+  //     returns (ModifyArticleCommentVisiableResponse);
+  // // 修改文章的评论是否操作
+  // rpc ModifyArtilceCommentOperate(ModifyArtilceCommentOperateRequest)
+  //     returns (ModifyArtilceCommentOperateResponse);
+
+  //** tag **
+  rpc CreateTag(CreateTagRequest) returns (CreateTagResponse);
+
+  rpc ModifyTagName(ModifyTagNameRequest) returns (ModifyTagNameResponse);
+  rpc ModifyTagPushArticle(ModifyTagPushArticleRequest)
+      returns (ModifyTagPushArticleResponse);
+  rpc ModifyTagRemoveArticle(ModifyTagRemoveArticleRequest)
+      returns (ModifyTagRemoveArticleResponse);
+  rpc SelectTagWithPage(SelectTagWithPageRequest)
+      returns (SelectTagWithPageResponse);
+
+  rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse);
+}
