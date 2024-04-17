@@ -25,7 +25,9 @@ func NewDeleteTagLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteT
 
 // 删除tag
 func (l *DeleteTagLogic) DeleteTag(in *content.DeleteTagRequest) (*content.DeleteTagResponse, error) {
-	// todo: add your logic here and delete this line
-
+	_, err := l.svcCtx.ModelWithTag.Delete(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &content.DeleteTagResponse{}, nil
 }

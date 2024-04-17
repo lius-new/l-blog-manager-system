@@ -9,7 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var prefixUserCacheKey = "cache:user:"
@@ -17,8 +16,6 @@ var prefixUserCacheKey = "cache:user:"
 type userModel interface {
 	Insert(ctx context.Context, data *User) error
 	FindOne(ctx context.Context, id string) (*User, error)
-	FindByUserName(ctx context.Context, username string) (*User, error)
-	FindByPage(ctx context.Context, pageNum,pageSize int64) ([]User, error)
 	Update(ctx context.Context, data *User) (*mongo.UpdateResult, error)
 	Delete(ctx context.Context, id string) (int64, error)
 }
@@ -74,41 +71,6 @@ func (m *defaultUserModel) FindOne(ctx context.Context, id string) (*User, error
 	switch err {
 	case nil:
 		return &data, nil
-	case monc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
-}
-
-func (m *defaultUserModel) FindByUserName(ctx context.Context, username string) (*User, error) {
-	var data User
-	err :=m.conn.FindOneNoCache(ctx, &data, bson.M{"username": username})
-	switch err {
-	case nil:
-		return &data, nil
-	case monc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
-}
-func (m *defaultUserModel) FindByPage(ctx context.Context, pageNum,pageSize int64) ([]User, error) {
-	findOptions := options.Find()
-	if pageNum <= 0 {
-			pageNum = 1
-	}
-	findOptions.SetLimit(pageSize)
-	findOptions.SetSkip(pageSize * (pageNum - 1))
-	findOptions.SetSort(bson.M{"time": -1})
-
-
-	data := make([]User,0)
-	err:=m.conn.Find(ctx, data ,bson.D{{}},findOptions)
-
-	switch err {
-	case nil:
-		return data, nil
 	case monc.ErrNotFound:
 		return nil, ErrNotFound
 	default:

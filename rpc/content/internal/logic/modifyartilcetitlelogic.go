@@ -3,8 +3,11 @@ package logic
 import (
 	"context"
 
+	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/article"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,7 +28,17 @@ func NewModifyArtilceTitleLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 
 // * article modify *
 func (l *ModifyArtilceTitleLogic) ModifyArtilceTitle(in *content.ModifyArticleTitleRequest) (*content.ModifyArticleTitleResponse, error) {
-	// todo: add your logic here and delete this line
+	id, err := primitive.ObjectIDFromHex(in.GetId())
+	if err != nil {
+		return nil, rpc.ErrInvalidObjectId
+	}
+	_, err = l.svcCtx.ModelWithArticle.Update(l.ctx, &model.Article{
+		ID:    id,
+		Title: in.Title,
+	})
+	if err != nil {
+		return nil, err
+	}
 
 	return &content.ModifyArticleTitleResponse{}, nil
 }

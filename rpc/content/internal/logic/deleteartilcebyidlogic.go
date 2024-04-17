@@ -25,7 +25,10 @@ func NewDeleteArtilceByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 // 根据删除文章
 func (l *DeleteArtilceByIdLogic) DeleteArtilceById(in *content.DeleteArticleRequest) (*content.DeleteArticleResponse, error) {
-	// todo: add your logic here and delete this line
+	_, err := l.svcCtx.ModelWithArticle.Delete(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
 
 	return &content.DeleteArticleResponse{}, nil
 }

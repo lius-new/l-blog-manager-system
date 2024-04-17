@@ -5,6 +5,7 @@ import (
 
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/article"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,7 +26,17 @@ func NewCreateArtilceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cre
 
 // * article create *
 func (l *CreateArtilceLogic) CreateArtilce(in *content.CreateArticleRequest) (*content.CreateArticleResponse, error) {
-	// todo: add your logic here and delete this line
+	err := l.svcCtx.ModelWithArticle.Insert(l.ctx, &model.Article{
+		Title:    in.Title,
+		Desc:     in.Desc,
+		Content:  in.Content,
+		Covers:   in.Covers,
+		Tags:     in.Tags,
+		Visiable: in.Visiable,
+	})
+	if err != nil {
+		return nil, err
+	}
 
 	return &content.CreateArticleResponse{}, nil
 }

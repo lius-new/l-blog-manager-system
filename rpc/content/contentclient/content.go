@@ -52,6 +52,7 @@ type (
 	SelectArticleByPageResponse        = content.SelectArticleByPageResponse
 	SelectArticleByTagRequest          = content.SelectArticleByTagRequest
 	SelectArticleByTagResponse         = content.SelectArticleByTagResponse
+	SelectArticles                     = content.SelectArticles
 	SelectTagByIdRequest               = content.SelectTagByIdRequest
 	SelectTagByIdResponse              = content.SelectTagByIdResponse
 	SelectTagByPageRequest             = content.SelectTagByPageRequest

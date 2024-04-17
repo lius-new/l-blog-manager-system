@@ -25,7 +25,17 @@ func NewSelectArtilceByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 // * article select *
 func (l *SelectArtilceByIdLogic) SelectArtilceById(in *content.SelectArticleByIdRequest) (*content.SelectArticle, error) {
-	// todo: add your logic here and delete this line
+	article, err := l.svcCtx.ModelWithArticle.FindOne(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
 
-	return &content.SelectArticle{}, nil
+	return &content.SelectArticle{
+		Id:      article.ID.Hex(),
+		Title:   article.Title,
+		Desc:    article.Desc,
+		Content: article.Content,
+		Tags:    article.Tags,
+		Covers:  article.Covers,
+	}, nil
 }

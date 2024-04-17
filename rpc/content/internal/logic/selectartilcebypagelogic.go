@@ -25,7 +25,7 @@ func NewSelectArtilceByPageLogic(ctx context.Context, svcCtx *svc.ServiceContext
 
 // 分页获取文章
 func (l *SelectArtilceByPageLogic) SelectArtilceByPage(in *content.SelectArticleByPageRequest) (*content.SelectArticleByPageResponse, error) {
-	// todo: add your logic here and delete this line
+	// TODO:
 
 	return &content.SelectArticleByPageResponse{}, nil
 }

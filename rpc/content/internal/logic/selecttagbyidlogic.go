@@ -25,7 +25,15 @@ func NewSelectTagByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Sel
 
 // 根据id获取tag
 func (l *SelectTagByIdLogic) SelectTagById(in *content.SelectTagByIdRequest) (*content.SelectTagByIdResponse, error) {
-	// todo: add your logic here and delete this line
+	tag, err := l.svcCtx.ModelWithTag.FindOne(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
 
-	return &content.SelectTagByIdResponse{}, nil
+	return &content.SelectTagByIdResponse{
+		Id:       tag.ID.Hex(),
+		Name:     tag.Name,
+		Articles: tag.Articles,
+		Visiable: tag.Visiable,
+	}, nil
 }

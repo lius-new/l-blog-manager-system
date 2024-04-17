@@ -5,6 +5,7 @@ import (
 
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/tag"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,7 +26,14 @@ func NewCreateTagLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateT
 
 // ** tag **
 func (l *CreateTagLogic) CreateTag(in *content.CreateTagRequest) (*content.CreateTagResponse, error) {
-	// todo: add your logic here and delete this line
+	err := l.svcCtx.ModelWithTag.Insert(l.ctx, &model.Tag{
+		Name:     in.Name,
+		Articles: in.Articles,
+		Visiable: in.Visiable,
+	})
+	if err != nil {
+		return nil, err
+	}
 
 	return &content.CreateTagResponse{}, nil
 }

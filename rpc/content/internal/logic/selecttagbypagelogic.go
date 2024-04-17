@@ -25,7 +25,6 @@ func NewSelectTagByPageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *S
 
 // 根据分页获取tag
 func (l *SelectTagByPageLogic) SelectTagByPage(in *content.SelectTagByPageRequest) (*content.SelectTagByPageResponse, error) {
-	// todo: add your logic here and delete this line
-
+	// TODO:
 	return &content.SelectTagByPageResponse{}, nil
 }

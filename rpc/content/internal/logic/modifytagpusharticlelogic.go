@@ -5,6 +5,7 @@ import (
 
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/tag"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,7 +26,17 @@ func NewModifyTagPushArticleLogic(ctx context.Context, svcCtx *svc.ServiceContex
 
 // 添加article到tag
 func (l *ModifyTagPushArticleLogic) ModifyTagPushArticle(in *content.ModifyTagPushArticleRequest) (*content.ModifyTagPushArticleResponse, error) {
-	// todo: add your logic here and delete this line
-
+	currentTag, err := l.svcCtx.ModelWithTag.FindOne(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+	articles := append(currentTag.Articles, in.Article)
+	_, err = l.svcCtx.ModelWithTag.Update(l.ctx, &model.Tag{
+		ID:       currentTag.ID,
+		Articles: articles,
+	})
+	if err != nil {
+		return nil, err
+	}
 	return &content.ModifyTagPushArticleResponse{}, nil
 }

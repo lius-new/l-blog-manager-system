@@ -25,7 +25,7 @@ func NewSelectArtilceByTagLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 
 // 根据tag获取文章
 func (l *SelectArtilceByTagLogic) SelectArtilceByTag(in *content.SelectArticleByTagRequest) (*content.SelectArticleByTagResponse, error) {
-	// todo: add your logic here and delete this line
+	// TODO:
 
 	return &content.SelectArticleByTagResponse{}, nil
 }

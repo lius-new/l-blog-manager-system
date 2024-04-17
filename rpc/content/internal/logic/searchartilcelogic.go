@@ -25,7 +25,6 @@ func NewSearchArtilceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Sea
 
 // * article search *
 func (l *SearchArtilceLogic) SearchArtilce(in *content.SearchArtilceRequest) (*content.SearchArtilceResponse, error) {
-	// todo: add your logic here and delete this line
-
+	//TODO:
 	return &content.SearchArtilceResponse{}, nil
 }
