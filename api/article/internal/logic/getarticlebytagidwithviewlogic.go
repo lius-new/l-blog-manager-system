@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetArticleInFrontendLogic struct {
+type GetArticleByTagIdWithViewLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewGetArticleInFrontendLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetArticleInFrontendLogic {
-	return &GetArticleInFrontendLogic{
+func NewGetArticleByTagIdWithViewLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetArticleByTagIdWithViewLogic {
+	return &GetArticleByTagIdWithViewLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetArticleInFrontendLogic) GetArticleInFrontend() (resp *types.ViewsResp, err error) {
+func (l *GetArticleByTagIdWithViewLogic) GetArticleByTagIdWithView(req *types.GetArticleByTagIdWithViewRequest) (resp *types.GetArticleByTagIdWithViewResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

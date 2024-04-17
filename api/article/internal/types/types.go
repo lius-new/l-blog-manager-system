@@ -9,7 +9,7 @@ type Article struct {
 	UpdateAt    int64    `json:"updateAt"`    // 文章更新时间
 }
 
-type ArticleBackend struct {
+type Data struct {
 	Id          string   `json:"id"`         // 文章id
 	Title       string   `json:"title"`      // 文章标题
 	Content     string   `json:"content"`    // 文章内容
@@ -22,8 +22,7 @@ type ArticleBackend struct {
 	DeleteAt    int64    `json:"deleteAt"`   // 删除更新时间
 }
 
-type ReqInBackend struct {
-	Id          string   `json:"id"`         // 文章id
+type CreateArticleRequest struct {
 	Title       string   `json:"title"`      // 文章标题
 	Content     string   `json:"content"`    // 文章内容
 	Description string   `json:"descritipn"` // 文章描述
@@ -32,22 +31,142 @@ type ReqInBackend struct {
 	Status      bool     `json:"status"`     // 文章状态
 }
 
-type RespInBackend struct {
-	Data   ArticleBackend `json:"data"`
-	Status bool           `json:"status"`
+type CreateArticleResponse struct {
+	Data []Data `json:"data"`
 }
 
-type ViewsReq struct {
+type DeleteArticleRequest struct {
+	Id string `json:"id"` // 文章id
+}
+
+type DeleteArticleResponse struct {
+	Id string `json:"id"` // 文章id
+}
+
+type GetArticleByIdWithBackendRequest struct {
+	Id string `json:"id"` // 文章id
+}
+
+type GetArticleByIdWithBackendResponse struct {
+	Data
+}
+
+type GetArticleByIdWithViewRequest struct {
+	Id string `json:"id"` // 文章id
+}
+
+type GetArticleByIdWithViewResponse struct {
+	Id          string   `json:"id"`          // 文章id
+	Title       string   `json:"title"`       // 文章标题
+	Description string   `json:"description"` // 文章描述
+	Content     string   `json:"content"`     // 文章内容
+	Tags        []string `json:"tags"`        // 文章tag
+	UpdateAt    int64    `json:"updateAt"`    // 文章更新时间
+}
+
+type GetArticleByPageRequest struct {
 	PageNum  int `json:"page_num"`  // 多少页
 	PageSize int `json:"page_size"` // 每页多少条数据
 }
 
-type ViewsResp struct {
-	Data   []Article `json:"data"`   // 当前页的文章数据
-	Status bool      `json:"status"` // 是否访问成功
+type GetArticleByPageWithViewResponse struct {
+	Data  []Article `json:"data"` // 当前页的文章数据
+	Total int64     `json:"total"`
 }
 
-type ViewsRespInBackend struct {
-	Data   []ArticleBackend `json:"data"`
-	Status bool             `json:"status"`
+type GetArticleByTagIdWithBackendRequest struct {
+	TagId []string `json:"tags"` // 标签id
+}
+
+type GetArticleByTagIdWithBackendResponse struct {
+	Data  []Data `json:"data"` // 当前页的文章数据
+	Total int64  `json:"total"`
+}
+
+type GetArticleByTagIdWithViewRequest struct {
+	TagId []string `json:"tags"` // 标签id
+}
+
+type GetArticleByTagIdWithViewResponse struct {
+	Data  []Article `json:"data"` // 当前页的文章数据
+	Total int64     `json:"total"`
+}
+
+type GetArticlesByPageWithBackendRequest struct {
+	PageNum  int `json:"page_num"`  // 多少页
+	PageSize int `json:"page_size"` // 每页多少条数据
+}
+
+type GetArticlesByPageWithBackendResponse struct {
+	Data  []Data `json:"data"`
+	Total int64  `json:"total"`
+}
+
+type ModifyArticleContentRequest struct {
+	Id      string `json:"id"`      // 文章id
+	Content string `json:"content"` // 文章id
+}
+
+type ModifyArticleContentResponse struct {
+	Id      string `json:"id"`      // 文章id
+	Content string `json:"content"` // 文章id
+}
+
+type ModifyArticleCoverRequest struct {
+	Id    string   `json:"id"`    // 文章id
+	Cover []string `json:"cover"` // 文章id
+}
+
+type ModifyArticleCoverResponse struct {
+	Id    string   `json:"id"`    // 文章id
+	Cover []string `json:"cover"` // 文章id
+}
+
+type ModifyArticleDescRequest struct {
+	Id   string `json:"id"`   // 文章id
+	Desc string `json:"desc"` // 文章id
+}
+
+type ModifyArticleDescResponse struct {
+	Id   string `json:"id"`   // 文章id
+	Desc string `json:"desc"` // 文章id
+}
+
+type ModifyArticleTagRequest struct {
+	Id   string   `json:"id"`   // 文章id
+	Tags []string `json:"tags"` // 文章id
+}
+
+type ModifyArticleTagResponse struct {
+	Id   string   `json:"id"`   // 文章id
+	Tags []string `json:"tags"` // 文章id
+}
+
+type ModifyArticleTitleRequest struct {
+	Id    string `json:"id"`    // 文章id
+	Title string `json:"title"` // 文章id
+}
+
+type ModifyArticleTitleResponse struct {
+	Id    string `json:"id"`    // 文章id
+	Title string `json:"title"` // 文章id
+}
+
+type ModifyArticleVisiableRequest struct {
+	Id       string `json:"id"`       // 文章id
+	Visiable bool   `json:"visiable"` // 文章id
+}
+
+type ModifyArticleVisiableResponse struct {
+	Id       string `json:"id"`       // 文章id
+	Visiable bool   `json:"visiable"` // 文章id
+}
+
+type SearchArticleRequest struct {
+	Search string `path:"search"` // 搜素内容: 标题, 描述, 内容
+}
+
+type SearchArticleResponse struct {
+	Data  []Article `json:"data"` // 当前页的文章数据
+	Total int64     `json:"total"`
 }

@@ -160,47 +160,81 @@ message DeleteArticleResponse {
 }
 
 //** tag **
+// 创建tag的参数
 message CreateTagRequest {
   string name = 1;
   repeated string articles = 2;
+  bool visiable = 3;
 }
+// 创建tag的响应结果
 message CreateTagResponse {
   string id = 1;
   string name = 2;
   repeated string articles = 3;
+  bool visiable = 4;
 }
+// 更新tag可见性参数
+message ModifyTagVisiableRequest {
+  string id = 1;
+  string visiable = 2;
+}
+// 更新tag可见性响应
+message ModifyTagVisiableResponse {
+  string id = 1;
+  string visiable = 2;
+}
+// 更新tag 名称参数
 message ModifyTagNameRequest {
   string id = 1;
   string name = 2;
 }
+// 更新tag 名称响应
 message ModifyTagNameResponse {
   string id = 1;
   string name = 2;
 }
+// 往指定tag中添加article参数
 message ModifyTagPushArticleRequest {
   string id = 1;
   string article = 2;
 }
+// 往指定tag中添加article响应
 message ModifyTagPushArticleResponse {
   string id = 1;
   string articles = 2;
 }
+// 往指定tag中删除article参数
 message ModifyTagRemoveArticleRequest {
   string id = 1;
   string article = 2;
 }
+// 往指定tag中删除article响应
 message ModifyTagRemoveArticleResponse {
   string id = 1;
   string articles = 2;
 }
-message SelectTagWithPageRequest {
+// 根据分页来获取tag的参数
+message SelectTagByPageRequest {
   int64 pageNum = 1;
   int64 pageSize = 2;
 }
-message SelectTagWithPageResponse {
+// 根据分页来获取tag的响应
+message SelectTagByPageResponse {
   string id = 1;
   string name = 2;
   repeated string articles = 3;
+  bool visiable = 4;
+}
+// 根据id来获取tag的参数
+message SelectTagByIdRequest {
+  string id = 1;
+}
+// 根据id来获取tag的响应
+message SelectTagByIdResponse {
+  string id = 1;
+  string name = 2;
+  repeated string articles = 3;
+  bool visiable = 4;
 }
 message DeleteTagRequest { string id = 1; }
 message DeleteTagResponse {}
@@ -284,15 +318,24 @@ service Content {
   //     returns (ModifyArtilceCommentOperateResponse);
 
   //** tag **
+  // 创建tag
   rpc CreateTag(CreateTagRequest) returns (CreateTagResponse);
-
+  // 修改tag name
   rpc ModifyTagName(ModifyTagNameRequest) returns (ModifyTagNameResponse);
+  // 修改tag可见性(visiable)
+  rpc ModifyTagVisiable(ModifyTagVisiableRequest)
+      returns (ModifyTagVisiableResponse);
+  // 添加article到tag
   rpc ModifyTagPushArticle(ModifyTagPushArticleRequest)
       returns (ModifyTagPushArticleResponse);
+  // 从tag中移除article
   rpc ModifyTagRemoveArticle(ModifyTagRemoveArticleRequest)
       returns (ModifyTagRemoveArticleResponse);
-  rpc SelectTagWithPage(SelectTagWithPageRequest)
-      returns (SelectTagWithPageResponse);
-
+  // 根据分页获取tag
+  rpc SelectTagByPage(SelectTagByPageRequest) returns (SelectTagByPageResponse);
+  // 根据id获取tag
+  rpc SelectTagById(SelectTagByIdRequest)
+      returns (SelectTagByIdResponse);
+  // 删除tag
   rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse);
 }

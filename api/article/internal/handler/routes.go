@@ -13,14 +13,24 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/",
-				Handler: GetArticlesInFrontendHandler(serverCtx),
+				Handler: GetArticlesByPageHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/:id",
-				Handler: GetArticleInFrontendHandler(serverCtx),
+				Path:    "/:search",
+				Handler: SearchArticleHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/id",
+				Handler: GetArticleByIdWithViewHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/tags",
+				Handler: GetArticleByTagIdWithViewHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/articles"),
@@ -31,29 +41,59 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.AuthMiddleware},
 			[]rest.Route{
 				{
-					Method:  http.MethodGet,
-					Path:    "/:id/auth",
-					Handler: GetArticleInBackendHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodDelete,
-					Path:    "/:id/auth",
-					Handler: DeleteArticlesInBackendHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/auth",
-					Handler: GetArticlesInBackendHandler(serverCtx),
+					Method:  http.MethodPost,
+					Path:    "/backend",
+					Handler: GetArticlesByPageWithBackendHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/auth",
-					Handler: CreateArticlesInBackendHandler(serverCtx),
+					Path:    "/backend/create",
+					Handler: CreateArticleHandler(serverCtx),
 				},
 				{
-					Method:  http.MethodPut,
-					Path:    "/auth",
-					Handler: ModifyArticlesInBackendHandler(serverCtx),
+					Method:  http.MethodPost,
+					Path:    "/backend/deletet/id",
+					Handler: DeleteArticleHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/backend/id",
+					Handler: GetArticleByIdWithBackendHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/backend/modify/content",
+					Handler: ModifyArticleContentHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/backend/modify/cover",
+					Handler: ModifyArticleCoverHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/backend/modify/desc",
+					Handler: ModifyArticleDescHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/backend/modify/tag",
+					Handler: ModifyArticleTagHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/backend/modify/title",
+					Handler: ModifyArticleTitleHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/backend/modify/visiable",
+					Handler: ModifyArticleVisiableHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/backend/tag",
+					Handler: GetArticleByTagIdWithBackendHandler(serverCtx),
 				},
 			}...,
 		),

@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type DeleteArticlesInBackendLogic struct {
+type ModifyArticleTitleLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewDeleteArticlesInBackendLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteArticlesInBackendLogic {
-	return &DeleteArticlesInBackendLogic{
+func NewModifyArticleTitleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ModifyArticleTitleLogic {
+	return &ModifyArticleTitleLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *DeleteArticlesInBackendLogic) DeleteArticlesInBackend() (resp *types.RespInBackend, err error) {
+func (l *ModifyArticleTitleLogic) ModifyArticleTitle(req *types.ModifyArticleTitleRequest) (resp *types.ModifyArticleTitleResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

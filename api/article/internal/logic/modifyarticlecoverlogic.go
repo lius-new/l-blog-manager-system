@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetArticlesInBackendLogic struct {
+type ModifyArticleCoverLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewGetArticlesInBackendLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetArticlesInBackendLogic {
-	return &GetArticlesInBackendLogic{
+func NewModifyArticleCoverLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ModifyArticleCoverLogic {
+	return &ModifyArticleCoverLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetArticlesInBackendLogic) GetArticlesInBackend(req *types.ViewsReq) (resp *types.ViewsRespInBackend, err error) {
+func (l *ModifyArticleCoverLogic) ModifyArticleCover(req *types.ModifyArticleCoverRequest) (resp *types.ModifyArticleCoverResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

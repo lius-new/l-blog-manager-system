@@ -9,3 +9,4 @@ go run $PROJECT_POSITION_PATH/rpc/authorization/authorization.go -f $PROJECT_POS
 
 # running gateway service 
 go run  $PROJECT_POSITION_PATH/api/user/user.go -f $PROJECT_POSITION_PATH/api/user/etc/user-api.yaml &
+go run  $PROJECT_POSITION_PATH/api/article/article.go -f $PROJECT_POSITION_PATH/api/article/etc/article-api.yaml &
