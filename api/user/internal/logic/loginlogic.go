@@ -70,6 +70,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 			panic(err)
 		}
 
+    // 修改当前用户的凭证Id
 		_, err = l.svcCtx.Userer.Modify(l.ctx, &user.ModifyUserRequest{
 			Id:       loginResp.Id,
 			Username: loginResp.Username,
@@ -84,6 +85,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 		loginResp.SecretId = generateSecretResp.GetId()
 	}
 
+  // 生成token
 	generateResp, err := l.svcCtx.Auther.GenerateToken(l.ctx, &authorization.GenerateJwtRequestWithJwt{
 		Id:       loginResp.SecretId,
 		Uid:      loginResp.Id,

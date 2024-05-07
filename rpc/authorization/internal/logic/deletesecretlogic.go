@@ -26,6 +26,7 @@ func NewDeleteSecretLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dele
 
 // 删除secret
 func (l *DeleteSecretLogic) DeleteSecret(in *authorization.DeleteSecretRequestWithSecret) (*authorization.DeleteSecretResponseWithSecret, error) {
+  // 删除secret
 	deleteCount, err := l.svcCtx.Model.Delete(l.ctx, in.Id)
 	if err != nil {
 		return nil, err

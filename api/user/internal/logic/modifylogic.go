@@ -41,7 +41,6 @@ func (l *ModifyLogic) Modify(req *types.ModifyRequest) (resp *types.CreateRespon
 		Data: types.UserBackend{
 			Id:       req.Id,
 			Username: modifyResp.Username,
-			Password: modifyResp.Password,
 			Status:   modifyResp.Status,
 		},
 		Status: true,

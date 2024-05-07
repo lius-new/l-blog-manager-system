@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+
+	"github.com/lius-new/blog-backend/rpc"
 )
 
 type JWTGenerate interface {
@@ -35,7 +37,10 @@ func NewJwtUtil(secret1, secret2 string, expire time.Time, issuer string) JwtUti
 }
 
 // buildGenerateJwtTokenFunc: 生成GenerateJwtTokenFunc的工厂方法, 支持修改signed method的类型
-func (j JwtUtil) buildGenerateJwtTokenFunc(signedMethod *jwt.SigningMethodHMAC, secret string) func(key, value string) (string, error) {
+func (j JwtUtil) buildGenerateJwtTokenFunc(
+	signedMethod *jwt.SigningMethodHMAC,
+	secret string,
+) func(key, value string) (string, error) {
 	return func(key, value string) (string, error) {
 		if len(key) == 0 || len(value) == 0 {
 			return "", errors.New("claim param empty")
@@ -67,11 +72,14 @@ func (j JwtUtil) generateJwtTokenOuter(key, value string) (string, error) {
 
 // ParseJwtToken: 解析token
 func (j JwtUtil) ParseJwtToken(token string) (*Claims, error) {
-
 	parse := func(secret, token string, c *Claims) (*jwt.Token, error) {
 		res, err := jwt.ParseWithClaims(token, c, func(t *jwt.Token) (interface{}, error) {
 			return []byte(secret), nil
 		})
+
+		if err != nil || !res.Valid {
+			return res, rpc.ErrInvalidToken
+		}
 
 		return res, err
 	}
@@ -86,7 +94,6 @@ func (j JwtUtil) ParseJwtToken(token string) (*Claims, error) {
 	// 解析内层
 	innerClaims := Claims{}
 	_, err = parse(j.SecretInner, outerClaims.Value, &innerClaims)
-
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +108,6 @@ func (j JwtUtil) GenerateJwtToken(key, value string) (string, error) {
 		return "", err
 	}
 	outerToken, err := j.generateJwtTokenOuter(value, innerToken)
-
 	if err != nil {
 		return "", err
 	}

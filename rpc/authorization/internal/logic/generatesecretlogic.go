@@ -40,6 +40,7 @@ func generateRandomKey(length int) (string, error) {
 
 // 为指定用户生成secret
 func (l *GenerateSecretLogic) GenerateSecret(in *authorization.GenerateSecretRequestWithSecret) (*authorization.SecretResponseWithSecret, error) {
+  // 判断请求参数中是否存在
 	if len(in.Uid) == 0 || len(in.Issuer) == 0 || in.Expire <= 0 {
 		return nil, rpc.ErrRequestParam
 	}
@@ -49,6 +50,7 @@ func (l *GenerateSecretLogic) GenerateSecret(in *authorization.GenerateSecretReq
 		Uid: in.Uid,
 	})
 
+  // 判断用户是否存在
 	if err != nil && err == rpc.ErrNotFound {
 		return nil, rpc.ErrNotFound
 	} else if err != nil {

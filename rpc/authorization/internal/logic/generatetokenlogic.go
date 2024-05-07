@@ -4,11 +4,12 @@ import (
 	"context"
 	"time"
 
+	"github.com/zeromicro/go-zero/core/logx"
+
+	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/authorization/authorization"
 	"github.com/lius-new/blog-backend/rpc/authorization/internal/jwt"
 	"github.com/lius-new/blog-backend/rpc/authorization/internal/svc"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type GenerateTokenLogic struct {
@@ -26,15 +27,32 @@ func NewGenerateTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Gen
 }
 
 // 生成token
-func (l *GenerateTokenLogic) GenerateToken(in *authorization.GenerateJwtRequestWithJwt) (*authorization.GenerateJwtResponseWithJwt, error) {
+func (l *GenerateTokenLogic) GenerateToken(
+	in *authorization.GenerateJwtRequestWithJwt,
+) (*authorization.GenerateJwtResponseWithJwt, error) {
+	// 判断请求参数是否异常
+	if len(in.Id) == 0 || len(in.Uesrname) == 0 || len(in.Uid) == 0 {
+		return nil, rpc.ErrRequestParam
+	}
+
+  // 查询到用户对应的secretID
 	secret, err := l.svcCtx.Model.FindOne(l.ctx, in.Id)
-	if err != nil {
+
+  // 判断是否存在
+	if err == rpc.ErrNotFound {
+		return nil, rpc.ErrNotFound
+	} else if err != nil {
 		return nil, err
 	}
 
+  // 超时的时间
 	expire := time.Now().Add(time.Duration(secret.Expire))
+  // jwt util struct
 	jwtUtil := jwt.NewJwtUtil(secret.SecretInner, secret.SecretOuter, expire, secret.Issuer)
+  // 生成token
 	token, err := jwtUtil.GenerateJwtToken(in.Uid, in.Uesrname)
+
+  // 是否存在生成的错误信息
 	if err != nil {
 		return nil, err
 	}

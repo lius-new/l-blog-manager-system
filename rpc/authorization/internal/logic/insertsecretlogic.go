@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
+	"github.com/zeromicro/go-zero/core/logx"
+
 	"github.com/lius-new/blog-backend/rpc/authorization/authorization"
 	"github.com/lius-new/blog-backend/rpc/authorization/internal/svc"
 	model "github.com/lius-new/blog-backend/rpc/authorization/model/mongo"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type InsertSecretLogic struct {
@@ -26,7 +26,9 @@ func NewInsertSecretLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Inse
 }
 
 // 新增secret
-func (l *InsertSecretLogic) InsertSecret(in *authorization.InsertAndUpdateSecretRequestWithSecret) (*authorization.SecretResponseWithSecret, error) {
+func (l *InsertSecretLogic) InsertSecret(
+	in *authorization.InsertAndUpdateSecretRequestWithSecret,
+) (*authorization.SecretResponseWithSecret, error) {
 	// 查询是否存在
 	secret, err := l.svcCtx.Model.FindByUID(l.ctx, in.Uid)
 	if err != nil {
@@ -40,13 +42,12 @@ func (l *InsertSecretLogic) InsertSecret(in *authorization.InsertAndUpdateSecret
 	secret = &model.Secret{
 		SecretInner: in.SecretInner,
 		SecretOuter: in.SecretOuter,
-		Expire:      time.Now().UnixNano() + in.Expire,
+		Expire:      in.Expire,
 		Issuer:      in.Issuer,
 		UserId:      in.Uid,
 	}
 
 	objectId, err := l.svcCtx.Model.Insert(l.ctx, secret)
-
 	if err != nil {
 		return nil, err
 	}

@@ -4,7 +4,6 @@ package types
 type UserBackend struct {
 	Id       string `json:"id"`
 	Username string `json:"username"`
-	Password string `json:"password"`
 	Status   bool   `json:"status"`
 }
 

@@ -12,6 +12,9 @@ var (
 	ErrInvalidDisabled = errors.New("invalid disabled")
 	ErrInvalidExist    = errors.New("invalid exist")
 	ErrInvalidObjectId = errors.New("invalid objectId")
+	ErrInvalidDeleted  = errors.New("invalid delete")
+	ErrInvalidPassword = errors.New("invalid password")
+	ErrInvalidToken    = errors.New("invalid token")
 )
 
 // 请求相关的错误常量

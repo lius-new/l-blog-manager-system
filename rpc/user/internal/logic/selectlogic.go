@@ -3,11 +3,11 @@ package logic
 import (
 	"context"
 
+	"github.com/zeromicro/go-zero/core/logx"
+
 	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/user/internal/svc"
 	"github.com/lius-new/blog-backend/rpc/user/user"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type SelectLogic struct {
@@ -25,6 +25,7 @@ func NewSelectLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SelectLogi
 }
 
 func (l *SelectLogic) Select(in *user.SelectUserRequest) (*user.UserResponse, error) {
+	// 判断请求参数
 	if len(in.Uid) == 0 {
 		return nil, rpc.ErrRequestParam
 	}
@@ -40,6 +41,7 @@ func (l *SelectLogic) Select(in *user.SelectUserRequest) (*user.UserResponse, er
 	return &user.UserResponse{
 		Username: selectUser.Username,
 		Password: selectUser.Password,
+		Status:   selectUser.Status,
 		SecretId: selectUser.SecretId,
 	}, nil
 }
