@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/lius-new/blog-backend/api"
@@ -21,7 +20,6 @@ func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewLoginLogic(r.Context(), svcCtx)
 		resp, err := l.Login(&req)
-		fmt.Println(resp)
 		api.Response(w, resp, err)
 	}
 }

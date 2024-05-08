@@ -2,7 +2,6 @@ package logic_test
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"testing"
 
@@ -23,8 +22,6 @@ func TestInsert(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println(md5Resp)
 
 	resp, err := insertLogic.Insert(&user.InsertUserRequest{
 		Username: "lius6666",

@@ -70,35 +70,30 @@ func (j JwtUtil) generateJwtTokenOuter(key, value string) (string, error) {
 	return j.buildGenerateJwtTokenFunc(jwt.SigningMethodHS256, j.SecretOuter)(key, value)
 }
 
-// ParseJwtToken: 解析token
-func (j JwtUtil) ParseJwtToken(token string) (*Claims, error) {
-	parse := func(secret, token string, c *Claims) (*jwt.Token, error) {
-		res, err := jwt.ParseWithClaims(token, c, func(t *jwt.Token) (interface{}, error) {
-			return []byte(secret), nil
-		})
+func (j JwtUtil) parse(secret, token string, c *Claims) (*jwt.Token, error) {
+	res, err := jwt.ParseWithClaims(token, c, func(t *jwt.Token) (interface{}, error) {
+		return []byte(secret), nil
+	})
 
-		if err != nil || !res.Valid {
-			return res, rpc.ErrInvalidToken
-		}
-
-		return res, err
+	if err != nil || !res.Valid {
+		return res, rpc.ErrInvalidToken
 	}
 
-	// 解析外层
+	return res, err
+}
+
+// ParseJwtTokenOuter: 解析外层token
+func (j JwtUtil) ParseJwtTokenOuter(token string) (Claims, error) {
 	outerClaims := Claims{}
-	_, err := parse(j.SecretOuter, token, &outerClaims)
-	if err != nil {
-		return nil, err
-	}
+	_, err := j.parse(j.SecretOuter, token, &outerClaims)
+	return outerClaims, err
+}
 
-	// 解析内层
+// ParseJwtToken: 解析内层token
+func (j JwtUtil) ParseJwtTokenInner(token string) (Claims, error) {
 	innerClaims := Claims{}
-	_, err = parse(j.SecretInner, outerClaims.Value, &innerClaims)
-	if err != nil {
-		return nil, err
-	}
-
-	return &innerClaims, err
+	_, err := j.parse(j.SecretInner, token, &innerClaims)
+	return innerClaims, err
 }
 
 // GenerateJwtToken: 解析token

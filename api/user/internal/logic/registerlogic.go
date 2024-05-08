@@ -13,21 +13,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type CreateLogic struct {
+type RegisterLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogic {
-	return &CreateLogic{
+func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegisterLogic {
+	return &RegisterLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *CreateLogic) Create(req *types.CreateRequest) (resp *types.CreateResponse, err error) {
+func (l *RegisterLogic) Register(req *types.CreateRequest) (resp *types.CreateResponse, err error) {
 	defer func() {
 		if catchErr := recover(); catchErr != nil {
 			var catchErr = catchErr.(error)
@@ -40,6 +40,17 @@ func (l *CreateLogic) Create(req *types.CreateRequest) (resp *types.CreateRespon
 		}
 	}()
 
+	// 查询用户
+	uResp, err := l.svcCtx.Userer.SelectByPage(l.ctx, &user.SelectUserByPageRequest{
+		PageNum:  0,
+		PageSize: 10,
+	})
+	if err != nil {
+		panic(err)
+	}
+	if uResp.Total > 1 {
+		return nil, errors.New("请联系管理员")
+	}
 	newUser := &user.InsertUserRequest{
 		Username: req.Username,
 		Password: req.Password,

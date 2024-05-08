@@ -13,8 +13,6 @@ type CreateRequest struct {
 }
 
 type CreateResponse struct {
-	Data   UserBackend `json:"data"`
-	Status bool        `json:"status"`
 }
 
 type DeleteResponse struct {

@@ -24,7 +24,7 @@ func NewModifyLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ModifyLogi
 	}
 }
 
-func (l *ModifyLogic) Modify(req *types.ModifyRequest) (resp *types.CreateResponse, err error) {
+func (l *ModifyLogic) Modify(req *types.ModifyRequest) (resp *types.UserBackend, err error) {
 	modifyResp, err := l.svcCtx.Userer.Modify(l.ctx, &user.ModifyUserRequest{
 		Id:       req.Id,
 		Username: req.Username,
@@ -32,17 +32,16 @@ func (l *ModifyLogic) Modify(req *types.ModifyRequest) (resp *types.CreateRespon
 		Status:   req.Status,
 	})
 	if err != nil {
-		return &types.CreateResponse{
-			Status: false,
-		}, err
-	}
-
-	return &types.CreateResponse{
-		Data: types.UserBackend{
+		return &types.UserBackend{
 			Id:       req.Id,
 			Username: modifyResp.Username,
 			Status:   modifyResp.Status,
-		},
-		Status: true,
+		}, err
+	}
+
+	return &types.UserBackend{
+		Id:       req.Id,
+		Username: modifyResp.Username,
+		Status:   modifyResp.Status,
 	}, nil
 }

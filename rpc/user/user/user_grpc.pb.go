@@ -25,6 +25,7 @@ type UsererClient interface {
 	Insert(ctx context.Context, in *InsertUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	Modify(ctx context.Context, in *ModifyUserRequest, opts ...grpc.CallOption) (*ModifyUserResponse, error)
 	Select(ctx context.Context, in *SelectUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	SelectByName(ctx context.Context, in *SelectUserByUsernameRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	SelectByPage(ctx context.Context, in *SelectUserByPageRequest, opts ...grpc.CallOption) (*UsersResponse, error)
 	Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	Login(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginResponse, error)
@@ -65,6 +66,15 @@ func (c *usererClient) Select(ctx context.Context, in *SelectUserRequest, opts .
 	return out, nil
 }
 
+func (c *usererClient) SelectByName(ctx context.Context, in *SelectUserByUsernameRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+	out := new(UserResponse)
+	err := c.cc.Invoke(ctx, "/user.Userer/SelectByName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *usererClient) SelectByPage(ctx context.Context, in *SelectUserByPageRequest, opts ...grpc.CallOption) (*UsersResponse, error) {
 	out := new(UsersResponse)
 	err := c.cc.Invoke(ctx, "/user.Userer/SelectByPage", in, out, opts...)
@@ -99,6 +109,7 @@ type UsererServer interface {
 	Insert(context.Context, *InsertUserRequest) (*UserResponse, error)
 	Modify(context.Context, *ModifyUserRequest) (*ModifyUserResponse, error)
 	Select(context.Context, *SelectUserRequest) (*UserResponse, error)
+	SelectByName(context.Context, *SelectUserByUsernameRequest) (*UserResponse, error)
 	SelectByPage(context.Context, *SelectUserByPageRequest) (*UsersResponse, error)
 	Delete(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	Login(context.Context, *LoginUserRequest) (*LoginResponse, error)
@@ -117,6 +128,9 @@ func (UnimplementedUsererServer) Modify(context.Context, *ModifyUserRequest) (*M
 }
 func (UnimplementedUsererServer) Select(context.Context, *SelectUserRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Select not implemented")
+}
+func (UnimplementedUsererServer) SelectByName(context.Context, *SelectUserByUsernameRequest) (*UserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectByName not implemented")
 }
 func (UnimplementedUsererServer) SelectByPage(context.Context, *SelectUserByPageRequest) (*UsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SelectByPage not implemented")
@@ -194,6 +208,24 @@ func _Userer_Select_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Userer_SelectByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectUserByUsernameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsererServer).SelectByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Userer/SelectByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsererServer).SelectByName(ctx, req.(*SelectUserByUsernameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Userer_SelectByPage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SelectUserByPageRequest)
 	if err := dec(in); err != nil {
@@ -266,6 +298,10 @@ var Userer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Select",
 			Handler:    _Userer_Select_Handler,
+		},
+		{
+			MethodName: "SelectByName",
+			Handler:    _Userer_SelectByName_Handler,
 		},
 		{
 			MethodName: "SelectByPage",

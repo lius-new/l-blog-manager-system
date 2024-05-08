@@ -21,6 +21,5 @@ func SelectByPageHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := logic.NewSelectByPageLogic(r.Context(), svcCtx)
 		resp, err := l.SelectByPage(&req)
 		api.Response(w, resp, err)
-
 	}
 }

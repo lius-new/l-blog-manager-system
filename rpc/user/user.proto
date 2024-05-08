@@ -16,8 +16,10 @@ message ModifyUserRequest {
   bool status = 4;
   string secretId = 5;
 }
-// 查询指定用户参数
+// 根据id查询指定用户的请求参数
 message SelectUserRequest { string uid = 1; }
+// 根据username查询指定用户的请求参数
+message SelectUserByUsernameRequest { string username = 1; }
 // 查询指定数量的用户参数
 message SelectUserByPageRequest {
   int64 pageNum = 1;
@@ -41,12 +43,14 @@ message UserResponse {
 // 用户更新返回的结果
 message ModifyUserResponse {
   string username = 1;
-  string password = 2;
-  bool status = 3;
-  string secretId = 5;
+  bool status = 2;
+  string secretId = 3;
 }
 // 查询指定数量返回的结果
-message UsersResponse { repeated UserResponse users = 1; }
+message UsersResponse {
+  repeated UserResponse users = 1;
+  int64 total = 2;
+}
 // 删除用户响应结果
 message DeleteUserResponse { string uid = 1; }
 // 登陆的返回结果
@@ -61,7 +65,9 @@ message LoginResponse {
 service Userer {
   rpc Insert(InsertUserRequest) returns (UserResponse);       // 添加用户
   rpc Modify(ModifyUserRequest) returns (ModifyUserResponse); // 修改用户
-  rpc Select(SelectUserRequest) returns (UserResponse);       // 查询指定id
+  rpc Select(SelectUserRequest) returns (UserResponse); // 根据id查询指定用户
+  rpc SelectByName(SelectUserByUsernameRequest)
+      returns (UserResponse); // 根据username查询指定用户
   rpc SelectByPage(SelectUserByPageRequest)
       returns (UsersResponse); // 通过分页查询用户
   rpc Delete(DeleteUserRequest) returns (DeleteUserResponse); // 删除用户

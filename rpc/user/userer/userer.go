@@ -13,22 +13,24 @@ import (
 )
 
 type (
-	DeleteUserRequest       = user.DeleteUserRequest
-	DeleteUserResponse      = user.DeleteUserResponse
-	InsertUserRequest       = user.InsertUserRequest
-	LoginResponse           = user.LoginResponse
-	LoginUserRequest        = user.LoginUserRequest
-	ModifyUserRequest       = user.ModifyUserRequest
-	ModifyUserResponse      = user.ModifyUserResponse
-	SelectUserByPageRequest = user.SelectUserByPageRequest
-	SelectUserRequest       = user.SelectUserRequest
-	UserResponse            = user.UserResponse
-	UsersResponse           = user.UsersResponse
+	DeleteUserRequest           = user.DeleteUserRequest
+	DeleteUserResponse          = user.DeleteUserResponse
+	InsertUserRequest           = user.InsertUserRequest
+	LoginResponse               = user.LoginResponse
+	LoginUserRequest            = user.LoginUserRequest
+	ModifyUserRequest           = user.ModifyUserRequest
+	ModifyUserResponse          = user.ModifyUserResponse
+	SelectUserByPageRequest     = user.SelectUserByPageRequest
+	SelectUserByUsernameRequest = user.SelectUserByUsernameRequest
+	SelectUserRequest           = user.SelectUserRequest
+	UserResponse                = user.UserResponse
+	UsersResponse               = user.UsersResponse
 
 	Userer interface {
 		Insert(ctx context.Context, in *InsertUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 		Modify(ctx context.Context, in *ModifyUserRequest, opts ...grpc.CallOption) (*ModifyUserResponse, error)
 		Select(ctx context.Context, in *SelectUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+		SelectByName(ctx context.Context, in *SelectUserByUsernameRequest, opts ...grpc.CallOption) (*UserResponse, error)
 		SelectByPage(ctx context.Context, in *SelectUserByPageRequest, opts ...grpc.CallOption) (*UsersResponse, error)
 		Delete(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 		Login(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginResponse, error)
@@ -58,6 +60,11 @@ func (m *defaultUserer) Modify(ctx context.Context, in *ModifyUserRequest, opts 
 func (m *defaultUserer) Select(ctx context.Context, in *SelectUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	client := user.NewUsererClient(m.cli.Conn())
 	return client.Select(ctx, in, opts...)
+}
+
+func (m *defaultUserer) SelectByName(ctx context.Context, in *SelectUserByUsernameRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+	client := user.NewUsererClient(m.cli.Conn())
+	return client.SelectByName(ctx, in, opts...)
 }
 
 func (m *defaultUserer) SelectByPage(ctx context.Context, in *SelectUserByPageRequest, opts ...grpc.CallOption) (*UsersResponse, error) {

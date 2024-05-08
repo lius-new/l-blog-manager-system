@@ -24,8 +24,7 @@ func NewSelectByPageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Sele
 }
 
 func (l *SelectByPageLogic) SelectByPage(in *user.SelectUserByPageRequest) (*user.UsersResponse, error) {
-
-	users, err := l.svcCtx.Model.FindByPage(l.ctx, in.PageNum, in.PageSize)
+	users, total, err := l.svcCtx.Model.FindByPage(l.ctx, in.PageNum, in.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -42,5 +41,5 @@ func (l *SelectByPageLogic) SelectByPage(in *user.SelectUserByPageRequest) (*use
 		})
 	}
 
-	return &user.UsersResponse{Users: res}, nil
+	return &user.UsersResponse{Users: res, Total: total}, nil
 }

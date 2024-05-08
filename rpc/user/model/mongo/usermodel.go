@@ -17,7 +17,7 @@ type (
 	UserModel interface {
 		userModel
 		FindByUserName(ctx context.Context, username string) (*User, error)
-		FindByPage(ctx context.Context, pageNum, pageSize int64) ([]User, error)
+		FindByPage(ctx context.Context, pageNum, pageSize int64) ([]User, int64, error)
 	}
 
 	customUserModel struct {
@@ -36,6 +36,7 @@ func NewUserModel(url, db, collection string, c cache.CacheConf) UserModel {
 func (m *customUserModel) FindByUserName(ctx context.Context, username string) (*User, error) {
 	var data User
 	err := m.conn.FindOneNoCache(ctx, &data, bson.M{"username": username})
+
 	switch err {
 	case nil:
 		return &data, nil
@@ -46,7 +47,7 @@ func (m *customUserModel) FindByUserName(ctx context.Context, username string) (
 	}
 }
 
-func (m *defaultUserModel) FindByPage(ctx context.Context, pageNum, pageSize int64) ([]User, error) {
+func (m *defaultUserModel) FindByPage(ctx context.Context, pageNum, pageSize int64) ([]User, int64, error) {
 	findOptions := options.Find()
 	if pageNum <= 0 {
 		pageNum = 1
@@ -56,14 +57,16 @@ func (m *defaultUserModel) FindByPage(ctx context.Context, pageNum, pageSize int
 	findOptions.SetSort(bson.M{"time": -1})
 
 	data := make([]User, 0)
-	err := m.conn.Find(ctx, data, bson.D{{}}, findOptions)
+	err := m.conn.Find(ctx, &data, bson.D{{}}, findOptions)
+
+	total, _ := m.conn.CountDocuments(ctx, bson.D{{}})
 
 	switch err {
 	case nil:
-		return data, nil
+		return data, total, nil
 	case monc.ErrNotFound:
-		return nil, ErrNotFound
+		return nil, 0, ErrNotFound
 	default:
-		return nil, err
+		return nil, 0, err
 	}
 }

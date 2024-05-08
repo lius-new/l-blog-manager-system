@@ -35,24 +35,27 @@ func (l *GenerateTokenLogic) GenerateToken(
 		return nil, rpc.ErrRequestParam
 	}
 
-  // 查询到用户对应的secretID
+	// 查询到用户对应的secretID
 	secret, err := l.svcCtx.Model.FindOne(l.ctx, in.Id)
 
-  // 判断是否存在
+	// 判断是否存在
 	if err == rpc.ErrNotFound {
 		return nil, rpc.ErrNotFound
 	} else if err != nil {
 		return nil, err
 	}
 
-  // 超时的时间
+	// 超时的时间
 	expire := time.Now().Add(time.Duration(secret.Expire))
-  // jwt util struct
-	jwtUtil := jwt.NewJwtUtil(secret.SecretInner, secret.SecretOuter, expire, secret.Issuer)
-  // 生成token
+
+	// 从redis中获取到的secret
+	secretOuter := l.svcCtx.GetSecretOuter()
+	// jwt util struct
+	jwtUtil := jwt.NewJwtUtil(secret.Secret, secretOuter, expire, secret.Issuer)
+	// 生成token
 	token, err := jwtUtil.GenerateJwtToken(in.Uid, in.Uesrname)
 
-  // 是否存在生成的错误信息
+	// 是否存在生成的错误信息
 	if err != nil {
 		return nil, err
 	}

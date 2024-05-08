@@ -41,12 +41,9 @@ func (l *UpdateSecretLogic) UpdateSecret(
 	} else if err != nil {
 		return nil, err
 	}
-  // 检查提交的参数避免提交错误的参数也修改数据库
-	if in.SecretInner != findSecret.SecretInner && len(in.SecretInner) != 0 {
-		findSecret.SecretInner = in.SecretInner
-	}
-	if in.SecretOuter != findSecret.SecretOuter && len(in.SecretOuter) != 0 {
-		findSecret.SecretOuter = in.SecretOuter
+	// 检查提交的参数避免提交错误的参数也修改数据库
+	if in.Secret != findSecret.Secret && len(in.Secret) != 0 {
+		findSecret.Secret = in.Secret
 	}
 	if in.Uid != findSecret.UserId && len(in.Uid) != 0 {
 		findSecret.UserId = in.Uid
@@ -57,14 +54,13 @@ func (l *UpdateSecretLogic) UpdateSecret(
 	if in.Expire != findSecret.Expire && in.Expire != 0 {
 		findSecret.Expire = in.Expire
 	}
-  // 更新
+	// 更新
 	updateRes, err := l.svcCtx.Model.Update(l.ctx, &model.Secret{
-		ID:          findSecret.ID,
-		SecretInner: findSecret.SecretInner,
-		SecretOuter: findSecret.SecretOuter,
-		Expire:      findSecret.Expire,
-		Issuer:      findSecret.Issuer,
-		UserId:      findSecret.UserId,
+		ID:     findSecret.ID,
+		Secret: findSecret.Secret,
+		Expire: findSecret.Expire,
+		Issuer: findSecret.Issuer,
+		UserId: findSecret.UserId,
 	})
 	if err != nil {
 		return nil, err
@@ -73,11 +69,10 @@ func (l *UpdateSecretLogic) UpdateSecret(
 	}
 
 	return &authorization.SecretResponseWithSecret{
-		Id:          in.Id,
-		SecretInner: in.SecretInner,
-		SecretOuter: in.SecretOuter,
-		Expire:      in.Expire,
-		Issuer:      in.Issuer,
-		Uid:         in.Uid,
+		Id:     in.Id,
+		Secret: in.Secret,
+		Expire: in.Expire,
+		Issuer: in.Issuer,
+		Uid:    in.Uid,
 	}, nil
 }

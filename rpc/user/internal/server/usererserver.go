@@ -37,6 +37,11 @@ func (s *UsererServer) Select(ctx context.Context, in *user.SelectUserRequest) (
 	return l.Select(in)
 }
 
+func (s *UsererServer) SelectByName(ctx context.Context, in *user.SelectUserByUsernameRequest) (*user.UserResponse, error) {
+	l := logic.NewSelectByNameLogic(ctx, s.svcCtx)
+	return l.SelectByName(in)
+}
+
 func (s *UsererServer) SelectByPage(ctx context.Context, in *user.SelectUserByPageRequest) (*user.UsersResponse, error) {
 	l := logic.NewSelectByPageLogic(ctx, s.svcCtx)
 	return l.SelectByPage(in)

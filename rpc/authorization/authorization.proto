@@ -5,8 +5,7 @@ option go_package = "./authorization";
 
 // 判断token的请求参数
 message judgeJwtRequestWithJwt {
-  string id = 1;    // secret的id
-  string token = 2; // 需要校验的token
+  string token = 1; // 需要校验的token
 }
 // 判断token的响应结果
 message judgeJwtResponseWithJwt { string id = 1; }
@@ -22,11 +21,10 @@ message generateJwtResponseWithJwt { string token = 1; }
 // 添加secret请求参数, 更新secret请求参数
 message insertAndUpdateSecretRequestWithSecret {
   string id = 1;
-  string SecretInner = 2;
-  string SecretOuter = 3;
-  int64 Expire = 4;
-  string Issuer = 5;
-  string uid = 6;
+  string Secret = 2;
+  int64 Expire = 3;
+  string Issuer = 4;
+  string uid = 5;
 }
 // 为指定用户生成secret请求参数
 message generateSecretRequestWithSecret {
@@ -42,11 +40,10 @@ message selectSecretRequestWithSecret { string id = 1; }
 // 添加secret和管理secret和查询secret的响应
 message secretResponseWithSecret {
   string id = 1;
-  string SecretInner = 2;
-  string SecretOuter = 3;
-  int64 Expire = 4;
-  string Issuer = 5;
-  string uid = 6;
+  string Secret = 2;
+  int64 Expire = 3;
+  string Issuer = 4;
+  string uid = 5;
 }
 // 删除secret的响应
 message deleteSecretResponseWithSecret { string id = 1; }

@@ -2,8 +2,6 @@ package logic
 
 import (
 	"context"
-	"crypto/rand"
-	"encoding/hex"
 	"time"
 
 	"github.com/lius-new/blog-backend/rpc"
@@ -29,18 +27,9 @@ func NewGenerateSecretLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 	}
 }
 
-func generateRandomKey(length int) (string, error) {
-	key := make([]byte, length)
-	_, err := rand.Read(key)
-	if err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(key), nil
-}
-
 // 为指定用户生成secret
 func (l *GenerateSecretLogic) GenerateSecret(in *authorization.GenerateSecretRequestWithSecret) (*authorization.SecretResponseWithSecret, error) {
-  // 判断请求参数中是否存在
+	// 判断请求参数中是否存在
 	if len(in.Uid) == 0 || len(in.Issuer) == 0 || in.Expire <= 0 {
 		return nil, rpc.ErrRequestParam
 	}
@@ -50,7 +39,7 @@ func (l *GenerateSecretLogic) GenerateSecret(in *authorization.GenerateSecretReq
 		Uid: in.Uid,
 	})
 
-  // 判断用户是否存在
+	// 判断用户是否存在
 	if err != nil && err == rpc.ErrNotFound {
 		return nil, rpc.ErrNotFound
 	} else if err != nil {
@@ -68,14 +57,12 @@ func (l *GenerateSecretLogic) GenerateSecret(in *authorization.GenerateSecretReq
 		l.svcCtx.Model.DeleteByUID(l.ctx, in.Uid)
 	}
 
-	secretInner, _ := generateRandomKey(32)
-	secretOuter, _ := generateRandomKey(32)
+	secretInner, _ := svc.GenerateRandomKey(32)
 	secret = &model.Secret{
-		SecretInner: secretInner,
-		SecretOuter: secretOuter,
-		Expire:      time.Now().UnixNano() + in.Expire,
-		Issuer:      in.Issuer,
-		UserId:      in.Uid,
+		Secret: secretInner,
+		Expire: time.Now().UnixNano() + in.Expire,
+		Issuer: in.Issuer,
+		UserId: in.Uid,
 	}
 	objectId, err := l.svcCtx.Model.Insert(l.ctx, secret)
 	if err != nil {
@@ -83,11 +70,10 @@ func (l *GenerateSecretLogic) GenerateSecret(in *authorization.GenerateSecretReq
 	}
 
 	return &authorization.SecretResponseWithSecret{
-		Id:          objectId.Hex(),
-		SecretInner: secretInner,
-		SecretOuter: secretOuter,
-		Expire:      in.Expire,
-		Issuer:      in.Issuer,
-		Uid:         in.Uid,
+		Id:     objectId.Hex(),
+		Secret: secretInner,
+		Expire: in.Expire,
+		Issuer: in.Issuer,
+		Uid:    in.Uid,
 	}, nil
 }

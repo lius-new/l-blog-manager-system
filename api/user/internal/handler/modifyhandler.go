@@ -21,6 +21,5 @@ func ModifyHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := logic.NewModifyLogic(r.Context(), svcCtx)
 		resp, err := l.Modify(&req)
 		api.Response(w, resp, err)
-
 	}
 }

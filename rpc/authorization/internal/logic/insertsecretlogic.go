@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 
@@ -40,11 +39,10 @@ func (l *InsertSecretLogic) InsertSecret(
 	}
 
 	secret = &model.Secret{
-		SecretInner: in.SecretInner,
-		SecretOuter: in.SecretOuter,
-		Expire:      in.Expire,
-		Issuer:      in.Issuer,
-		UserId:      in.Uid,
+		Secret: in.Secret,
+		Expire: in.Expire,
+		Issuer: in.Issuer,
+		UserId: in.Uid,
 	}
 
 	objectId, err := l.svcCtx.Model.Insert(l.ctx, secret)
@@ -53,11 +51,10 @@ func (l *InsertSecretLogic) InsertSecret(
 	}
 
 	return &authorization.SecretResponseWithSecret{
-		Id:          objectId.String(),
-		SecretInner: in.SecretInner,
-		SecretOuter: in.SecretOuter,
-		Expire:      in.Expire,
-		Issuer:      in.Issuer,
-		Uid:         in.Uid,
+		Id:     objectId.String(),
+		Secret: in.Secret,
+		Expire: in.Expire,
+		Issuer: in.Issuer,
+		Uid:    in.Uid,
 	}, nil
 }

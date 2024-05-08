@@ -31,11 +31,10 @@ func (l *SelectSecretLogic) SelectSecret(in *authorization.SelectSecretRequestWi
 	}
 
 	return &authorization.SecretResponseWithSecret{
-		Id:          secret.ID.String(),
-		SecretInner: secret.SecretInner,
-		SecretOuter: secret.SecretOuter,
-		Expire:      secret.Expire,
-		Issuer:      secret.Issuer,
-		Uid:         secret.UserId,
+		Id:     secret.ID.String(),
+		Secret: secret.Secret,
+		Expire: secret.Expire,
+		Issuer: secret.Issuer,
+		Uid:    secret.UserId,
 	}, nil
 }

@@ -21,6 +21,5 @@ func SelectHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := logic.NewSelectLogic(r.Context(), svcCtx)
 		resp, err := l.Select(&req)
 		api.Response(w, resp, err)
-
 	}
 }

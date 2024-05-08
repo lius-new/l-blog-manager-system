@@ -35,19 +35,19 @@ func (l *ModifyLogic) Modify(in *user.ModifyUserRequest) (*user.ModifyUserRespon
 	// 查询到，然后判断是否更新，如果跟新就更新数据库，否则不更新数据库
 	findUser, err := l.svcCtx.Model.FindOne(l.ctx, in.Id)
 
-  // 判断用户是否存在
+	// 判断用户是否存在
 	if err == rpc.ErrNotFound {
 		return nil, rpc.ErrNotFound
 	} else if err != nil {
 		return nil, err
 	}
 
-  // 比较用户名是否被更新
+	// 比较用户名是否被更新
 	if findUser.Username != in.Username && len(in.Username) != 0 {
 		findUser.Username = in.Username
 	}
 
-  // 比较密码是否更新
+	// 比较密码是否更新
 	if len(in.Password) != 0 {
 		passowordMD5, err := l.svcCtx.Utiler.MD5(l.ctx, &utils.MD5Reqeust{Text: in.Password})
 		if err != nil {
@@ -58,7 +58,7 @@ func (l *ModifyLogic) Modify(in *user.ModifyUserRequest) (*user.ModifyUserRespon
 		}
 	}
 
-  // 比较密钥是否更新
+	// 比较密钥是否更新
 	if findUser.SecretId != in.SecretId && len(in.SecretId) != 0 {
 		findUser.SecretId = in.SecretId
 	}
@@ -67,11 +67,10 @@ func (l *ModifyLogic) Modify(in *user.ModifyUserRequest) (*user.ModifyUserRespon
 	resp, err := l.svcCtx.Model.Update(l.ctx, &model.User{
 		ID:       findUser.ID,
 		Username: findUser.Username,
-		Password: in.Password,
 		Status:   in.Status,
 		SecretId: findUser.SecretId,
 	})
-  // 更新操作是否存在err
+	// 更新操作是否存在err
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +80,6 @@ func (l *ModifyLogic) Modify(in *user.ModifyUserRequest) (*user.ModifyUserRespon
 
 	return &user.ModifyUserResponse{
 		Username: findUser.Username,
-		Password: findUser.Password,
 		Status:   in.Status,
 		SecretId: findUser.SecretId,
 	}, nil

@@ -28,6 +28,10 @@ service user-api {
 	// 登陆接口
 	@handler Login
 	post /login (loginRequest) returns (loginResponse)
+
+	// 创建用户接口
+	@handler Register
+	post /register (createRequest) returns (createResponse)
 }
 
 type (
@@ -43,10 +47,7 @@ type (
 		Password string `json:"password"`
 	}
 	// 创建用户返回值,(修改和根据id查询用户也都用的是这个接口)
-	createResponse {
-		Data   UserBackend `json:"data"`
-		Status bool        `json:"status"`
-	}
+	createResponse  {}
 	// 根据id删除或者查询用户的请求参数类型
 	idRequest {
 		Id string `path:"id"`
@@ -83,13 +84,13 @@ type (
 	middleware: AuthMiddleware
 )
 service user-api {
-	// 创建用户接口
-	@handler Create
-	post / (createRequest) returns (createResponse)
-
 	// 修改用户接口
 	@handler Modify
 	put / (modifyRequest) returns (createResponse)
+
+	// 添加用户
+	@handler Create
+	post / (createRequest) returns (createResponse)
 
 	// 删除用户接口
 	@handler Delete
@@ -97,7 +98,7 @@ service user-api {
 
 	// 根据id选择用户接口
 	@handler Select
-	get /:id (idRequest) returns (createResponse)
+	get /:id (idRequest) returns (UserBackend)
 
 	// 根据分页参数选择用户接口
 	@handler SelectByPage

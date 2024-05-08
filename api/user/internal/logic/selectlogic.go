@@ -24,22 +24,17 @@ func NewSelectLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SelectLogi
 	}
 }
 
-func (l *SelectLogic) Select(req *types.IdRequest) (resp *types.CreateResponse, err error) {
+func (l *SelectLogic) Select(req *types.IdRequest) (resp *types.UserBackend, err error) {
 	selectResp, err := l.svcCtx.Userer.Select(l.ctx, &user.SelectUserRequest{
 		Uid: req.Id,
 	})
 	if err != nil {
-		return &types.CreateResponse{
-			Status: false,
-		}, err
+		return nil, err
 	}
 
-	return &types.CreateResponse{
-		Data: types.UserBackend{
-			Id:       req.Id,
-			Username: selectResp.Username,
-			Status:   selectResp.Status,
-		},
-		Status: true,
+	return &types.UserBackend{
+		Id:       req.Id,
+		Username: selectResp.Username,
+		Status:   selectResp.Status,
 	}, nil
 }
