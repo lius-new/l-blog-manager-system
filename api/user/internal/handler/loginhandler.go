@@ -21,5 +21,6 @@ func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := logic.NewLoginLogic(r.Context(), svcCtx)
 		resp, err := l.Login(&req)
 		api.Response(w, resp, err)
+
 	}
 }

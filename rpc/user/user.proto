@@ -8,14 +8,37 @@ message InsertUserRequest {
   string username = 1;
   string password = 2;
 }
+
 // 修改用户参数
 message ModifyUserRequest {
   string id = 1;
   string username = 2;
   string password = 3;
-  bool status = 4;
-  string secretId = 5;
+  string secretId = 4;
 }
+message ModifyUserNameRequest {
+  string id = 1;
+  string username = 2;
+}
+message ModifyPasswordRequest {
+  string id = 1;
+  string Password = 2;
+}
+message ModifyUserStatusRequest {
+  string id = 1;
+  bool status = 2;
+}
+// 修改用户凭证
+message ModifySecretRequest {
+  string id = 1;
+  string secretId = 2;
+}
+
+// 用户更新返回的结果
+message ModifyUserResponse {}
+// 修改用户密码返回结果
+message ModifyPasswordResponse {}
+
 // 根据id查询指定用户的请求参数
 message SelectUserRequest { string uid = 1; }
 // 根据username查询指定用户的请求参数
@@ -40,12 +63,6 @@ message UserResponse {
   bool status = 4;
   string secretId = 5;
 }
-// 用户更新返回的结果
-message ModifyUserResponse {
-  string username = 1;
-  bool status = 2;
-  string secretId = 3;
-}
 // 查询指定数量返回的结果
 message UsersResponse {
   repeated UserResponse users = 1;
@@ -63,8 +80,18 @@ message LoginResponse {
 }
 
 service Userer {
-  rpc Insert(InsertUserRequest) returns (UserResponse);       // 添加用户
+  rpc Insert(InsertUserRequest) returns (UserResponse); // 添加用户
+
   rpc Modify(ModifyUserRequest) returns (ModifyUserResponse); // 修改用户
+  rpc ModifyUserName(ModifyUserNameRequest)
+      returns (ModifyUserNameRequest); // 修改用户名称
+  rpc ModifyPassword(ModifyPasswordRequest)
+      returns (ModifyPasswordResponse); // 修改用户名称
+  rpc ModifyStatus(ModifyUserStatusRequest)
+      returns (ModifyUserStatusRequest); // 修改用户是否可用
+  rpc ModifySecretId(ModifySecretRequest)
+      returns (ModifySecretRequest); // 修改用户是否可用
+
   rpc Select(SelectUserRequest) returns (UserResponse); // 根据id查询指定用户
   rpc SelectByName(SelectUserByUsernameRequest)
       returns (UserResponse); // 根据username查询指定用户

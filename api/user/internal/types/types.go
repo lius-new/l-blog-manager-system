@@ -16,8 +16,6 @@ type CreateResponse struct {
 }
 
 type DeleteResponse struct {
-	Id     string `json:"id"`
-	Status bool   `json:"status"`
 }
 
 type IdRequest struct {
@@ -33,11 +31,30 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
-type ModifyRequest struct {
+type ModifyPasswordRequest struct {
+	Id       string `json:"id"`
+	Password string `json:"password"`
+}
+
+type ModifyRefreshSecretRequest struct {
+	Id   string `json:"id"`
+	Hour int64  `json:"hour"` // hour可以指定token有效时间
+}
+
+type ModifyStatusRequest struct {
+	Id     string `json:"id"`
+	Status bool   `json:"status"`
+}
+
+type ModifyUserNameAndPasswordRequest struct {
 	Id       string `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
-	Status   bool   `json:"status"`
+}
+
+type ModifyUserNameRequest struct {
+	Id       string `json:"id"`
+	Username string `json:"username"`
 }
 
 type SelectPage struct {
@@ -46,6 +63,6 @@ type SelectPage struct {
 }
 
 type SelectPageResponse struct {
-	Data   []UserBackend `json:"data"`
-	Status bool          `json:"status"`
+	Data  []UserBackend `json:"data"`
+	Total int64         `json:"total"`
 }

@@ -26,6 +26,8 @@ func NewModifyLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ModifyLogi
 	}
 }
 
+// 因为这个方法可以修改User所有属性，所以内部会判断参数长度否则如果传入空参数那么就不应该修改这个参数而保持原本的。
+// 该方法的缺陷在与无法修改status, 如果要修改status请调用ModifyStatus
 func (l *ModifyLogic) Modify(in *user.ModifyUserRequest) (*user.ModifyUserResponse, error) {
 	// 如果用户id不存在就返回nil,err
 	if len(in.Id) == 0 {
@@ -42,7 +44,7 @@ func (l *ModifyLogic) Modify(in *user.ModifyUserRequest) (*user.ModifyUserRespon
 		return nil, err
 	}
 
-	// 比较用户名是否被更新
+	// 比较用户名是否被更新, 防止使用空数据。
 	if findUser.Username != in.Username && len(in.Username) != 0 {
 		findUser.Username = in.Username
 	}
@@ -63,13 +65,16 @@ func (l *ModifyLogic) Modify(in *user.ModifyUserRequest) (*user.ModifyUserRespon
 		findUser.SecretId = in.SecretId
 	}
 
-	// 更新用户信息
-	resp, err := l.svcCtx.Model.Update(l.ctx, &model.User{
+	updateUser := &model.User{
 		ID:       findUser.ID,
 		Username: findUser.Username,
-		Status:   in.Status,
+		Password: findUser.Password,
 		SecretId: findUser.SecretId,
-	})
+	}
+
+	// 更新用户信息
+	resp, err := l.svcCtx.Model.Update(l.ctx, updateUser)
+
 	// 更新操作是否存在err
 	if err != nil {
 		return nil, err
@@ -77,10 +82,5 @@ func (l *ModifyLogic) Modify(in *user.ModifyUserRequest) (*user.ModifyUserRespon
 	if resp.ModifiedCount == 0 {
 		return nil, rpc.ErrNotFound
 	}
-
-	return &user.ModifyUserResponse{
-		Username: findUser.Username,
-		Status:   in.Status,
-		SecretId: findUser.SecretId,
-	}, nil
+	return &user.ModifyUserResponse{}, nil
 }

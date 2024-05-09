@@ -33,7 +33,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					Method:  http.MethodPut,
 					Path:    "/",
-					Handler: ModifyHandler(serverCtx),
+					Handler: ModifyUserNameAndPasswordHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -54,6 +54,26 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodGet,
 					Path:    "/:id",
 					Handler: SelectHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/password",
+					Handler: ModifyPasswordHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/secret",
+					Handler: ModifyRefreshSecretHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/status",
+					Handler: ModifyStatusHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/username",
+					Handler: ModifyUserNameHandler(serverCtx),
 				},
 			}...,
 		),

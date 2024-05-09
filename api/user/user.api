@@ -15,7 +15,7 @@ type (
 		Password string `json:"password"`
 	}
 	loginResponse {
-		token string `json:"token"`
+		Token string `json:"token"`
 	}
 )
 
@@ -29,7 +29,7 @@ service user-api {
 	@handler Login
 	post /login (loginRequest) returns (loginResponse)
 
-	// 创建用户接口
+	// 创建用户接口(这个接口逻辑中会限制注册的数量, 当注册数量超过1就不能调用该接口。想额外添加就去登陆后台调用Create)
 	@handler Register
 	post /register (createRequest) returns (createResponse)
 }
@@ -47,22 +47,34 @@ type (
 		Password string `json:"password"`
 	}
 	// 创建用户返回值,(修改和根据id查询用户也都用的是这个接口)
-	createResponse  {}
+	createResponse struct{}
 	// 根据id删除或者查询用户的请求参数类型
 	idRequest {
 		Id string `path:"id"`
 	}
 	// 删除用户返回值
-	deleteResponse {
-		Id     string `json:"id"`
-		Status bool   `json:"status"`
-	}
+	deleteResponse struct{}
 	// 修改用户请求参数
-	modifyRequest {
+	modifyUserNameAndPasswordRequest {
 		Id       string `json:"id"`
 		Username string `json:"username"`
 		Password string `json:"password"`
-		Status   bool   `json:"status"`
+	}
+	modifyUserNameRequest {
+		Id       string `json:"id"`
+		Username string `json:"username"`
+	}
+	modifyPasswordRequest {
+		Id       string `json:"id"`
+		Password string `json:"password"`
+	}
+	modifyStatusRequest {
+		Id     string `json:"id"`
+		Status bool   `json:"status"`
+	}
+	modifyRefreshSecretRequest {
+		Id   string `json:"id"`
+		Hour int64  `json:"hour"` // hour可以指定token有效时间
 	}
 	// 根据分页查询某页用户的参数
 	selectPage {
@@ -71,8 +83,8 @@ type (
 	}
 	// 分页返回结果
 	selectPageResponse {
-		Data   []UserBackend `json:"data"`
-		Status bool          `json:"status"`
+		Data  []UserBackend `json:"data"`
+		Total int64         `json:"total"`
 	}
 )
 
@@ -84,11 +96,27 @@ type (
 	middleware: AuthMiddleware
 )
 service user-api {
-	// 修改用户接口
-	@handler Modify
-	put / (modifyRequest) returns (createResponse)
+	// 修改用户接口(用户名和密码)
+	@handler ModifyUserNameAndPassword
+	put / (modifyUserNameAndPasswordRequest) returns (createResponse)
 
-	// 添加用户
+	// 修改用户名, 返回空内容
+	@handler ModifyUserName
+	put /username (modifyUserNameRequest) returns (createResponse)
+
+	// 修改密码, 返回空内容
+	@handler ModifyPassword
+	put /password (modifyPasswordRequest) returns (createResponse)
+
+	// 修改用户状态,返回空内容
+	@handler ModifyStatus
+	put /status (modifyStatusRequest) returns (createResponse)
+
+	// 修改用户secret,返回空内容
+	@handler ModifyRefreshSecret
+	put /secret (modifyRefreshSecretRequest) returns (createResponse)
+
+	// 添加用户,这个是供管理使用的(注册调用register接口)。
 	@handler Create
 	post / (createRequest) returns (createResponse)
 
@@ -104,4 +132,3 @@ service user-api {
 	@handler SelectByPage
 	get / (selectPage) returns (selectPageResponse)
 }
-

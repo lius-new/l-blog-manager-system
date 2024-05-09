@@ -24,6 +24,10 @@ const _ = grpc.SupportPackageIsVersion7
 type UsererClient interface {
 	Insert(ctx context.Context, in *InsertUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	Modify(ctx context.Context, in *ModifyUserRequest, opts ...grpc.CallOption) (*ModifyUserResponse, error)
+	ModifyUserName(ctx context.Context, in *ModifyUserNameRequest, opts ...grpc.CallOption) (*ModifyUserNameRequest, error)
+	ModifyPassword(ctx context.Context, in *ModifyPasswordRequest, opts ...grpc.CallOption) (*ModifyPasswordResponse, error)
+	ModifyStatus(ctx context.Context, in *ModifyUserStatusRequest, opts ...grpc.CallOption) (*ModifyUserStatusRequest, error)
+	ModifySecretId(ctx context.Context, in *ModifySecretRequest, opts ...grpc.CallOption) (*ModifySecretRequest, error)
 	Select(ctx context.Context, in *SelectUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	SelectByName(ctx context.Context, in *SelectUserByUsernameRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	SelectByPage(ctx context.Context, in *SelectUserByPageRequest, opts ...grpc.CallOption) (*UsersResponse, error)
@@ -51,6 +55,42 @@ func (c *usererClient) Insert(ctx context.Context, in *InsertUserRequest, opts .
 func (c *usererClient) Modify(ctx context.Context, in *ModifyUserRequest, opts ...grpc.CallOption) (*ModifyUserResponse, error) {
 	out := new(ModifyUserResponse)
 	err := c.cc.Invoke(ctx, "/user.Userer/Modify", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usererClient) ModifyUserName(ctx context.Context, in *ModifyUserNameRequest, opts ...grpc.CallOption) (*ModifyUserNameRequest, error) {
+	out := new(ModifyUserNameRequest)
+	err := c.cc.Invoke(ctx, "/user.Userer/ModifyUserName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usererClient) ModifyPassword(ctx context.Context, in *ModifyPasswordRequest, opts ...grpc.CallOption) (*ModifyPasswordResponse, error) {
+	out := new(ModifyPasswordResponse)
+	err := c.cc.Invoke(ctx, "/user.Userer/ModifyPassword", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usererClient) ModifyStatus(ctx context.Context, in *ModifyUserStatusRequest, opts ...grpc.CallOption) (*ModifyUserStatusRequest, error) {
+	out := new(ModifyUserStatusRequest)
+	err := c.cc.Invoke(ctx, "/user.Userer/ModifyStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usererClient) ModifySecretId(ctx context.Context, in *ModifySecretRequest, opts ...grpc.CallOption) (*ModifySecretRequest, error) {
+	out := new(ModifySecretRequest)
+	err := c.cc.Invoke(ctx, "/user.Userer/ModifySecretId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -108,6 +148,10 @@ func (c *usererClient) Login(ctx context.Context, in *LoginUserRequest, opts ...
 type UsererServer interface {
 	Insert(context.Context, *InsertUserRequest) (*UserResponse, error)
 	Modify(context.Context, *ModifyUserRequest) (*ModifyUserResponse, error)
+	ModifyUserName(context.Context, *ModifyUserNameRequest) (*ModifyUserNameRequest, error)
+	ModifyPassword(context.Context, *ModifyPasswordRequest) (*ModifyPasswordResponse, error)
+	ModifyStatus(context.Context, *ModifyUserStatusRequest) (*ModifyUserStatusRequest, error)
+	ModifySecretId(context.Context, *ModifySecretRequest) (*ModifySecretRequest, error)
 	Select(context.Context, *SelectUserRequest) (*UserResponse, error)
 	SelectByName(context.Context, *SelectUserByUsernameRequest) (*UserResponse, error)
 	SelectByPage(context.Context, *SelectUserByPageRequest) (*UsersResponse, error)
@@ -125,6 +169,18 @@ func (UnimplementedUsererServer) Insert(context.Context, *InsertUserRequest) (*U
 }
 func (UnimplementedUsererServer) Modify(context.Context, *ModifyUserRequest) (*ModifyUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Modify not implemented")
+}
+func (UnimplementedUsererServer) ModifyUserName(context.Context, *ModifyUserNameRequest) (*ModifyUserNameRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifyUserName not implemented")
+}
+func (UnimplementedUsererServer) ModifyPassword(context.Context, *ModifyPasswordRequest) (*ModifyPasswordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifyPassword not implemented")
+}
+func (UnimplementedUsererServer) ModifyStatus(context.Context, *ModifyUserStatusRequest) (*ModifyUserStatusRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifyStatus not implemented")
+}
+func (UnimplementedUsererServer) ModifySecretId(context.Context, *ModifySecretRequest) (*ModifySecretRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifySecretId not implemented")
 }
 func (UnimplementedUsererServer) Select(context.Context, *SelectUserRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Select not implemented")
@@ -186,6 +242,78 @@ func _Userer_Modify_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UsererServer).Modify(ctx, req.(*ModifyUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Userer_ModifyUserName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifyUserNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsererServer).ModifyUserName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Userer/ModifyUserName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsererServer).ModifyUserName(ctx, req.(*ModifyUserNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Userer_ModifyPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifyPasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsererServer).ModifyPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Userer/ModifyPassword",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsererServer).ModifyPassword(ctx, req.(*ModifyPasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Userer_ModifyStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifyUserStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsererServer).ModifyStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Userer/ModifyStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsererServer).ModifyStatus(ctx, req.(*ModifyUserStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Userer_ModifySecretId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifySecretRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsererServer).ModifySecretId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.Userer/ModifySecretId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsererServer).ModifySecretId(ctx, req.(*ModifySecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -294,6 +422,22 @@ var Userer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Modify",
 			Handler:    _Userer_Modify_Handler,
+		},
+		{
+			MethodName: "ModifyUserName",
+			Handler:    _Userer_ModifyUserName_Handler,
+		},
+		{
+			MethodName: "ModifyPassword",
+			Handler:    _Userer_ModifyPassword_Handler,
+		},
+		{
+			MethodName: "ModifyStatus",
+			Handler:    _Userer_ModifyStatus_Handler,
+		},
+		{
+			MethodName: "ModifySecretId",
+			Handler:    _Userer_ModifySecretId_Handler,
 		},
 		{
 			MethodName: "Select",

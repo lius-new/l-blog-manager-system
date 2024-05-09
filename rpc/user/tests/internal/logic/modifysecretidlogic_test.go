@@ -10,14 +10,12 @@ import (
 	"github.com/lius-new/blog-backend/rpc/user/user"
 )
 
-func TestModify(t *testing.T) {
-	logicClient := logic.NewModifyLogic(context.Background(), tests.SVC_CONTEXT)
+func TestModifySecretId(t *testing.T) {
+	logicClient := logic.NewModifySecretIdLogic(context.Background(), tests.SVC_CONTEXT)
 
-	resp, err := logicClient.Modify(&user.ModifyUserRequest{
+	resp, err := logicClient.ModifySecretId(&user.ModifySecretRequest{
 		Id:       "663b9e602a23854f42fc6df8",
-		Username: "lius6666",
-		Password: "13",
-		SecretId: "661e33b895fb0ef92c541012",
+		SecretId: "663b9e7a3107cbf02b0b113c",
 	})
 	if err != nil {
 		panic(err)

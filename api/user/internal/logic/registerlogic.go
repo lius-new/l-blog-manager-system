@@ -48,7 +48,7 @@ func (l *RegisterLogic) Register(req *types.CreateRequest) (resp *types.CreateRe
 	if err != nil {
 		panic(err)
 	}
-	if uResp.Total > 1 {
+	if uResp.Total >= 1 {
 		return nil, errors.New("请联系管理员")
 	}
 	newUser := &user.InsertUserRequest{

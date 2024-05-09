@@ -2,10 +2,12 @@ package model
 
 import (
 	"context"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/monc"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -18,6 +20,7 @@ type (
 		userModel
 		FindByUserName(ctx context.Context, username string) (*User, error)
 		FindByPage(ctx context.Context, pageNum, pageSize int64) ([]User, int64, error)
+		UpdateStatus(ctx context.Context, data *User) (*mongo.UpdateResult, error)
 	}
 
 	customUserModel struct {
@@ -69,4 +72,11 @@ func (m *defaultUserModel) FindByPage(ctx context.Context, pageNum, pageSize int
 	default:
 		return nil, 0, err
 	}
+}
+
+func (m *customUserModel) UpdateStatus(ctx context.Context, data *User) (*mongo.UpdateResult, error) {
+	data.UpdateAt = time.Now()
+	key := prefixUserCacheKey + data.ID.Hex()
+	res, err := m.conn.UpdateOne(ctx, key, bson.M{"_id": data.ID}, bson.M{"$set": bson.D{{"status", data.Status}}})
+	return res, err
 }

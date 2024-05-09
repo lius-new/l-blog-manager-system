@@ -10,16 +10,16 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func SelectHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ModifyUserNameHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.IdRequest
+		var req types.ModifyUserNameRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.Error(w, err)
 			return
 		}
 
-		l := logic.NewSelectLogic(r.Context(), svcCtx)
-		resp, err := l.Select(&req)
+		l := logic.NewModifyUserNameLogic(r.Context(), svcCtx)
+		resp, err := l.ModifyUserName(&req)
 		api.Response(w, resp, err)
 
 	}

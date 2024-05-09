@@ -18,8 +18,13 @@ type (
 	InsertUserRequest           = user.InsertUserRequest
 	LoginResponse               = user.LoginResponse
 	LoginUserRequest            = user.LoginUserRequest
+	ModifyPasswordRequest       = user.ModifyPasswordRequest
+	ModifyPasswordResponse      = user.ModifyPasswordResponse
+	ModifySecretRequest         = user.ModifySecretRequest
+	ModifyUserNameRequest       = user.ModifyUserNameRequest
 	ModifyUserRequest           = user.ModifyUserRequest
 	ModifyUserResponse          = user.ModifyUserResponse
+	ModifyUserStatusRequest     = user.ModifyUserStatusRequest
 	SelectUserByPageRequest     = user.SelectUserByPageRequest
 	SelectUserByUsernameRequest = user.SelectUserByUsernameRequest
 	SelectUserRequest           = user.SelectUserRequest
@@ -29,6 +34,10 @@ type (
 	Userer interface {
 		Insert(ctx context.Context, in *InsertUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 		Modify(ctx context.Context, in *ModifyUserRequest, opts ...grpc.CallOption) (*ModifyUserResponse, error)
+		ModifyUserName(ctx context.Context, in *ModifyUserNameRequest, opts ...grpc.CallOption) (*ModifyUserNameRequest, error)
+		ModifyPassword(ctx context.Context, in *ModifyPasswordRequest, opts ...grpc.CallOption) (*ModifyPasswordResponse, error)
+		ModifyStatus(ctx context.Context, in *ModifyUserStatusRequest, opts ...grpc.CallOption) (*ModifyUserStatusRequest, error)
+		ModifySecretId(ctx context.Context, in *ModifySecretRequest, opts ...grpc.CallOption) (*ModifySecretRequest, error)
 		Select(ctx context.Context, in *SelectUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 		SelectByName(ctx context.Context, in *SelectUserByUsernameRequest, opts ...grpc.CallOption) (*UserResponse, error)
 		SelectByPage(ctx context.Context, in *SelectUserByPageRequest, opts ...grpc.CallOption) (*UsersResponse, error)
@@ -55,6 +64,26 @@ func (m *defaultUserer) Insert(ctx context.Context, in *InsertUserRequest, opts 
 func (m *defaultUserer) Modify(ctx context.Context, in *ModifyUserRequest, opts ...grpc.CallOption) (*ModifyUserResponse, error) {
 	client := user.NewUsererClient(m.cli.Conn())
 	return client.Modify(ctx, in, opts...)
+}
+
+func (m *defaultUserer) ModifyUserName(ctx context.Context, in *ModifyUserNameRequest, opts ...grpc.CallOption) (*ModifyUserNameRequest, error) {
+	client := user.NewUsererClient(m.cli.Conn())
+	return client.ModifyUserName(ctx, in, opts...)
+}
+
+func (m *defaultUserer) ModifyPassword(ctx context.Context, in *ModifyPasswordRequest, opts ...grpc.CallOption) (*ModifyPasswordResponse, error) {
+	client := user.NewUsererClient(m.cli.Conn())
+	return client.ModifyPassword(ctx, in, opts...)
+}
+
+func (m *defaultUserer) ModifyStatus(ctx context.Context, in *ModifyUserStatusRequest, opts ...grpc.CallOption) (*ModifyUserStatusRequest, error) {
+	client := user.NewUsererClient(m.cli.Conn())
+	return client.ModifyStatus(ctx, in, opts...)
+}
+
+func (m *defaultUserer) ModifySecretId(ctx context.Context, in *ModifySecretRequest, opts ...grpc.CallOption) (*ModifySecretRequest, error) {
+	client := user.NewUsererClient(m.cli.Conn())
+	return client.ModifySecretId(ctx, in, opts...)
 }
 
 func (m *defaultUserer) Select(ctx context.Context, in *SelectUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {

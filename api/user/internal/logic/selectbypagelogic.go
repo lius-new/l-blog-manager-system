@@ -3,11 +3,11 @@ package logic
 import (
 	"context"
 
+	"github.com/lius-new/blog-backend/rpc/user/user"
+	"github.com/zeromicro/go-zero/core/logx"
+
 	"github.com/lius-new/blog-backend/api/user/internal/svc"
 	"github.com/lius-new/blog-backend/api/user/internal/types"
-	"github.com/lius-new/blog-backend/rpc/user/user"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type SelectByPageLogic struct {
@@ -24,16 +24,17 @@ func NewSelectByPageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Sele
 	}
 }
 
-func (l *SelectByPageLogic) SelectByPage(req *types.SelectPage) (resp *types.SelectPageResponse, err error) {
+func (l *SelectByPageLogic) SelectByPage(
+	req *types.SelectPage,
+) (resp *types.SelectPageResponse, err error) {
 	selectPageResp, err := l.svcCtx.Userer.SelectByPage(l.ctx, &user.SelectUserByPageRequest{
 		PageNum:  req.PageNum,
 		PageSize: req.PageSize,
 	})
 	if err != nil {
-		return &types.SelectPageResponse{
-			Status: false,
-		}, err
+		return nil, err
 	}
+
 	users := make([]types.UserBackend, 0)
 	for _, v := range selectPageResp.Users {
 		users = append(users, types.UserBackend{
@@ -41,11 +42,10 @@ func (l *SelectByPageLogic) SelectByPage(req *types.SelectPage) (resp *types.Sel
 			Username: v.Username,
 			Status:   v.Status,
 		})
-
 	}
 
 	return &types.SelectPageResponse{
-		Data:   users,
-		Status: true,
+		Data:  users,
+		Total: selectPageResp.Total,
 	}, nil
 }

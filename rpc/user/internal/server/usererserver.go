@@ -32,6 +32,26 @@ func (s *UsererServer) Modify(ctx context.Context, in *user.ModifyUserRequest) (
 	return l.Modify(in)
 }
 
+func (s *UsererServer) ModifyUserName(ctx context.Context, in *user.ModifyUserNameRequest) (*user.ModifyUserNameRequest, error) {
+	l := logic.NewModifyUserNameLogic(ctx, s.svcCtx)
+	return l.ModifyUserName(in)
+}
+
+func (s *UsererServer) ModifyPassword(ctx context.Context, in *user.ModifyPasswordRequest) (*user.ModifyPasswordResponse, error) {
+	l := logic.NewModifyPasswordLogic(ctx, s.svcCtx)
+	return l.ModifyPassword(in)
+}
+
+func (s *UsererServer) ModifyStatus(ctx context.Context, in *user.ModifyUserStatusRequest) (*user.ModifyUserStatusRequest, error) {
+	l := logic.NewModifyStatusLogic(ctx, s.svcCtx)
+	return l.ModifyStatus(in)
+}
+
+func (s *UsererServer) ModifySecretId(ctx context.Context, in *user.ModifySecretRequest) (*user.ModifySecretRequest, error) {
+	l := logic.NewModifySecretIdLogic(ctx, s.svcCtx)
+	return l.ModifySecretId(in)
+}
+
 func (s *UsererServer) Select(ctx context.Context, in *user.SelectUserRequest) (*user.UserResponse, error) {
 	l := logic.NewSelectLogic(ctx, s.svcCtx)
 	return l.Select(in)

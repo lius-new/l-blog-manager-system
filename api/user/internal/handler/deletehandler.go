@@ -21,5 +21,6 @@ func DeleteHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := logic.NewDeleteLogic(r.Context(), svcCtx)
 		resp, err := l.Delete(&req)
 		api.Response(w, resp, err)
+
 	}
 }
