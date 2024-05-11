@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UtilerClient interface {
 	MD5(ctx context.Context, in *MD5Reqeust, opts ...grpc.CallOption) (*MD5Reponse, error)
+	HashWithString(ctx context.Context, in *HashWithStringReqeust, opts ...grpc.CallOption) (*HashWithStringReponse, error)
 }
 
 type utilerClient struct {
@@ -42,11 +43,21 @@ func (c *utilerClient) MD5(ctx context.Context, in *MD5Reqeust, opts ...grpc.Cal
 	return out, nil
 }
 
+func (c *utilerClient) HashWithString(ctx context.Context, in *HashWithStringReqeust, opts ...grpc.CallOption) (*HashWithStringReponse, error) {
+	out := new(HashWithStringReponse)
+	err := c.cc.Invoke(ctx, "/utils.Utiler/HashWithString", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UtilerServer is the server API for Utiler service.
 // All implementations must embed UnimplementedUtilerServer
 // for forward compatibility
 type UtilerServer interface {
 	MD5(context.Context, *MD5Reqeust) (*MD5Reponse, error)
+	HashWithString(context.Context, *HashWithStringReqeust) (*HashWithStringReponse, error)
 	mustEmbedUnimplementedUtilerServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedUtilerServer struct {
 
 func (UnimplementedUtilerServer) MD5(context.Context, *MD5Reqeust) (*MD5Reponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MD5 not implemented")
+}
+func (UnimplementedUtilerServer) HashWithString(context.Context, *HashWithStringReqeust) (*HashWithStringReponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HashWithString not implemented")
 }
 func (UnimplementedUtilerServer) mustEmbedUnimplementedUtilerServer() {}
 
@@ -88,6 +102,24 @@ func _Utiler_MD5_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Utiler_HashWithString_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HashWithStringReqeust)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UtilerServer).HashWithString(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/utils.Utiler/HashWithString",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UtilerServer).HashWithString(ctx, req.(*HashWithStringReqeust))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Utiler_ServiceDesc is the grpc.ServiceDesc for Utiler service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var Utiler_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MD5",
 			Handler:    _Utiler_MD5_Handler,
+		},
+		{
+			MethodName: "HashWithString",
+			Handler:    _Utiler_HashWithString_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 
+	"github.com/zeromicro/go-zero/core/logx"
+
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type DeleteTagLogic struct {
@@ -24,10 +24,12 @@ func NewDeleteTagLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteT
 }
 
 // 删除tag
-func (l *DeleteTagLogic) DeleteTag(in *content.DeleteTagRequest) (*content.DeleteTagResponse, error) {
-	_, err := l.svcCtx.ModelWithTag.Delete(l.ctx, in.Id)
+func (l *DeleteTagLogic) DeleteTag(
+	in *content.DeleteTagRequest,
+) (*content.DeleteTagResponse, error) {
+	count, err := l.svcCtx.ModelWithTag.Delete(l.ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
-	return &content.DeleteTagResponse{}, nil
+	return &content.DeleteTagResponse{Count: count}, nil
 }

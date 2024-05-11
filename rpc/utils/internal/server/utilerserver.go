@@ -26,3 +26,8 @@ func (s *UtilerServer) MD5(ctx context.Context, in *utils.MD5Reqeust) (*utils.MD
 	l := logic.NewMD5Logic(ctx, s.svcCtx)
 	return l.MD5(in)
 }
+
+func (s *UtilerServer) HashWithString(ctx context.Context, in *utils.HashWithStringReqeust) (*utils.HashWithStringReponse, error) {
+	l := logic.NewHashWithStringLogic(ctx, s.svcCtx)
+	return l.HashWithString(in)
+}

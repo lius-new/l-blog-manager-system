@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 
+	"github.com/zeromicro/go-zero/core/logx"
+
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type SearchArtilceLogic struct {
@@ -24,7 +24,24 @@ func NewSearchArtilceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Sea
 }
 
 // * article search *
-func (l *SearchArtilceLogic) SearchArtilce(in *content.SearchArtilceRequest) (*content.SearchArtilceResponse, error) {
-	//TODO:
-	return &content.SearchArtilceResponse{}, nil
+func (l *SearchArtilceLogic) SearchArtilce(
+	in *content.SearchArtilceRequest,
+) (*content.SearchArtilceResponse, error) {
+	articles, err := l.svcCtx.ModelWithArticle.Search(l.ctx, in.Search)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := make([]*content.SearchArtilce, 0)
+	for _, v := range articles {
+		resp = append(resp, &content.SearchArtilce{
+			Id:    v.ID.Hex(),
+			Title: v.Title,
+			Desc:  v.Desc,
+		})
+	}
+
+	return &content.SearchArtilceResponse{
+		Articles: resp,
+	}, nil
 }

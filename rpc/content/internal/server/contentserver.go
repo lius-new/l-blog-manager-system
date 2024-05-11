@@ -52,6 +52,12 @@ func (s *ContentServer) SearchArtilce(ctx context.Context, in *content.SearchArt
 	return l.SearchArtilce(in)
 }
 
+// * article exist *
+func (s *ContentServer) ExistArtilce(ctx context.Context, in *content.ExistArtilceRequest) (*content.ExistArtilceResponse, error) {
+	l := logic.NewExistArtilceLogic(ctx, s.svcCtx)
+	return l.ExistArtilce(in)
+}
+
 // * article modify *
 func (s *ContentServer) ModifyArtilceTitle(ctx context.Context, in *content.ModifyArticleTitleRequest) (*content.ModifyArticleTitleResponse, error) {
 	l := logic.NewModifyArtilceTitleLogic(ctx, s.svcCtx)
@@ -106,6 +112,17 @@ func (s *ContentServer) CreateTag(ctx context.Context, in *content.CreateTagRequ
 	return l.CreateTag(in)
 }
 
+func (s *ContentServer) CreateTags(ctx context.Context, in *content.CreateTagsRequest) (*content.CreateTagsResponse, error) {
+	l := logic.NewCreateTagsLogic(ctx, s.svcCtx)
+	return l.CreateTags(in)
+}
+
+// * tag exist *
+func (s *ContentServer) ExistTag(ctx context.Context, in *content.ExistTagRequest) (*content.ExistTagResponse, error) {
+	l := logic.NewExistTagLogic(ctx, s.svcCtx)
+	return l.ExistTag(in)
+}
+
 // 修改tag name
 func (s *ContentServer) ModifyTagName(ctx context.Context, in *content.ModifyTagNameRequest) (*content.ModifyTagNameResponse, error) {
 	l := logic.NewModifyTagNameLogic(ctx, s.svcCtx)
@@ -146,4 +163,28 @@ func (s *ContentServer) SelectTagById(ctx context.Context, in *content.SelectTag
 func (s *ContentServer) DeleteTag(ctx context.Context, in *content.DeleteTagRequest) (*content.DeleteTagResponse, error) {
 	l := logic.NewDeleteTagLogic(ctx, s.svcCtx)
 	return l.DeleteTag(in)
+}
+
+// **cover **
+func (s *ContentServer) CreateCover(ctx context.Context, in *content.CreateCoverRequest) (*content.CreateCoverResponse, error) {
+	l := logic.NewCreateCoverLogic(ctx, s.svcCtx)
+	return l.CreateCover(in)
+}
+
+// 创建多个Cover
+func (s *ContentServer) CreateCovers(ctx context.Context, in *content.CreateCoversRequest) (*content.CreateCoversResponse, error) {
+	l := logic.NewCreateCoversLogic(ctx, s.svcCtx)
+	return l.CreateCovers(in)
+}
+
+// 删除cover
+func (s *ContentServer) DeleteCover(ctx context.Context, in *content.DeleteCoverRequest) (*content.DeleteCoverResponse, error) {
+	l := logic.NewDeleteCoverLogic(ctx, s.svcCtx)
+	return l.DeleteCover(in)
+}
+
+// 查询cover
+func (s *ContentServer) SelectCover(ctx context.Context, in *content.SelectCoverRequest) (*content.SelectCoverResponse, error) {
+	l := logic.NewSelectCoverLogic(ctx, s.svcCtx)
+	return l.SelectCover(in)
 }

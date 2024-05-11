@@ -36,6 +36,7 @@ func NewUserModel(url, db, collection string, c cache.CacheConf) UserModel {
 	}
 }
 
+// FindByUserName: 根据用户名来查询用户
 func (m *customUserModel) FindByUserName(ctx context.Context, username string) (*User, error) {
 	var data User
 	err := m.conn.FindOneNoCache(ctx, &data, bson.M{"username": username})
@@ -50,19 +51,23 @@ func (m *customUserModel) FindByUserName(ctx context.Context, username string) (
 	}
 }
 
-func (m *defaultUserModel) FindByPage(ctx context.Context, pageNum, pageSize int64) ([]User, int64, error) {
+// FindByPage: 分页查询
+func (m *defaultUserModel) FindByPage(
+	ctx context.Context,
+	pageNum, pageSize int64,
+) ([]User, int64, error) {
 	findOptions := options.Find()
 	if pageNum <= 0 {
 		pageNum = 1
 	}
 	findOptions.SetLimit(pageSize)
 	findOptions.SetSkip(pageSize * (pageNum - 1))
-	findOptions.SetSort(bson.M{"time": -1})
+	findOptions.SetSort(bson.M{"time": -11})
 
 	data := make([]User, 0)
-	err := m.conn.Find(ctx, &data, bson.D{{}}, findOptions)
+	err := m.conn.Find(ctx, &data, bson.M{}, findOptions)
 
-	total, _ := m.conn.CountDocuments(ctx, bson.D{{}})
+	total, _ := m.conn.CountDocuments(ctx, bson.M{})
 
 	switch err {
 	case nil:
@@ -74,9 +79,18 @@ func (m *defaultUserModel) FindByPage(ctx context.Context, pageNum, pageSize int
 	}
 }
 
-func (m *customUserModel) UpdateStatus(ctx context.Context, data *User) (*mongo.UpdateResult, error) {
+// UpdateStatus: 更新用户状态(是否可用)
+func (m *customUserModel) UpdateStatus(
+	ctx context.Context,
+	data *User,
+) (*mongo.UpdateResult, error) {
 	data.UpdateAt = time.Now()
 	key := prefixUserCacheKey + data.ID.Hex()
-	res, err := m.conn.UpdateOne(ctx, key, bson.M{"_id": data.ID}, bson.M{"$set": bson.D{{"status", data.Status}}})
+	res, err := m.conn.UpdateOne(
+		ctx,
+		key,
+		bson.M{"_id": data.ID},
+		bson.M{"$set": bson.M{"status": data.Status}},
+	)
 	return res, err
 }

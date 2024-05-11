@@ -35,6 +35,9 @@ type ContentClient interface {
 	// * article search *
 	// 搜索文章: 标题或文章或Desc
 	SearchArtilce(ctx context.Context, in *SearchArtilceRequest, opts ...grpc.CallOption) (*SearchArtilceResponse, error)
+	// * article exist *
+	// 判断文章是否存在
+	ExistArtilce(ctx context.Context, in *ExistArtilceRequest, opts ...grpc.CallOption) (*ExistArtilceResponse, error)
 	// * article modify *
 	// 修改文章标题
 	ModifyArtilceTitle(ctx context.Context, in *ModifyArticleTitleRequest, opts ...grpc.CallOption) (*ModifyArticleTitleResponse, error)
@@ -55,6 +58,10 @@ type ContentClient interface {
 	// ** tag **
 	// 创建tag
 	CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*CreateTagResponse, error)
+	CreateTags(ctx context.Context, in *CreateTagsRequest, opts ...grpc.CallOption) (*CreateTagsResponse, error)
+	// * tag exist *
+	// 判断 tag是否存在
+	ExistTag(ctx context.Context, in *ExistTagRequest, opts ...grpc.CallOption) (*ExistTagResponse, error)
 	// 修改tag name
 	ModifyTagName(ctx context.Context, in *ModifyTagNameRequest, opts ...grpc.CallOption) (*ModifyTagNameResponse, error)
 	// 修改tag可见性(visiable)
@@ -69,6 +76,16 @@ type ContentClient interface {
 	SelectTagById(ctx context.Context, in *SelectTagByIdRequest, opts ...grpc.CallOption) (*SelectTagByIdResponse, error)
 	// 删除tag
 	DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*DeleteTagResponse, error)
+	//	**cover **
+	//
+	// 创建cover
+	CreateCover(ctx context.Context, in *CreateCoverRequest, opts ...grpc.CallOption) (*CreateCoverResponse, error)
+	// 创建多个Cover
+	CreateCovers(ctx context.Context, in *CreateCoversRequest, opts ...grpc.CallOption) (*CreateCoversResponse, error)
+	// 删除cover
+	DeleteCover(ctx context.Context, in *DeleteCoverRequest, opts ...grpc.CallOption) (*DeleteCoverResponse, error)
+	// 查询cover
+	SelectCover(ctx context.Context, in *SelectCoverRequest, opts ...grpc.CallOption) (*SelectCoverResponse, error)
 }
 
 type contentClient struct {
@@ -118,6 +135,15 @@ func (c *contentClient) SelectArtilceByTag(ctx context.Context, in *SelectArticl
 func (c *contentClient) SearchArtilce(ctx context.Context, in *SearchArtilceRequest, opts ...grpc.CallOption) (*SearchArtilceResponse, error) {
 	out := new(SearchArtilceResponse)
 	err := c.cc.Invoke(ctx, "/content.Content/SearchArtilce", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentClient) ExistArtilce(ctx context.Context, in *ExistArtilceRequest, opts ...grpc.CallOption) (*ExistArtilceResponse, error) {
+	out := new(ExistArtilceResponse)
+	err := c.cc.Invoke(ctx, "/content.Content/ExistArtilce", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -205,6 +231,24 @@ func (c *contentClient) CreateTag(ctx context.Context, in *CreateTagRequest, opt
 	return out, nil
 }
 
+func (c *contentClient) CreateTags(ctx context.Context, in *CreateTagsRequest, opts ...grpc.CallOption) (*CreateTagsResponse, error) {
+	out := new(CreateTagsResponse)
+	err := c.cc.Invoke(ctx, "/content.Content/CreateTags", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentClient) ExistTag(ctx context.Context, in *ExistTagRequest, opts ...grpc.CallOption) (*ExistTagResponse, error) {
+	out := new(ExistTagResponse)
+	err := c.cc.Invoke(ctx, "/content.Content/ExistTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *contentClient) ModifyTagName(ctx context.Context, in *ModifyTagNameRequest, opts ...grpc.CallOption) (*ModifyTagNameResponse, error) {
 	out := new(ModifyTagNameResponse)
 	err := c.cc.Invoke(ctx, "/content.Content/ModifyTagName", in, out, opts...)
@@ -268,6 +312,42 @@ func (c *contentClient) DeleteTag(ctx context.Context, in *DeleteTagRequest, opt
 	return out, nil
 }
 
+func (c *contentClient) CreateCover(ctx context.Context, in *CreateCoverRequest, opts ...grpc.CallOption) (*CreateCoverResponse, error) {
+	out := new(CreateCoverResponse)
+	err := c.cc.Invoke(ctx, "/content.Content/CreateCover", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentClient) CreateCovers(ctx context.Context, in *CreateCoversRequest, opts ...grpc.CallOption) (*CreateCoversResponse, error) {
+	out := new(CreateCoversResponse)
+	err := c.cc.Invoke(ctx, "/content.Content/CreateCovers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentClient) DeleteCover(ctx context.Context, in *DeleteCoverRequest, opts ...grpc.CallOption) (*DeleteCoverResponse, error) {
+	out := new(DeleteCoverResponse)
+	err := c.cc.Invoke(ctx, "/content.Content/DeleteCover", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentClient) SelectCover(ctx context.Context, in *SelectCoverRequest, opts ...grpc.CallOption) (*SelectCoverResponse, error) {
+	out := new(SelectCoverResponse)
+	err := c.cc.Invoke(ctx, "/content.Content/SelectCover", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ContentServer is the server API for Content service.
 // All implementations must embed UnimplementedContentServer
 // for forward compatibility
@@ -285,6 +365,9 @@ type ContentServer interface {
 	// * article search *
 	// 搜索文章: 标题或文章或Desc
 	SearchArtilce(context.Context, *SearchArtilceRequest) (*SearchArtilceResponse, error)
+	// * article exist *
+	// 判断文章是否存在
+	ExistArtilce(context.Context, *ExistArtilceRequest) (*ExistArtilceResponse, error)
 	// * article modify *
 	// 修改文章标题
 	ModifyArtilceTitle(context.Context, *ModifyArticleTitleRequest) (*ModifyArticleTitleResponse, error)
@@ -305,6 +388,10 @@ type ContentServer interface {
 	// ** tag **
 	// 创建tag
 	CreateTag(context.Context, *CreateTagRequest) (*CreateTagResponse, error)
+	CreateTags(context.Context, *CreateTagsRequest) (*CreateTagsResponse, error)
+	// * tag exist *
+	// 判断 tag是否存在
+	ExistTag(context.Context, *ExistTagRequest) (*ExistTagResponse, error)
 	// 修改tag name
 	ModifyTagName(context.Context, *ModifyTagNameRequest) (*ModifyTagNameResponse, error)
 	// 修改tag可见性(visiable)
@@ -319,6 +406,16 @@ type ContentServer interface {
 	SelectTagById(context.Context, *SelectTagByIdRequest) (*SelectTagByIdResponse, error)
 	// 删除tag
 	DeleteTag(context.Context, *DeleteTagRequest) (*DeleteTagResponse, error)
+	//	**cover **
+	//
+	// 创建cover
+	CreateCover(context.Context, *CreateCoverRequest) (*CreateCoverResponse, error)
+	// 创建多个Cover
+	CreateCovers(context.Context, *CreateCoversRequest) (*CreateCoversResponse, error)
+	// 删除cover
+	DeleteCover(context.Context, *DeleteCoverRequest) (*DeleteCoverResponse, error)
+	// 查询cover
+	SelectCover(context.Context, *SelectCoverRequest) (*SelectCoverResponse, error)
 	mustEmbedUnimplementedContentServer()
 }
 
@@ -340,6 +437,9 @@ func (UnimplementedContentServer) SelectArtilceByTag(context.Context, *SelectArt
 }
 func (UnimplementedContentServer) SearchArtilce(context.Context, *SearchArtilceRequest) (*SearchArtilceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchArtilce not implemented")
+}
+func (UnimplementedContentServer) ExistArtilce(context.Context, *ExistArtilceRequest) (*ExistArtilceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExistArtilce not implemented")
 }
 func (UnimplementedContentServer) ModifyArtilceTitle(context.Context, *ModifyArticleTitleRequest) (*ModifyArticleTitleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModifyArtilceTitle not implemented")
@@ -368,6 +468,12 @@ func (UnimplementedContentServer) DeleteArtilceById(context.Context, *DeleteArti
 func (UnimplementedContentServer) CreateTag(context.Context, *CreateTagRequest) (*CreateTagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTag not implemented")
 }
+func (UnimplementedContentServer) CreateTags(context.Context, *CreateTagsRequest) (*CreateTagsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTags not implemented")
+}
+func (UnimplementedContentServer) ExistTag(context.Context, *ExistTagRequest) (*ExistTagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExistTag not implemented")
+}
 func (UnimplementedContentServer) ModifyTagName(context.Context, *ModifyTagNameRequest) (*ModifyTagNameResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModifyTagName not implemented")
 }
@@ -388,6 +494,18 @@ func (UnimplementedContentServer) SelectTagById(context.Context, *SelectTagByIdR
 }
 func (UnimplementedContentServer) DeleteTag(context.Context, *DeleteTagRequest) (*DeleteTagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTag not implemented")
+}
+func (UnimplementedContentServer) CreateCover(context.Context, *CreateCoverRequest) (*CreateCoverResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCover not implemented")
+}
+func (UnimplementedContentServer) CreateCovers(context.Context, *CreateCoversRequest) (*CreateCoversResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCovers not implemented")
+}
+func (UnimplementedContentServer) DeleteCover(context.Context, *DeleteCoverRequest) (*DeleteCoverResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCover not implemented")
+}
+func (UnimplementedContentServer) SelectCover(context.Context, *SelectCoverRequest) (*SelectCoverResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectCover not implemented")
 }
 func (UnimplementedContentServer) mustEmbedUnimplementedContentServer() {}
 
@@ -488,6 +606,24 @@ func _Content_SearchArtilce_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ContentServer).SearchArtilce(ctx, req.(*SearchArtilceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Content_ExistArtilce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExistArtilceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServer).ExistArtilce(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/content.Content/ExistArtilce",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServer).ExistArtilce(ctx, req.(*ExistArtilceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -654,6 +790,42 @@ func _Content_CreateTag_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Content_CreateTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateTagsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServer).CreateTags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/content.Content/CreateTags",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServer).CreateTags(ctx, req.(*CreateTagsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Content_ExistTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExistTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServer).ExistTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/content.Content/ExistTag",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServer).ExistTag(ctx, req.(*ExistTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Content_ModifyTagName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ModifyTagNameRequest)
 	if err := dec(in); err != nil {
@@ -780,6 +952,78 @@ func _Content_DeleteTag_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Content_CreateCover_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateCoverRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServer).CreateCover(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/content.Content/CreateCover",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServer).CreateCover(ctx, req.(*CreateCoverRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Content_CreateCovers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateCoversRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServer).CreateCovers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/content.Content/CreateCovers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServer).CreateCovers(ctx, req.(*CreateCoversRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Content_DeleteCover_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCoverRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServer).DeleteCover(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/content.Content/DeleteCover",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServer).DeleteCover(ctx, req.(*DeleteCoverRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Content_SelectCover_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectCoverRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServer).SelectCover(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/content.Content/SelectCover",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServer).SelectCover(ctx, req.(*SelectCoverRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Content_ServiceDesc is the grpc.ServiceDesc for Content service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -806,6 +1050,10 @@ var Content_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SearchArtilce",
 			Handler:    _Content_SearchArtilce_Handler,
+		},
+		{
+			MethodName: "ExistArtilce",
+			Handler:    _Content_ExistArtilce_Handler,
 		},
 		{
 			MethodName: "ModifyArtilceTitle",
@@ -844,6 +1092,14 @@ var Content_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Content_CreateTag_Handler,
 		},
 		{
+			MethodName: "CreateTags",
+			Handler:    _Content_CreateTags_Handler,
+		},
+		{
+			MethodName: "ExistTag",
+			Handler:    _Content_ExistTag_Handler,
+		},
+		{
 			MethodName: "ModifyTagName",
 			Handler:    _Content_ModifyTagName_Handler,
 		},
@@ -870,6 +1126,22 @@ var Content_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteTag",
 			Handler:    _Content_DeleteTag_Handler,
+		},
+		{
+			MethodName: "CreateCover",
+			Handler:    _Content_CreateCover_Handler,
+		},
+		{
+			MethodName: "CreateCovers",
+			Handler:    _Content_CreateCovers_Handler,
+		},
+		{
+			MethodName: "DeleteCover",
+			Handler:    _Content_DeleteCover_Handler,
+		},
+		{
+			MethodName: "SelectCover",
+			Handler:    _Content_SelectCover_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -3,10 +3,11 @@ package logic
 import (
 	"context"
 
+	"github.com/zeromicro/go-zero/core/logx"
+
+	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type SelectArtilceByIdLogic struct {
@@ -15,7 +16,10 @@ type SelectArtilceByIdLogic struct {
 	logx.Logger
 }
 
-func NewSelectArtilceByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SelectArtilceByIdLogic {
+func NewSelectArtilceByIdLogic(
+	ctx context.Context,
+	svcCtx *svc.ServiceContext,
+) *SelectArtilceByIdLogic {
 	return &SelectArtilceByIdLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
@@ -24,18 +28,24 @@ func NewSelectArtilceByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 // * article select *
-func (l *SelectArtilceByIdLogic) SelectArtilceById(in *content.SelectArticleByIdRequest) (*content.SelectArticle, error) {
-	article, err := l.svcCtx.ModelWithArticle.FindOne(l.ctx, in.Id)
-	if err != nil {
+func (l *SelectArtilceByIdLogic) SelectArtilceById(
+	in *content.SelectArticleByIdRequest,
+) (*content.SelectArticle, error) {
+	// 查询指定id的文章
+	findArticle, err := l.svcCtx.ModelWithArticle.FindOne(l.ctx, in.Id)
+	if err == rpc.ErrNotFound || findArticle == nil {
+		return nil, rpc.ErrNotFound
+	} else if err != nil {
 		return nil, err
 	}
+  // TODO: 修改返回的tags & 修改返回的COVERS
 
 	return &content.SelectArticle{
-		Id:      article.ID.Hex(),
-		Title:   article.Title,
-		Desc:    article.Desc,
-		Content: article.Content,
-		Tags:    article.Tags,
-		Covers:  article.Covers,
+		Id:      findArticle.ID.Hex(),
+		Title:   findArticle.Title,
+		Desc:    findArticle.Desc,
+		Content: findArticle.Content,
+		Tags:    findArticle.Tags,
+		Covers:  findArticle.Covers,
 	}, nil
 }

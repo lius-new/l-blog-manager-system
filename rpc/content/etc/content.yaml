@@ -9,3 +9,9 @@ MongoURL: mongodb://lius:lsmima@127.0.0.1:27017
 DBName: liusnew-blog
 Cache:
   - Host: 127.0.0.1:6379
+
+Utils:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: utils.rpc

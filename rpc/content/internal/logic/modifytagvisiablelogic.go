@@ -3,13 +3,12 @@ package logic
 import (
 	"context"
 
+	"github.com/zeromicro/go-zero/core/logx"
+
 	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
 	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/tag"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type ModifyTagVisiableLogic struct {
@@ -18,7 +17,10 @@ type ModifyTagVisiableLogic struct {
 	logx.Logger
 }
 
-func NewModifyTagVisiableLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ModifyTagVisiableLogic {
+func NewModifyTagVisiableLogic(
+	ctx context.Context,
+	svcCtx *svc.ServiceContext,
+) *ModifyTagVisiableLogic {
 	return &ModifyTagVisiableLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
@@ -27,14 +29,20 @@ func NewModifyTagVisiableLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 // 修改tag可见性(visiable)
-func (l *ModifyTagVisiableLogic) ModifyTagVisiable(in *content.ModifyTagVisiableRequest) (*content.ModifyTagVisiableResponse, error) {
-	id, err := primitive.ObjectIDFromHex(in.GetId())
-	if err != nil {
-		return nil, rpc.ErrInvalidObjectId
+func (l *ModifyTagVisiableLogic) ModifyTagVisiable(
+	in *content.ModifyTagVisiableRequest,
+) (*content.ModifyTagVisiableResponse, error) {
+	// 判断指定tag是否存在
+
+	currentTag, err := l.svcCtx.ModelWithTag.FindOne(l.ctx, in.Id)
+	if err == rpc.ErrNotFound || currentTag == nil {
+		return nil, rpc.ErrNotFound
+	} else if err != nil {
+		return nil, err
 	}
 
 	_, err = l.svcCtx.ModelWithTag.Update(l.ctx, &model.Tag{
-		ID:       id,
+		ID:       currentTag.ID,
 		Visiable: in.Visiable,
 	})
 	if err != nil {

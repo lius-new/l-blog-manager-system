@@ -32,6 +32,7 @@ message SelectArticleByIdRequest { string id = 1; }
 message SelectArticleByPageRequest {
   int64 pageNum = 1;
   int64 pageSize = 2;
+  bool hideShow = 3;
 }
 
 message SelectArticles {
@@ -64,13 +65,13 @@ message SearchArtilce {
   string id = 1;
   string title = 2;
   string desc = 3;
-  int64 pageNum = 4;
-  int64 pageSize = 5;
 }
-message SearchArtilceResponse {
-  repeated SearchArtilce articles = 1;
-  int64 total = 2;
-}
+message SearchArtilceResponse { repeated SearchArtilce articles = 1; }
+
+//* article exist *
+message ExistArtilceRequest { string id = 1; }
+message ExistArtilceResponse { bool exist = 1; }
+
 //* article modify *
 // 修改文章标题参数
 message ModifyArticleTitleRequest {
@@ -126,17 +127,22 @@ message ModifyArticleVisiableByTagResponse {}
 // 删除文章的参数
 message DeleteArticleRequest { string id = 1; }
 // 删除文章的响应
-message DeleteArticleResponse {}
+message DeleteArticleResponse { int64 count = 1; }
 
 //** tag **
 // 创建tag的参数
-message CreateTagRequest {
-  string name = 1;
-  repeated string articles = 2;
-  bool visiable = 3;
-}
+message CreateTagRequest { string name = 1; }
 // 创建tag的响应结果
-message CreateTagResponse {}
+message CreateTagResponse { string id = 1; }
+// 创建tags的参数
+message CreateTagsRequest { repeated string names = 1; }
+// 创建tag的响应结果
+message CreateTagsResponse { repeated string ids = 1; }
+
+//* article exist *
+message ExistTagRequest { string id = 1; }
+message ExistTagResponse { bool exist = 1; }
+
 // 更新tag可见性参数
 message ModifyTagVisiableRequest {
   string id = 1;
@@ -154,14 +160,14 @@ message ModifyTagNameResponse {}
 // 往指定tag中添加article参数
 message ModifyTagPushArticleRequest {
   string id = 1;
-  string article = 2;
+  string article = 2; // article的id
 }
 // 往指定tag中添加article响应
 message ModifyTagPushArticleResponse {}
 // 往指定tag中删除article参数
 message ModifyTagRemoveArticleRequest {
   string id = 1;
-  string article = 2;
+  string article = 2; // article的id
 }
 // 往指定tag中删除article响应
 message ModifyTagRemoveArticleResponse {}
@@ -169,13 +175,16 @@ message ModifyTagRemoveArticleResponse {}
 message SelectTagByPageRequest {
   int64 pageNum = 1;
   int64 pageSize = 2;
+  bool hideShow = 3;
+}
+message SelectTag{
+  string id = 1;
+  string name = 2;
 }
 // 根据分页来获取tag的响应
 message SelectTagByPageResponse {
-  string id = 1;
-  string name = 2;
-  repeated string articles = 3;
-  bool visiable = 4;
+  repeated SelectTag tags = 1;
+  int64 total = 2;
 }
 // 根据id来获取tag的参数
 message SelectTagByIdRequest { string id = 1; }
@@ -187,7 +196,26 @@ message SelectTagByIdResponse {
   bool visiable = 4;
 }
 message DeleteTagRequest { string id = 1; }
-message DeleteTagResponse {}
+message DeleteTagResponse { int64 count = 1; }
+
+// ============ cover ============
+message Cover {
+  string id = 1;
+  string content = 2;
+  string hash = 3;
+}
+// 创建 cover
+message CreateCoverRequest { string content = 1; }
+message CreateCoverResponse { string id = 1; }
+// 创建多个Cover
+message CreateCoversRequest { repeated string content = 1; }
+message CreateCoversResponse { repeated string ids = 1; }
+// 删除cover
+message DeleteCoverRequest { string id = 1; }
+message DeleteCoverResponse { int64 count = 1; }
+// 查询cover
+message SelectCoverRequest { string id = 1; }
+message SelectCoverResponse { Cover cover = 1; }
 
 service Content {
   //** article **
@@ -209,6 +237,10 @@ service Content {
   //* article search *
   // 搜索文章: 标题或文章或Desc
   rpc SearchArtilce(SearchArtilceRequest) returns (SearchArtilceResponse);
+
+  //* article exist *
+  // 判断文章是否存在
+  rpc ExistArtilce(ExistArtilceRequest) returns (ExistArtilceResponse);
 
   //* article modify *
   // 修改文章标题
@@ -270,6 +302,12 @@ service Content {
   //** tag **
   // 创建tag
   rpc CreateTag(CreateTagRequest) returns (CreateTagResponse);
+  rpc CreateTags(CreateTagsRequest) returns (CreateTagsResponse);
+
+  //* tag exist *
+  // 判断 tag是否存在
+  rpc ExistTag(ExistTagRequest) returns (ExistTagResponse);
+
   // 修改tag name
   rpc ModifyTagName(ModifyTagNameRequest) returns (ModifyTagNameResponse);
   // 修改tag可见性(visiable)
@@ -287,4 +325,14 @@ service Content {
   rpc SelectTagById(SelectTagByIdRequest) returns (SelectTagByIdResponse);
   // 删除tag
   rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse);
+
+  //  **cover **
+  // 创建cover
+  rpc CreateCover(CreateCoverRequest) returns (CreateCoverResponse);
+  // 创建多个Cover
+  rpc CreateCovers(CreateCoversRequest) returns (CreateCoversResponse);
+  // 删除cover
+  rpc DeleteCover(DeleteCoverRequest) returns (DeleteCoverResponse);
+  // 查询cover
+  rpc SelectCover(SelectCoverRequest) returns (SelectCoverResponse);
 }

@@ -13,14 +13,27 @@ import (
 )
 
 type (
+	Cover                              = content.Cover
 	CreateArticleRequest               = content.CreateArticleRequest
 	CreateArticleResponse              = content.CreateArticleResponse
+	CreateCoverRequest                 = content.CreateCoverRequest
+	CreateCoverResponse                = content.CreateCoverResponse
+	CreateCoversRequest                = content.CreateCoversRequest
+	CreateCoversResponse               = content.CreateCoversResponse
 	CreateTagRequest                   = content.CreateTagRequest
 	CreateTagResponse                  = content.CreateTagResponse
+	CreateTagsRequest                  = content.CreateTagsRequest
+	CreateTagsResponse                 = content.CreateTagsResponse
 	DeleteArticleRequest               = content.DeleteArticleRequest
 	DeleteArticleResponse              = content.DeleteArticleResponse
+	DeleteCoverRequest                 = content.DeleteCoverRequest
+	DeleteCoverResponse                = content.DeleteCoverResponse
 	DeleteTagRequest                   = content.DeleteTagRequest
 	DeleteTagResponse                  = content.DeleteTagResponse
+	ExistArtilceRequest                = content.ExistArtilceRequest
+	ExistArtilceResponse               = content.ExistArtilceResponse
+	ExistTagRequest                    = content.ExistTagRequest
+	ExistTagResponse                   = content.ExistTagResponse
 	ModifyArticleContentRequest        = content.ModifyArticleContentRequest
 	ModifyArticleContentResponse       = content.ModifyArticleContentResponse
 	ModifyArticleCoverRequest          = content.ModifyArticleCoverRequest
@@ -53,6 +66,9 @@ type (
 	SelectArticleByTagRequest          = content.SelectArticleByTagRequest
 	SelectArticleByTagResponse         = content.SelectArticleByTagResponse
 	SelectArticles                     = content.SelectArticles
+	SelectCoverRequest                 = content.SelectCoverRequest
+	SelectCoverResponse                = content.SelectCoverResponse
+	SelectTag                          = content.SelectTag
 	SelectTagByIdRequest               = content.SelectTagByIdRequest
 	SelectTagByIdResponse              = content.SelectTagByIdResponse
 	SelectTagByPageRequest             = content.SelectTagByPageRequest
@@ -69,6 +85,8 @@ type (
 		SelectArtilceByTag(ctx context.Context, in *SelectArticleByTagRequest, opts ...grpc.CallOption) (*SelectArticleByTagResponse, error)
 		// * article search *
 		SearchArtilce(ctx context.Context, in *SearchArtilceRequest, opts ...grpc.CallOption) (*SearchArtilceResponse, error)
+		// * article exist *
+		ExistArtilce(ctx context.Context, in *ExistArtilceRequest, opts ...grpc.CallOption) (*ExistArtilceResponse, error)
 		// * article modify *
 		ModifyArtilceTitle(ctx context.Context, in *ModifyArticleTitleRequest, opts ...grpc.CallOption) (*ModifyArticleTitleResponse, error)
 		// 修改文章描述
@@ -87,6 +105,9 @@ type (
 		DeleteArtilceById(ctx context.Context, in *DeleteArticleRequest, opts ...grpc.CallOption) (*DeleteArticleResponse, error)
 		// ** tag **
 		CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*CreateTagResponse, error)
+		CreateTags(ctx context.Context, in *CreateTagsRequest, opts ...grpc.CallOption) (*CreateTagsResponse, error)
+		// * tag exist *
+		ExistTag(ctx context.Context, in *ExistTagRequest, opts ...grpc.CallOption) (*ExistTagResponse, error)
 		// 修改tag name
 		ModifyTagName(ctx context.Context, in *ModifyTagNameRequest, opts ...grpc.CallOption) (*ModifyTagNameResponse, error)
 		// 修改tag可见性(visiable)
@@ -101,6 +122,14 @@ type (
 		SelectTagById(ctx context.Context, in *SelectTagByIdRequest, opts ...grpc.CallOption) (*SelectTagByIdResponse, error)
 		// 删除tag
 		DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*DeleteTagResponse, error)
+		// **cover **
+		CreateCover(ctx context.Context, in *CreateCoverRequest, opts ...grpc.CallOption) (*CreateCoverResponse, error)
+		// 创建多个Cover
+		CreateCovers(ctx context.Context, in *CreateCoversRequest, opts ...grpc.CallOption) (*CreateCoversResponse, error)
+		// 删除cover
+		DeleteCover(ctx context.Context, in *DeleteCoverRequest, opts ...grpc.CallOption) (*DeleteCoverResponse, error)
+		// 查询cover
+		SelectCover(ctx context.Context, in *SelectCoverRequest, opts ...grpc.CallOption) (*SelectCoverResponse, error)
 	}
 
 	defaultContent struct {
@@ -142,6 +171,12 @@ func (m *defaultContent) SelectArtilceByTag(ctx context.Context, in *SelectArtic
 func (m *defaultContent) SearchArtilce(ctx context.Context, in *SearchArtilceRequest, opts ...grpc.CallOption) (*SearchArtilceResponse, error) {
 	client := content.NewContentClient(m.cli.Conn())
 	return client.SearchArtilce(ctx, in, opts...)
+}
+
+// * article exist *
+func (m *defaultContent) ExistArtilce(ctx context.Context, in *ExistArtilceRequest, opts ...grpc.CallOption) (*ExistArtilceResponse, error) {
+	client := content.NewContentClient(m.cli.Conn())
+	return client.ExistArtilce(ctx, in, opts...)
 }
 
 // * article modify *
@@ -198,6 +233,17 @@ func (m *defaultContent) CreateTag(ctx context.Context, in *CreateTagRequest, op
 	return client.CreateTag(ctx, in, opts...)
 }
 
+func (m *defaultContent) CreateTags(ctx context.Context, in *CreateTagsRequest, opts ...grpc.CallOption) (*CreateTagsResponse, error) {
+	client := content.NewContentClient(m.cli.Conn())
+	return client.CreateTags(ctx, in, opts...)
+}
+
+// * tag exist *
+func (m *defaultContent) ExistTag(ctx context.Context, in *ExistTagRequest, opts ...grpc.CallOption) (*ExistTagResponse, error) {
+	client := content.NewContentClient(m.cli.Conn())
+	return client.ExistTag(ctx, in, opts...)
+}
+
 // 修改tag name
 func (m *defaultContent) ModifyTagName(ctx context.Context, in *ModifyTagNameRequest, opts ...grpc.CallOption) (*ModifyTagNameResponse, error) {
 	client := content.NewContentClient(m.cli.Conn())
@@ -238,4 +284,28 @@ func (m *defaultContent) SelectTagById(ctx context.Context, in *SelectTagByIdReq
 func (m *defaultContent) DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*DeleteTagResponse, error) {
 	client := content.NewContentClient(m.cli.Conn())
 	return client.DeleteTag(ctx, in, opts...)
+}
+
+// **cover **
+func (m *defaultContent) CreateCover(ctx context.Context, in *CreateCoverRequest, opts ...grpc.CallOption) (*CreateCoverResponse, error) {
+	client := content.NewContentClient(m.cli.Conn())
+	return client.CreateCover(ctx, in, opts...)
+}
+
+// 创建多个Cover
+func (m *defaultContent) CreateCovers(ctx context.Context, in *CreateCoversRequest, opts ...grpc.CallOption) (*CreateCoversResponse, error) {
+	client := content.NewContentClient(m.cli.Conn())
+	return client.CreateCovers(ctx, in, opts...)
+}
+
+// 删除cover
+func (m *defaultContent) DeleteCover(ctx context.Context, in *DeleteCoverRequest, opts ...grpc.CallOption) (*DeleteCoverResponse, error) {
+	client := content.NewContentClient(m.cli.Conn())
+	return client.DeleteCover(ctx, in, opts...)
+}
+
+// 查询cover
+func (m *defaultContent) SelectCover(ctx context.Context, in *SelectCoverRequest, opts ...grpc.CallOption) (*SelectCoverResponse, error) {
+	client := content.NewContentClient(m.cli.Conn())
+	return client.SelectCover(ctx, in, opts...)
 }

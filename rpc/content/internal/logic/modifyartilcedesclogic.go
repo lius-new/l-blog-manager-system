@@ -3,13 +3,13 @@ package logic
 import (
 	"context"
 
+	"github.com/zeromicro/go-zero/core/logx"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
 	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/article"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type ModifyArtilceDescLogic struct {
@@ -18,7 +18,10 @@ type ModifyArtilceDescLogic struct {
 	logx.Logger
 }
 
-func NewModifyArtilceDescLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ModifyArtilceDescLogic {
+func NewModifyArtilceDescLogic(
+	ctx context.Context,
+	svcCtx *svc.ServiceContext,
+) *ModifyArtilceDescLogic {
 	return &ModifyArtilceDescLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
@@ -27,7 +30,18 @@ func NewModifyArtilceDescLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 // 修改文章描述
-func (l *ModifyArtilceDescLogic) ModifyArtilceDesc(in *content.ModifyArticleDescRequest) (*content.ModifyArticleDescResponse, error) {
+func (l *ModifyArtilceDescLogic) ModifyArtilceDesc(
+	in *content.ModifyArticleDescRequest,
+) (*content.ModifyArticleDescResponse, error) {
+	if len(in.Id) == 0 || len(in.Desc) == 0 {
+		return nil, rpc.ErrRequestParam
+	}
+	// 判断文章是否存在
+	if _, err := NewExistArtilceLogic(l.ctx, l.svcCtx).ExistArtilce(&content.ExistArtilceRequest{
+		Id: in.Id,
+	}); err != nil {
+		return nil, err
+	}
 	id, err := primitive.ObjectIDFromHex(in.GetId())
 	if err != nil {
 		return nil, rpc.ErrInvalidObjectId

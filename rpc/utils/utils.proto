@@ -1,16 +1,19 @@
 syntax = "proto3";
 
 package utils;
-option go_package="./utils";
+option go_package = "./utils";
 
-message MD5Reqeust {
-  string text = 1;
-}
+// 计算MD5的请求参数
+message MD5Reqeust { string text = 1; }
+// 计算MD5的响应参数
+message MD5Reponse { string text = 1; }
 
-message MD5Reponse {
-  string text = 1;
-}
+// 计算Hash的请求参数
+message HashWithStringReqeust { string content = 1; }
+// 计算MD5的响应参数
+message HashWithStringReponse { string content = 1; }
 
 service Utiler {
-  rpc MD5(MD5Reqeust) returns(MD5Reponse);
+  rpc MD5(MD5Reqeust) returns (MD5Reponse);
+  rpc HashWithString(HashWithStringReqeust) returns (HashWithStringReponse);
 }
