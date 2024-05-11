@@ -6,6 +6,8 @@ PROJECT_POSITION_PATH=$HOME/Documents/coder/go-resp/src/liusnew-blog-backend-ser
 # running rpc service
 # 执行util rpc service
 go run $PROJECT_POSITION_PATH/rpc/utils/utils.go -f $PROJECT_POSITION_PATH/rpc/utils/etc/utils.yaml & 
+# 执行analyzer rpc service
+# go run $PROJECT_POSITION_PATH/rpc/analyzer/analyzer.go -f $PROJECT_POSITION_PATH/rpc/authorization/etc/analyzer.yaml &
 # 执行user rpc  service
 # go run $PROJECT_POSITION_PATH/rpc/user/user.go -f $PROJECT_POSITION_PATH/rpc/user/etc/user.yaml &
 # 执行authorization rpc service
