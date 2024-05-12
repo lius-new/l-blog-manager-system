@@ -20,16 +20,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Request struct {
+// ================ Record  ================
+// == 创建record ==
+// 创建record的请求参数
+type CreateRecordRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
-
-	Ping string `protobuf:"bytes,1,opt,name=ping,proto3" json:"ping,omitempty"`
 }
 
-func (x *Request) Reset() {
-	*x = Request{}
+func (x *CreateRecordRequest) Reset() {
+	*x = CreateRecordRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_analyzer_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -37,13 +38,13 @@ func (x *Request) Reset() {
 	}
 }
 
-func (x *Request) String() string {
+func (x *CreateRecordRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Request) ProtoMessage() {}
+func (*CreateRecordRequest) ProtoMessage() {}
 
-func (x *Request) ProtoReflect() protoreflect.Message {
+func (x *CreateRecordRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_analyzer_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -55,28 +56,20 @@ func (x *Request) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Request.ProtoReflect.Descriptor instead.
-func (*Request) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateRecordRequest.ProtoReflect.Descriptor instead.
+func (*CreateRecordRequest) Descriptor() ([]byte, []int) {
 	return file_analyzer_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Request) GetPing() string {
-	if x != nil {
-		return x.Ping
-	}
-	return ""
-}
-
-type Response struct {
+// 创建record的响应结果
+type CreateRecordResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
-
-	Pong string `protobuf:"bytes,1,opt,name=pong,proto3" json:"pong,omitempty"`
 }
 
-func (x *Response) Reset() {
-	*x = Response{}
+func (x *CreateRecordResponse) Reset() {
+	*x = CreateRecordResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_analyzer_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -84,13 +77,13 @@ func (x *Response) Reset() {
 	}
 }
 
-func (x *Response) String() string {
+func (x *CreateRecordResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Response) ProtoMessage() {}
+func (*CreateRecordResponse) ProtoMessage() {}
 
-func (x *Response) ProtoReflect() protoreflect.Message {
+func (x *CreateRecordResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_analyzer_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -102,32 +95,1343 @@ func (x *Response) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Response.ProtoReflect.Descriptor instead.
-func (*Response) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateRecordResponse.ProtoReflect.Descriptor instead.
+func (*CreateRecordResponse) Descriptor() ([]byte, []int) {
 	return file_analyzer_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Response) GetPong() string {
-	if x != nil {
-		return x.Pong
+// == 更新record ==
+// 更新record的请求参数
+type ModifyRecordRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ModifyRecordRequest) Reset() {
+	*x = ModifyRecordRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
 	}
-	return ""
+}
+
+func (x *ModifyRecordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ModifyRecordRequest) ProtoMessage() {}
+
+func (x *ModifyRecordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ModifyRecordRequest.ProtoReflect.Descriptor instead.
+func (*ModifyRecordRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{2}
+}
+
+// 更新record的响应结果
+type ModifyRecordResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ModifyRecordResponse) Reset() {
+	*x = ModifyRecordResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ModifyRecordResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ModifyRecordResponse) ProtoMessage() {}
+
+func (x *ModifyRecordResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ModifyRecordResponse.ProtoReflect.Descriptor instead.
+func (*ModifyRecordResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{3}
+}
+
+// == 合并record ==
+// 合并record的请求参数
+type MergeRecordRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *MergeRecordRequest) Reset() {
+	*x = MergeRecordRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *MergeRecordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MergeRecordRequest) ProtoMessage() {}
+
+func (x *MergeRecordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MergeRecordRequest.ProtoReflect.Descriptor instead.
+func (*MergeRecordRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{4}
+}
+
+// 合并record的响应结果
+type MergeRecordResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *MergeRecordResponse) Reset() {
+	*x = MergeRecordResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *MergeRecordResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MergeRecordResponse) ProtoMessage() {}
+
+func (x *MergeRecordResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MergeRecordResponse.ProtoReflect.Descriptor instead.
+func (*MergeRecordResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{5}
+}
+
+// == 删除record ==
+// 删除record的请求参数
+type DeleteRecordRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DeleteRecordRequest) Reset() {
+	*x = DeleteRecordRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteRecordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteRecordRequest) ProtoMessage() {}
+
+func (x *DeleteRecordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteRecordRequest.ProtoReflect.Descriptor instead.
+func (*DeleteRecordRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{6}
+}
+
+// 删除record的响应结果
+type DeleteRecordResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DeleteRecordResponse) Reset() {
+	*x = DeleteRecordResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteRecordResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteRecordResponse) ProtoMessage() {}
+
+func (x *DeleteRecordResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteRecordResponse.ProtoReflect.Descriptor instead.
+func (*DeleteRecordResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{7}
+}
+
+// == 查询record ==
+// 查询record的请求参数
+type SelectRecordRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectRecordRequest) Reset() {
+	*x = SelectRecordRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectRecordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectRecordRequest) ProtoMessage() {}
+
+func (x *SelectRecordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectRecordRequest.ProtoReflect.Descriptor instead.
+func (*SelectRecordRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{8}
+}
+
+// 查询record的响应结果
+type SelectRecordResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectRecordResponse) Reset() {
+	*x = SelectRecordResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectRecordResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectRecordResponse) ProtoMessage() {}
+
+func (x *SelectRecordResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectRecordResponse.ProtoReflect.Descriptor instead.
+func (*SelectRecordResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{9}
+}
+
+// == 查询record(分页) ==
+// 查询record的分页请求参数
+type SelectRecordByPageRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectRecordByPageRequest) Reset() {
+	*x = SelectRecordByPageRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectRecordByPageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectRecordByPageRequest) ProtoMessage() {}
+
+func (x *SelectRecordByPageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectRecordByPageRequest.ProtoReflect.Descriptor instead.
+func (*SelectRecordByPageRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{10}
+}
+
+// 查询record的分页响应结果
+type SelectRecordByPageResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectRecordByPageResponse) Reset() {
+	*x = SelectRecordByPageResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectRecordByPageResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectRecordByPageResponse) ProtoMessage() {}
+
+func (x *SelectRecordByPageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectRecordByPageResponse.ProtoReflect.Descriptor instead.
+func (*SelectRecordByPageResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{11}
+}
+
+// ================ Blocked  ================
+// == 创建blocked ==
+// 创建blocked 的请求参数
+type CreateBlockedRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *CreateBlockedRequest) Reset() {
+	*x = CreateBlockedRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateBlockedRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBlockedRequest) ProtoMessage() {}
+
+func (x *CreateBlockedRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBlockedRequest.ProtoReflect.Descriptor instead.
+func (*CreateBlockedRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{12}
+}
+
+// 创建blocked 的响应结果
+type CreateBlockedResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *CreateBlockedResponse) Reset() {
+	*x = CreateBlockedResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateBlockedResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBlockedResponse) ProtoMessage() {}
+
+func (x *CreateBlockedResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBlockedResponse.ProtoReflect.Descriptor instead.
+func (*CreateBlockedResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{13}
+}
+
+// == 更新blocked ==
+// 更新blocked 的请求参数
+type ModifyBlockedRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ModifyBlockedRequest) Reset() {
+	*x = ModifyBlockedRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ModifyBlockedRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ModifyBlockedRequest) ProtoMessage() {}
+
+func (x *ModifyBlockedRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ModifyBlockedRequest.ProtoReflect.Descriptor instead.
+func (*ModifyBlockedRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{14}
+}
+
+// 更新blocked 的响应结果
+type ModifyBlockedResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ModifyBlockedResponse) Reset() {
+	*x = ModifyBlockedResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ModifyBlockedResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ModifyBlockedResponse) ProtoMessage() {}
+
+func (x *ModifyBlockedResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ModifyBlockedResponse.ProtoReflect.Descriptor instead.
+func (*ModifyBlockedResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{15}
+}
+
+// == 删除blocked ==
+// 删除blocked 的请求参数
+type DeleteBlockedRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DeleteBlockedRequest) Reset() {
+	*x = DeleteBlockedRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteBlockedRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBlockedRequest) ProtoMessage() {}
+
+func (x *DeleteBlockedRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBlockedRequest.ProtoReflect.Descriptor instead.
+func (*DeleteBlockedRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{16}
+}
+
+// 删除blocked 的响应结果
+type DeleteBlockedResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DeleteBlockedResponse) Reset() {
+	*x = DeleteBlockedResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteBlockedResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBlockedResponse) ProtoMessage() {}
+
+func (x *DeleteBlockedResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBlockedResponse.ProtoReflect.Descriptor instead.
+func (*DeleteBlockedResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{17}
+}
+
+// == 查询blocked ==
+// 查询blocked 的请求参数
+type SelectBlockedRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectBlockedRequest) Reset() {
+	*x = SelectBlockedRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectBlockedRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectBlockedRequest) ProtoMessage() {}
+
+func (x *SelectBlockedRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectBlockedRequest.ProtoReflect.Descriptor instead.
+func (*SelectBlockedRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{18}
+}
+
+// 查询blocked 的响应结果
+type SelectBlockedResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectBlockedResponse) Reset() {
+	*x = SelectBlockedResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectBlockedResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectBlockedResponse) ProtoMessage() {}
+
+func (x *SelectBlockedResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectBlockedResponse.ProtoReflect.Descriptor instead.
+func (*SelectBlockedResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{19}
+}
+
+// == 查询blocked(分页) ==
+// 查询blocked 的请求参数
+type SelectBlockedByPageRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectBlockedByPageRequest) Reset() {
+	*x = SelectBlockedByPageRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectBlockedByPageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectBlockedByPageRequest) ProtoMessage() {}
+
+func (x *SelectBlockedByPageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectBlockedByPageRequest.ProtoReflect.Descriptor instead.
+func (*SelectBlockedByPageRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{20}
+}
+
+// 查询blocked 的响应结果
+type SelectBlockedByPageResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectBlockedByPageResponse) Reset() {
+	*x = SelectBlockedByPageResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[21]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectBlockedByPageResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectBlockedByPageResponse) ProtoMessage() {}
+
+func (x *SelectBlockedByPageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[21]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectBlockedByPageResponse.ProtoReflect.Descriptor instead.
+func (*SelectBlockedByPageResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{21}
+}
+
+// ================ WhiteList  ================
+// == 创建Whitelist ==
+// 创建whitelist 的请求参数
+type CreateWhiteListRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *CreateWhiteListRequest) Reset() {
+	*x = CreateWhiteListRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[22]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateWhiteListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateWhiteListRequest) ProtoMessage() {}
+
+func (x *CreateWhiteListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[22]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateWhiteListRequest.ProtoReflect.Descriptor instead.
+func (*CreateWhiteListRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{22}
+}
+
+// 创建whitelist 的响应结果
+type CreateWhiteListResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *CreateWhiteListResponse) Reset() {
+	*x = CreateWhiteListResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[23]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateWhiteListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateWhiteListResponse) ProtoMessage() {}
+
+func (x *CreateWhiteListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[23]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateWhiteListResponse.ProtoReflect.Descriptor instead.
+func (*CreateWhiteListResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{23}
+}
+
+// == 更新Whitelist ==
+// 更新whitelist 的请求参数
+type ModifyWhiteListRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ModifyWhiteListRequest) Reset() {
+	*x = ModifyWhiteListRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ModifyWhiteListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ModifyWhiteListRequest) ProtoMessage() {}
+
+func (x *ModifyWhiteListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ModifyWhiteListRequest.ProtoReflect.Descriptor instead.
+func (*ModifyWhiteListRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{24}
+}
+
+// 更新whitelist 的响应结果
+type ModifyWhiteListResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ModifyWhiteListResponse) Reset() {
+	*x = ModifyWhiteListResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ModifyWhiteListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ModifyWhiteListResponse) ProtoMessage() {}
+
+func (x *ModifyWhiteListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ModifyWhiteListResponse.ProtoReflect.Descriptor instead.
+func (*ModifyWhiteListResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{25}
+}
+
+// == 删除Whitelist ==
+// 删除whitelist 的请求参数
+type DeleteWhiteListRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DeleteWhiteListRequest) Reset() {
+	*x = DeleteWhiteListRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteWhiteListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteWhiteListRequest) ProtoMessage() {}
+
+func (x *DeleteWhiteListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteWhiteListRequest.ProtoReflect.Descriptor instead.
+func (*DeleteWhiteListRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{26}
+}
+
+// 删除whitelist 的响应结果
+type DeleteWhiteListResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DeleteWhiteListResponse) Reset() {
+	*x = DeleteWhiteListResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteWhiteListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteWhiteListResponse) ProtoMessage() {}
+
+func (x *DeleteWhiteListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteWhiteListResponse.ProtoReflect.Descriptor instead.
+func (*DeleteWhiteListResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{27}
+}
+
+// == 查询Whitelist ==
+// 查询whitelist 的请求参数
+type SelectWhiteListRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectWhiteListRequest) Reset() {
+	*x = SelectWhiteListRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[28]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectWhiteListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectWhiteListRequest) ProtoMessage() {}
+
+func (x *SelectWhiteListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[28]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectWhiteListRequest.ProtoReflect.Descriptor instead.
+func (*SelectWhiteListRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{28}
+}
+
+// 查询whitelist 的响应结果
+type SelectWhiteListResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectWhiteListResponse) Reset() {
+	*x = SelectWhiteListResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[29]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectWhiteListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectWhiteListResponse) ProtoMessage() {}
+
+func (x *SelectWhiteListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[29]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectWhiteListResponse.ProtoReflect.Descriptor instead.
+func (*SelectWhiteListResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{29}
+}
+
+// == 查询Whitelist(分页) ==
+// 查询whitelist 的请求参数
+type SelectWhiteListByPageRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectWhiteListByPageRequest) Reset() {
+	*x = SelectWhiteListByPageRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[30]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectWhiteListByPageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectWhiteListByPageRequest) ProtoMessage() {}
+
+func (x *SelectWhiteListByPageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[30]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectWhiteListByPageRequest.ProtoReflect.Descriptor instead.
+func (*SelectWhiteListByPageRequest) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{30}
+}
+
+// 查询whitelist 的响应结果
+type SelectWhiteListByPageResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *SelectWhiteListByPageResponse) Reset() {
+	*x = SelectWhiteListByPageResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_analyzer_proto_msgTypes[31]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SelectWhiteListByPageResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SelectWhiteListByPageResponse) ProtoMessage() {}
+
+func (x *SelectWhiteListByPageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_analyzer_proto_msgTypes[31]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SelectWhiteListByPageResponse.ProtoReflect.Descriptor instead.
+func (*SelectWhiteListByPageResponse) Descriptor() ([]byte, []int) {
+	return file_analyzer_proto_rawDescGZIP(), []int{31}
 }
 
 var File_analyzer_proto protoreflect.FileDescriptor
 
 var file_analyzer_proto_rawDesc = []byte{
 	0x0a, 0x0e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x12, 0x08, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x22, 0x1d, 0x0a, 0x07, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x69, 0x6e, 0x67, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x69, 0x6e, 0x67, 0x22, 0x1e, 0x0a, 0x08, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x6f, 0x6e, 0x67, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x6f, 0x6e, 0x67, 0x32, 0x39, 0x0a, 0x08, 0x41, 0x6e, 0x61,
-	0x6c, 0x79, 0x7a, 0x65, 0x72, 0x12, 0x2d, 0x0a, 0x04, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x11, 0x2e,
-	0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x12, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x42, 0x0c, 0x5a, 0x0a, 0x2e, 0x2f, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a,
-	0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x12, 0x08, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x22, 0x15, 0x0a, 0x13, 0x43, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x22, 0x16, 0x0a, 0x14, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72,
+	0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x15, 0x0a, 0x13, 0x4d, 0x6f, 0x64,
+	0x69, 0x66, 0x79, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x22, 0x16, 0x0a, 0x14, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x14, 0x0a, 0x12, 0x4d, 0x65, 0x72, 0x67,
+	0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x15,
+	0x0a, 0x13, 0x4d, 0x65, 0x72, 0x67, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x15, 0x0a, 0x13, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52,
+	0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x16, 0x0a, 0x14,
+	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x15, 0x0a, 0x13, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65,
+	0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x16, 0x0a, 0x14, 0x53,
+	0x65, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x1b, 0x0a, 0x19, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x63,
+	0x6f, 0x72, 0x64, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x22, 0x1c, 0x0a, 0x1a, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64,
+	0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x16,
+	0x0a, 0x14, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x17, 0x0a, 0x15, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x16, 0x0a, 0x14, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x17, 0x0a, 0x15, 0x4d, 0x6f, 0x64, 0x69, 0x66,
+	0x79, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x16, 0x0a, 0x14, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65,
+	0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x17, 0x0a, 0x15, 0x44, 0x65, 0x6c, 0x65,
+	0x74, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x16, 0x0a, 0x14, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b,
+	0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x17, 0x0a, 0x15, 0x53, 0x65, 0x6c,
+	0x65, 0x63, 0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0x1c, 0x0a, 0x1a, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x42, 0x6c, 0x6f, 0x63,
+	0x6b, 0x65, 0x64, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x22, 0x1d, 0x0a, 0x1b, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65,
+	0x64, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
+	0x18, 0x0a, 0x16, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69,
+	0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x19, 0x0a, 0x17, 0x43, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x18, 0x0a, 0x16, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x57, 0x68,
+	0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x19,
+	0x0a, 0x17, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x18, 0x0a, 0x16, 0x44, 0x65, 0x6c,
+	0x65, 0x74, 0x65, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x22, 0x19, 0x0a, 0x17, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x57, 0x68, 0x69,
+	0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x18,
+	0x0a, 0x16, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73,
+	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x19, 0x0a, 0x17, 0x53, 0x65, 0x6c, 0x65,
+	0x63, 0x74, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x1e, 0x0a, 0x1c, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x57, 0x68, 0x69,
+	0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x22, 0x1f, 0x0a, 0x1d, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x57, 0x68, 0x69,
+	0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x32, 0xe9, 0x0a, 0x0a, 0x08, 0x41, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65,
+	0x72, 0x12, 0x4d, 0x0a, 0x0c, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72,
+	0x64, 0x12, 0x1d, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x43, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x1e, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x43, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x4d, 0x0a, 0x0c, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64,
+	0x12, 0x1d, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x4d, 0x6f, 0x64, 0x69,
+	0x66, 0x79, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x1e, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x4d, 0x6f, 0x64, 0x69, 0x66,
+	0x79, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x4a, 0x0a, 0x0b, 0x4d, 0x65, 0x72, 0x67, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x1c,
+	0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x4d, 0x65, 0x72, 0x67, 0x65, 0x52,
+	0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x61,
+	0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x4d, 0x65, 0x72, 0x67, 0x65, 0x52, 0x65, 0x63,
+	0x6f, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4d, 0x0a, 0x0c, 0x44,
+	0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x1d, 0x2e, 0x61, 0x6e,
+	0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x63,
+	0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x61, 0x6e, 0x61,
+	0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f,
+	0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4d, 0x0a, 0x0c, 0x53, 0x65,
+	0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x1d, 0x2e, 0x61, 0x6e, 0x61,
+	0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x63, 0x6f,
+	0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x61, 0x6e, 0x61, 0x6c,
+	0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x63, 0x6f, 0x72,
+	0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5f, 0x0a, 0x12, 0x53, 0x65, 0x6c,
+	0x65, 0x63, 0x74, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x12,
+	0x23, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c, 0x65, 0x63,
+	0x74, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x24, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e,
+	0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x42, 0x79, 0x50, 0x61,
+	0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x50, 0x0a, 0x0d, 0x43, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x12, 0x1e, 0x2e, 0x61, 0x6e,
+	0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x6c, 0x6f,
+	0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x61, 0x6e,
+	0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x6c, 0x6f,
+	0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x50, 0x0a, 0x0d,
+	0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x12, 0x1e, 0x2e,
+	0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x42,
+	0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e,
+	0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x42,
+	0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x50,
+	0x0a, 0x0d, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x12,
+	0x1e, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x1f, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x65, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x50, 0x0a, 0x0d, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65,
+	0x64, 0x12, 0x1e, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c,
+	0x65, 0x63, 0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x1f, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c,
+	0x65, 0x63, 0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x62, 0x0a, 0x13, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x42, 0x6c, 0x6f, 0x63,
+	0x6b, 0x65, 0x64, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x12, 0x24, 0x2e, 0x61, 0x6e, 0x61, 0x6c,
+	0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b,
+	0x65, 0x64, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x25, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c, 0x65, 0x63,
+	0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x65, 0x64, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x56, 0x0a, 0x0f, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x20, 0x2e, 0x61, 0x6e, 0x61, 0x6c,
+	0x79, 0x7a, 0x65, 0x72, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x68, 0x69, 0x74, 0x65,
+	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x61, 0x6e,
+	0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x68, 0x69,
+	0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x56,
+	0x0a, 0x0f, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73,
+	0x74, 0x12, 0x20, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x4d, 0x6f, 0x64,
+	0x69, 0x66, 0x79, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x4d,
+	0x6f, 0x64, 0x69, 0x66, 0x79, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x56, 0x0a, 0x0f, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x20, 0x2e, 0x61, 0x6e, 0x61, 0x6c,
+	0x79, 0x7a, 0x65, 0x72, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x57, 0x68, 0x69, 0x74, 0x65,
+	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x61, 0x6e,
+	0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x57, 0x68, 0x69,
+	0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x56,
+	0x0a, 0x0f, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73,
+	0x74, 0x12, 0x20, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c,
+	0x65, 0x63, 0x74, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53,
+	0x65, 0x6c, 0x65, 0x63, 0x74, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x68, 0x0a, 0x15, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74,
+	0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x12,
+	0x26, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c, 0x65, 0x63,
+	0x74, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x27, 0x2e, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a,
+	0x65, 0x72, 0x2e, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x57, 0x68, 0x69, 0x74, 0x65, 0x4c, 0x69,
+	0x73, 0x74, 0x42, 0x79, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x42, 0x0c, 0x5a, 0x0a, 0x2e, 0x2f, 0x61, 0x6e, 0x61, 0x6c, 0x79, 0x7a, 0x65, 0x72, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -142,19 +1446,79 @@ func file_analyzer_proto_rawDescGZIP() []byte {
 	return file_analyzer_proto_rawDescData
 }
 
-var file_analyzer_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_analyzer_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
 var file_analyzer_proto_goTypes = []interface{}{
-	(*Request)(nil),  // 0: analyzer.Request
-	(*Response)(nil), // 1: analyzer.Response
+	(*CreateRecordRequest)(nil),           // 0: analyzer.CreateRecordRequest
+	(*CreateRecordResponse)(nil),          // 1: analyzer.CreateRecordResponse
+	(*ModifyRecordRequest)(nil),           // 2: analyzer.ModifyRecordRequest
+	(*ModifyRecordResponse)(nil),          // 3: analyzer.ModifyRecordResponse
+	(*MergeRecordRequest)(nil),            // 4: analyzer.MergeRecordRequest
+	(*MergeRecordResponse)(nil),           // 5: analyzer.MergeRecordResponse
+	(*DeleteRecordRequest)(nil),           // 6: analyzer.DeleteRecordRequest
+	(*DeleteRecordResponse)(nil),          // 7: analyzer.DeleteRecordResponse
+	(*SelectRecordRequest)(nil),           // 8: analyzer.SelectRecordRequest
+	(*SelectRecordResponse)(nil),          // 9: analyzer.SelectRecordResponse
+	(*SelectRecordByPageRequest)(nil),     // 10: analyzer.SelectRecordByPageRequest
+	(*SelectRecordByPageResponse)(nil),    // 11: analyzer.SelectRecordByPageResponse
+	(*CreateBlockedRequest)(nil),          // 12: analyzer.CreateBlockedRequest
+	(*CreateBlockedResponse)(nil),         // 13: analyzer.CreateBlockedResponse
+	(*ModifyBlockedRequest)(nil),          // 14: analyzer.ModifyBlockedRequest
+	(*ModifyBlockedResponse)(nil),         // 15: analyzer.ModifyBlockedResponse
+	(*DeleteBlockedRequest)(nil),          // 16: analyzer.DeleteBlockedRequest
+	(*DeleteBlockedResponse)(nil),         // 17: analyzer.DeleteBlockedResponse
+	(*SelectBlockedRequest)(nil),          // 18: analyzer.SelectBlockedRequest
+	(*SelectBlockedResponse)(nil),         // 19: analyzer.SelectBlockedResponse
+	(*SelectBlockedByPageRequest)(nil),    // 20: analyzer.SelectBlockedByPageRequest
+	(*SelectBlockedByPageResponse)(nil),   // 21: analyzer.SelectBlockedByPageResponse
+	(*CreateWhiteListRequest)(nil),        // 22: analyzer.CreateWhiteListRequest
+	(*CreateWhiteListResponse)(nil),       // 23: analyzer.CreateWhiteListResponse
+	(*ModifyWhiteListRequest)(nil),        // 24: analyzer.ModifyWhiteListRequest
+	(*ModifyWhiteListResponse)(nil),       // 25: analyzer.ModifyWhiteListResponse
+	(*DeleteWhiteListRequest)(nil),        // 26: analyzer.DeleteWhiteListRequest
+	(*DeleteWhiteListResponse)(nil),       // 27: analyzer.DeleteWhiteListResponse
+	(*SelectWhiteListRequest)(nil),        // 28: analyzer.SelectWhiteListRequest
+	(*SelectWhiteListResponse)(nil),       // 29: analyzer.SelectWhiteListResponse
+	(*SelectWhiteListByPageRequest)(nil),  // 30: analyzer.SelectWhiteListByPageRequest
+	(*SelectWhiteListByPageResponse)(nil), // 31: analyzer.SelectWhiteListByPageResponse
 }
 var file_analyzer_proto_depIdxs = []int32{
-	0, // 0: analyzer.Analyzer.Ping:input_type -> analyzer.Request
-	1, // 1: analyzer.Analyzer.Ping:output_type -> analyzer.Response
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: analyzer.Analyzer.CreateRecord:input_type -> analyzer.CreateRecordRequest
+	2,  // 1: analyzer.Analyzer.ModifyRecord:input_type -> analyzer.ModifyRecordRequest
+	4,  // 2: analyzer.Analyzer.MergeRecord:input_type -> analyzer.MergeRecordRequest
+	6,  // 3: analyzer.Analyzer.DeleteRecord:input_type -> analyzer.DeleteRecordRequest
+	8,  // 4: analyzer.Analyzer.SelectRecord:input_type -> analyzer.SelectRecordRequest
+	10, // 5: analyzer.Analyzer.SelectRecordByPage:input_type -> analyzer.SelectRecordByPageRequest
+	12, // 6: analyzer.Analyzer.CreateBlocked:input_type -> analyzer.CreateBlockedRequest
+	14, // 7: analyzer.Analyzer.ModifyBlocked:input_type -> analyzer.ModifyBlockedRequest
+	16, // 8: analyzer.Analyzer.DeleteBlocked:input_type -> analyzer.DeleteBlockedRequest
+	18, // 9: analyzer.Analyzer.SelectBlocked:input_type -> analyzer.SelectBlockedRequest
+	20, // 10: analyzer.Analyzer.SelectBlockedByPage:input_type -> analyzer.SelectBlockedByPageRequest
+	22, // 11: analyzer.Analyzer.CreateWhiteList:input_type -> analyzer.CreateWhiteListRequest
+	24, // 12: analyzer.Analyzer.ModifyWhiteList:input_type -> analyzer.ModifyWhiteListRequest
+	26, // 13: analyzer.Analyzer.DeleteWhiteList:input_type -> analyzer.DeleteWhiteListRequest
+	28, // 14: analyzer.Analyzer.SelectWhiteList:input_type -> analyzer.SelectWhiteListRequest
+	30, // 15: analyzer.Analyzer.SelectWhiteListByPage:input_type -> analyzer.SelectWhiteListByPageRequest
+	1,  // 16: analyzer.Analyzer.CreateRecord:output_type -> analyzer.CreateRecordResponse
+	3,  // 17: analyzer.Analyzer.ModifyRecord:output_type -> analyzer.ModifyRecordResponse
+	5,  // 18: analyzer.Analyzer.MergeRecord:output_type -> analyzer.MergeRecordResponse
+	7,  // 19: analyzer.Analyzer.DeleteRecord:output_type -> analyzer.DeleteRecordResponse
+	9,  // 20: analyzer.Analyzer.SelectRecord:output_type -> analyzer.SelectRecordResponse
+	11, // 21: analyzer.Analyzer.SelectRecordByPage:output_type -> analyzer.SelectRecordByPageResponse
+	13, // 22: analyzer.Analyzer.CreateBlocked:output_type -> analyzer.CreateBlockedResponse
+	15, // 23: analyzer.Analyzer.ModifyBlocked:output_type -> analyzer.ModifyBlockedResponse
+	17, // 24: analyzer.Analyzer.DeleteBlocked:output_type -> analyzer.DeleteBlockedResponse
+	19, // 25: analyzer.Analyzer.SelectBlocked:output_type -> analyzer.SelectBlockedResponse
+	21, // 26: analyzer.Analyzer.SelectBlockedByPage:output_type -> analyzer.SelectBlockedByPageResponse
+	23, // 27: analyzer.Analyzer.CreateWhiteList:output_type -> analyzer.CreateWhiteListResponse
+	25, // 28: analyzer.Analyzer.ModifyWhiteList:output_type -> analyzer.ModifyWhiteListResponse
+	27, // 29: analyzer.Analyzer.DeleteWhiteList:output_type -> analyzer.DeleteWhiteListResponse
+	29, // 30: analyzer.Analyzer.SelectWhiteList:output_type -> analyzer.SelectWhiteListResponse
+	31, // 31: analyzer.Analyzer.SelectWhiteListByPage:output_type -> analyzer.SelectWhiteListByPageResponse
+	16, // [16:32] is the sub-list for method output_type
+	0,  // [0:16] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_analyzer_proto_init() }
@@ -164,7 +1528,7 @@ func file_analyzer_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_analyzer_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Request); i {
+			switch v := v.(*CreateRecordRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -176,7 +1540,367 @@ func file_analyzer_proto_init() {
 			}
 		}
 		file_analyzer_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Response); i {
+			switch v := v.(*CreateRecordResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ModifyRecordRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ModifyRecordResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*MergeRecordRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*MergeRecordResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteRecordRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteRecordResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectRecordRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectRecordResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectRecordByPageRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectRecordByPageResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateBlockedRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateBlockedResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ModifyBlockedRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ModifyBlockedResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteBlockedRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteBlockedResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectBlockedRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectBlockedResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectBlockedByPageRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectBlockedByPageResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateWhiteListRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateWhiteListResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ModifyWhiteListRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ModifyWhiteListResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteWhiteListRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DeleteWhiteListResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectWhiteListRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectWhiteListResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectWhiteListByPageRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_analyzer_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SelectWhiteListByPageResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -194,7 +1918,7 @@ func file_analyzer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_analyzer_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   32,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -22,7 +22,25 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AnalyzerClient interface {
-	Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	// ================ Record  ================
+	CreateRecord(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*CreateRecordResponse, error)
+	ModifyRecord(ctx context.Context, in *ModifyRecordRequest, opts ...grpc.CallOption) (*ModifyRecordResponse, error)
+	MergeRecord(ctx context.Context, in *MergeRecordRequest, opts ...grpc.CallOption) (*MergeRecordResponse, error)
+	DeleteRecord(ctx context.Context, in *DeleteRecordRequest, opts ...grpc.CallOption) (*DeleteRecordResponse, error)
+	SelectRecord(ctx context.Context, in *SelectRecordRequest, opts ...grpc.CallOption) (*SelectRecordResponse, error)
+	SelectRecordByPage(ctx context.Context, in *SelectRecordByPageRequest, opts ...grpc.CallOption) (*SelectRecordByPageResponse, error)
+	// ================ Blocked  ================
+	CreateBlocked(ctx context.Context, in *CreateBlockedRequest, opts ...grpc.CallOption) (*CreateBlockedResponse, error)
+	ModifyBlocked(ctx context.Context, in *ModifyBlockedRequest, opts ...grpc.CallOption) (*ModifyBlockedResponse, error)
+	DeleteBlocked(ctx context.Context, in *DeleteBlockedRequest, opts ...grpc.CallOption) (*DeleteBlockedResponse, error)
+	SelectBlocked(ctx context.Context, in *SelectBlockedRequest, opts ...grpc.CallOption) (*SelectBlockedResponse, error)
+	SelectBlockedByPage(ctx context.Context, in *SelectBlockedByPageRequest, opts ...grpc.CallOption) (*SelectBlockedByPageResponse, error)
+	// ================ whitelist ================
+	CreateWhiteList(ctx context.Context, in *CreateWhiteListRequest, opts ...grpc.CallOption) (*CreateWhiteListResponse, error)
+	ModifyWhiteList(ctx context.Context, in *ModifyWhiteListRequest, opts ...grpc.CallOption) (*ModifyWhiteListResponse, error)
+	DeleteWhiteList(ctx context.Context, in *DeleteWhiteListRequest, opts ...grpc.CallOption) (*DeleteWhiteListResponse, error)
+	SelectWhiteList(ctx context.Context, in *SelectWhiteListRequest, opts ...grpc.CallOption) (*SelectWhiteListResponse, error)
+	SelectWhiteListByPage(ctx context.Context, in *SelectWhiteListByPageRequest, opts ...grpc.CallOption) (*SelectWhiteListByPageResponse, error)
 }
 
 type analyzerClient struct {
@@ -33,9 +51,144 @@ func NewAnalyzerClient(cc grpc.ClientConnInterface) AnalyzerClient {
 	return &analyzerClient{cc}
 }
 
-func (c *analyzerClient) Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
-	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/Ping", in, out, opts...)
+func (c *analyzerClient) CreateRecord(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*CreateRecordResponse, error) {
+	out := new(CreateRecordResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/CreateRecord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) ModifyRecord(ctx context.Context, in *ModifyRecordRequest, opts ...grpc.CallOption) (*ModifyRecordResponse, error) {
+	out := new(ModifyRecordResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/ModifyRecord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) MergeRecord(ctx context.Context, in *MergeRecordRequest, opts ...grpc.CallOption) (*MergeRecordResponse, error) {
+	out := new(MergeRecordResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/MergeRecord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) DeleteRecord(ctx context.Context, in *DeleteRecordRequest, opts ...grpc.CallOption) (*DeleteRecordResponse, error) {
+	out := new(DeleteRecordResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/DeleteRecord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) SelectRecord(ctx context.Context, in *SelectRecordRequest, opts ...grpc.CallOption) (*SelectRecordResponse, error) {
+	out := new(SelectRecordResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/SelectRecord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) SelectRecordByPage(ctx context.Context, in *SelectRecordByPageRequest, opts ...grpc.CallOption) (*SelectRecordByPageResponse, error) {
+	out := new(SelectRecordByPageResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/SelectRecordByPage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) CreateBlocked(ctx context.Context, in *CreateBlockedRequest, opts ...grpc.CallOption) (*CreateBlockedResponse, error) {
+	out := new(CreateBlockedResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/CreateBlocked", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) ModifyBlocked(ctx context.Context, in *ModifyBlockedRequest, opts ...grpc.CallOption) (*ModifyBlockedResponse, error) {
+	out := new(ModifyBlockedResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/ModifyBlocked", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) DeleteBlocked(ctx context.Context, in *DeleteBlockedRequest, opts ...grpc.CallOption) (*DeleteBlockedResponse, error) {
+	out := new(DeleteBlockedResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/DeleteBlocked", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) SelectBlocked(ctx context.Context, in *SelectBlockedRequest, opts ...grpc.CallOption) (*SelectBlockedResponse, error) {
+	out := new(SelectBlockedResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/SelectBlocked", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) SelectBlockedByPage(ctx context.Context, in *SelectBlockedByPageRequest, opts ...grpc.CallOption) (*SelectBlockedByPageResponse, error) {
+	out := new(SelectBlockedByPageResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/SelectBlockedByPage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) CreateWhiteList(ctx context.Context, in *CreateWhiteListRequest, opts ...grpc.CallOption) (*CreateWhiteListResponse, error) {
+	out := new(CreateWhiteListResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/CreateWhiteList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) ModifyWhiteList(ctx context.Context, in *ModifyWhiteListRequest, opts ...grpc.CallOption) (*ModifyWhiteListResponse, error) {
+	out := new(ModifyWhiteListResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/ModifyWhiteList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) DeleteWhiteList(ctx context.Context, in *DeleteWhiteListRequest, opts ...grpc.CallOption) (*DeleteWhiteListResponse, error) {
+	out := new(DeleteWhiteListResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/DeleteWhiteList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) SelectWhiteList(ctx context.Context, in *SelectWhiteListRequest, opts ...grpc.CallOption) (*SelectWhiteListResponse, error) {
+	out := new(SelectWhiteListResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/SelectWhiteList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyzerClient) SelectWhiteListByPage(ctx context.Context, in *SelectWhiteListByPageRequest, opts ...grpc.CallOption) (*SelectWhiteListByPageResponse, error) {
+	out := new(SelectWhiteListByPageResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/SelectWhiteListByPage", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +199,25 @@ func (c *analyzerClient) Ping(ctx context.Context, in *Request, opts ...grpc.Cal
 // All implementations must embed UnimplementedAnalyzerServer
 // for forward compatibility
 type AnalyzerServer interface {
-	Ping(context.Context, *Request) (*Response, error)
+	// ================ Record  ================
+	CreateRecord(context.Context, *CreateRecordRequest) (*CreateRecordResponse, error)
+	ModifyRecord(context.Context, *ModifyRecordRequest) (*ModifyRecordResponse, error)
+	MergeRecord(context.Context, *MergeRecordRequest) (*MergeRecordResponse, error)
+	DeleteRecord(context.Context, *DeleteRecordRequest) (*DeleteRecordResponse, error)
+	SelectRecord(context.Context, *SelectRecordRequest) (*SelectRecordResponse, error)
+	SelectRecordByPage(context.Context, *SelectRecordByPageRequest) (*SelectRecordByPageResponse, error)
+	// ================ Blocked  ================
+	CreateBlocked(context.Context, *CreateBlockedRequest) (*CreateBlockedResponse, error)
+	ModifyBlocked(context.Context, *ModifyBlockedRequest) (*ModifyBlockedResponse, error)
+	DeleteBlocked(context.Context, *DeleteBlockedRequest) (*DeleteBlockedResponse, error)
+	SelectBlocked(context.Context, *SelectBlockedRequest) (*SelectBlockedResponse, error)
+	SelectBlockedByPage(context.Context, *SelectBlockedByPageRequest) (*SelectBlockedByPageResponse, error)
+	// ================ whitelist ================
+	CreateWhiteList(context.Context, *CreateWhiteListRequest) (*CreateWhiteListResponse, error)
+	ModifyWhiteList(context.Context, *ModifyWhiteListRequest) (*ModifyWhiteListResponse, error)
+	DeleteWhiteList(context.Context, *DeleteWhiteListRequest) (*DeleteWhiteListResponse, error)
+	SelectWhiteList(context.Context, *SelectWhiteListRequest) (*SelectWhiteListResponse, error)
+	SelectWhiteListByPage(context.Context, *SelectWhiteListByPageRequest) (*SelectWhiteListByPageResponse, error)
 	mustEmbedUnimplementedAnalyzerServer()
 }
 
@@ -54,8 +225,53 @@ type AnalyzerServer interface {
 type UnimplementedAnalyzerServer struct {
 }
 
-func (UnimplementedAnalyzerServer) Ping(context.Context, *Request) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+func (UnimplementedAnalyzerServer) CreateRecord(context.Context, *CreateRecordRequest) (*CreateRecordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRecord not implemented")
+}
+func (UnimplementedAnalyzerServer) ModifyRecord(context.Context, *ModifyRecordRequest) (*ModifyRecordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifyRecord not implemented")
+}
+func (UnimplementedAnalyzerServer) MergeRecord(context.Context, *MergeRecordRequest) (*MergeRecordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MergeRecord not implemented")
+}
+func (UnimplementedAnalyzerServer) DeleteRecord(context.Context, *DeleteRecordRequest) (*DeleteRecordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRecord not implemented")
+}
+func (UnimplementedAnalyzerServer) SelectRecord(context.Context, *SelectRecordRequest) (*SelectRecordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectRecord not implemented")
+}
+func (UnimplementedAnalyzerServer) SelectRecordByPage(context.Context, *SelectRecordByPageRequest) (*SelectRecordByPageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectRecordByPage not implemented")
+}
+func (UnimplementedAnalyzerServer) CreateBlocked(context.Context, *CreateBlockedRequest) (*CreateBlockedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBlocked not implemented")
+}
+func (UnimplementedAnalyzerServer) ModifyBlocked(context.Context, *ModifyBlockedRequest) (*ModifyBlockedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifyBlocked not implemented")
+}
+func (UnimplementedAnalyzerServer) DeleteBlocked(context.Context, *DeleteBlockedRequest) (*DeleteBlockedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBlocked not implemented")
+}
+func (UnimplementedAnalyzerServer) SelectBlocked(context.Context, *SelectBlockedRequest) (*SelectBlockedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectBlocked not implemented")
+}
+func (UnimplementedAnalyzerServer) SelectBlockedByPage(context.Context, *SelectBlockedByPageRequest) (*SelectBlockedByPageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectBlockedByPage not implemented")
+}
+func (UnimplementedAnalyzerServer) CreateWhiteList(context.Context, *CreateWhiteListRequest) (*CreateWhiteListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateWhiteList not implemented")
+}
+func (UnimplementedAnalyzerServer) ModifyWhiteList(context.Context, *ModifyWhiteListRequest) (*ModifyWhiteListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifyWhiteList not implemented")
+}
+func (UnimplementedAnalyzerServer) DeleteWhiteList(context.Context, *DeleteWhiteListRequest) (*DeleteWhiteListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteWhiteList not implemented")
+}
+func (UnimplementedAnalyzerServer) SelectWhiteList(context.Context, *SelectWhiteListRequest) (*SelectWhiteListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectWhiteList not implemented")
+}
+func (UnimplementedAnalyzerServer) SelectWhiteListByPage(context.Context, *SelectWhiteListByPageRequest) (*SelectWhiteListByPageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectWhiteListByPage not implemented")
 }
 func (UnimplementedAnalyzerServer) mustEmbedUnimplementedAnalyzerServer() {}
 
@@ -70,20 +286,290 @@ func RegisterAnalyzerServer(s grpc.ServiceRegistrar, srv AnalyzerServer) {
 	s.RegisterService(&Analyzer_ServiceDesc, srv)
 }
 
-func _Analyzer_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+func _Analyzer_CreateRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRecordRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AnalyzerServer).Ping(ctx, in)
+		return srv.(AnalyzerServer).CreateRecord(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/analyzer.Analyzer/Ping",
+		FullMethod: "/analyzer.Analyzer/CreateRecord",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AnalyzerServer).Ping(ctx, req.(*Request))
+		return srv.(AnalyzerServer).CreateRecord(ctx, req.(*CreateRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_ModifyRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifyRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).ModifyRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/ModifyRecord",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).ModifyRecord(ctx, req.(*ModifyRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_MergeRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MergeRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).MergeRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/MergeRecord",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).MergeRecord(ctx, req.(*MergeRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_DeleteRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).DeleteRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/DeleteRecord",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).DeleteRecord(ctx, req.(*DeleteRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_SelectRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).SelectRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/SelectRecord",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).SelectRecord(ctx, req.(*SelectRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_SelectRecordByPage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectRecordByPageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).SelectRecordByPage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/SelectRecordByPage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).SelectRecordByPage(ctx, req.(*SelectRecordByPageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_CreateBlocked_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBlockedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).CreateBlocked(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/CreateBlocked",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).CreateBlocked(ctx, req.(*CreateBlockedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_ModifyBlocked_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifyBlockedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).ModifyBlocked(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/ModifyBlocked",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).ModifyBlocked(ctx, req.(*ModifyBlockedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_DeleteBlocked_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBlockedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).DeleteBlocked(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/DeleteBlocked",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).DeleteBlocked(ctx, req.(*DeleteBlockedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_SelectBlocked_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectBlockedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).SelectBlocked(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/SelectBlocked",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).SelectBlocked(ctx, req.(*SelectBlockedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_SelectBlockedByPage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectBlockedByPageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).SelectBlockedByPage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/SelectBlockedByPage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).SelectBlockedByPage(ctx, req.(*SelectBlockedByPageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_CreateWhiteList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateWhiteListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).CreateWhiteList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/CreateWhiteList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).CreateWhiteList(ctx, req.(*CreateWhiteListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_ModifyWhiteList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifyWhiteListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).ModifyWhiteList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/ModifyWhiteList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).ModifyWhiteList(ctx, req.(*ModifyWhiteListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_DeleteWhiteList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteWhiteListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).DeleteWhiteList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/DeleteWhiteList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).DeleteWhiteList(ctx, req.(*DeleteWhiteListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_SelectWhiteList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectWhiteListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).SelectWhiteList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/SelectWhiteList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).SelectWhiteList(ctx, req.(*SelectWhiteListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analyzer_SelectWhiteListByPage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectWhiteListByPageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).SelectWhiteListByPage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/SelectWhiteListByPage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).SelectWhiteListByPage(ctx, req.(*SelectWhiteListByPageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -96,8 +582,68 @@ var Analyzer_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AnalyzerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Ping",
-			Handler:    _Analyzer_Ping_Handler,
+			MethodName: "CreateRecord",
+			Handler:    _Analyzer_CreateRecord_Handler,
+		},
+		{
+			MethodName: "ModifyRecord",
+			Handler:    _Analyzer_ModifyRecord_Handler,
+		},
+		{
+			MethodName: "MergeRecord",
+			Handler:    _Analyzer_MergeRecord_Handler,
+		},
+		{
+			MethodName: "DeleteRecord",
+			Handler:    _Analyzer_DeleteRecord_Handler,
+		},
+		{
+			MethodName: "SelectRecord",
+			Handler:    _Analyzer_SelectRecord_Handler,
+		},
+		{
+			MethodName: "SelectRecordByPage",
+			Handler:    _Analyzer_SelectRecordByPage_Handler,
+		},
+		{
+			MethodName: "CreateBlocked",
+			Handler:    _Analyzer_CreateBlocked_Handler,
+		},
+		{
+			MethodName: "ModifyBlocked",
+			Handler:    _Analyzer_ModifyBlocked_Handler,
+		},
+		{
+			MethodName: "DeleteBlocked",
+			Handler:    _Analyzer_DeleteBlocked_Handler,
+		},
+		{
+			MethodName: "SelectBlocked",
+			Handler:    _Analyzer_SelectBlocked_Handler,
+		},
+		{
+			MethodName: "SelectBlockedByPage",
+			Handler:    _Analyzer_SelectBlockedByPage_Handler,
+		},
+		{
+			MethodName: "CreateWhiteList",
+			Handler:    _Analyzer_CreateWhiteList_Handler,
+		},
+		{
+			MethodName: "ModifyWhiteList",
+			Handler:    _Analyzer_ModifyWhiteList_Handler,
+		},
+		{
+			MethodName: "DeleteWhiteList",
+			Handler:    _Analyzer_DeleteWhiteList_Handler,
+		},
+		{
+			MethodName: "SelectWhiteList",
+			Handler:    _Analyzer_SelectWhiteList_Handler,
+		},
+		{
+			MethodName: "SelectWhiteListByPage",
+			Handler:    _Analyzer_SelectWhiteListByPage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

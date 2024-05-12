@@ -1,16 +1,156 @@
 syntax = "proto3";
 
 package analyzer;
-option go_package="./analyzer";
+option go_package = "./analyzer";
 
-message Request {
-  string ping = 1;
-}
+// ================ Record  ================
+// == 创建record ==
+// 创建record的请求参数
+message CreateRecordRequest {}
+// 创建record的响应结果
+message CreateRecordResponse {}
 
-message Response {
-  string pong = 1;
-}
+// == 更新record ==
+// 更新record的请求参数
+message ModifyRecordRequest {}
+// 更新record的响应结果
+message ModifyRecordResponse {}
+
+// == 合并record ==
+// 合并record的请求参数
+message MergeRecordRequest {}
+// 合并record的响应结果
+message MergeRecordResponse {}
+
+// == 删除record ==
+// 删除record的请求参数
+message DeleteRecordRequest {}
+// 删除record的响应结果
+message DeleteRecordResponse {}
+
+// == 查询record ==
+// 查询record的请求参数
+message SelectRecordRequest {}
+// 查询record的响应结果
+message SelectRecordResponse {}
+
+// == 查询record(分页) ==
+// 查询record的分页请求参数
+message SelectRecordByPageRequest {}
+// 查询record的分页响应结果
+message SelectRecordByPageResponse {}
+
+// ================ Blocked  ================
+// == 创建blocked ==
+// 创建blocked 的请求参数
+message CreateBlockedRequest {}
+// 创建blocked 的响应结果
+message CreateBlockedResponse {}
+
+// == 更新blocked ==
+// 更新blocked 的请求参数
+message ModifyBlockedRequest {}
+// 更新blocked 的响应结果
+message ModifyBlockedResponse {}
+
+// == 删除blocked ==
+// 删除blocked 的请求参数
+message DeleteBlockedRequest {}
+// 删除blocked 的响应结果
+message DeleteBlockedResponse {}
+
+// == 查询blocked ==
+// 查询blocked 的请求参数
+message SelectBlockedRequest {}
+// 查询blocked 的响应结果
+message SelectBlockedResponse {}
+
+// == 查询blocked(分页) ==
+// 查询blocked 的请求参数
+message SelectBlockedByPageRequest {}
+// 查询blocked 的响应结果
+message SelectBlockedByPageResponse {}
+
+// ================ WhiteList  ================
+// == 创建Whitelist ==
+// 创建whitelist 的请求参数
+message CreateWhiteListRequest {}
+// 创建whitelist 的响应结果
+message CreateWhiteListResponse {}
+
+// == 更新Whitelist ==
+// 更新whitelist 的请求参数
+message ModifyWhiteListRequest {}
+// 更新whitelist 的响应结果
+message ModifyWhiteListResponse {}
+
+// == 删除Whitelist ==
+// 删除whitelist 的请求参数
+message DeleteWhiteListRequest {}
+// 删除whitelist 的响应结果
+message DeleteWhiteListResponse {}
+
+// == 查询Whitelist ==
+// 查询whitelist 的请求参数
+message SelectWhiteListRequest {}
+// 查询whitelist 的响应结果
+message SelectWhiteListResponse {}
+
+// == 查询Whitelist(分页) ==
+// 查询whitelist 的请求参数
+message SelectWhiteListByPageRequest {}
+// 查询whitelist 的响应结果
+message SelectWhiteListByPageResponse {}
 
 service Analyzer {
-  rpc Ping(Request) returns(Response);
+  // ================ Record  ================
+  rpc CreateRecord(CreateRecordRequest)
+      returns (CreateRecordResponse); // 创建record(记录)
+
+  rpc ModifyRecord(ModifyRecordRequest)
+      returns (ModifyRecordResponse); // 更改record
+
+  rpc MergeRecord(MergeRecordRequest)
+      returns (MergeRecordResponse); // 合并record
+
+  rpc DeleteRecord(DeleteRecordRequest)
+      returns (DeleteRecordResponse); // 删除record
+
+  rpc SelectRecord(SelectRecordRequest)
+      returns (SelectRecordResponse); // 查询record
+
+  rpc SelectRecordByPage(SelectRecordByPageRequest)
+      returns (SelectRecordByPageResponse); // 根据分页查询record
+
+  // ================ Blocked  ================
+  rpc CreateBlocked(CreateBlockedRequest)
+      returns (CreateBlockedResponse); // 创建blocked(黑名单)
+
+  rpc ModifyBlocked(ModifyBlockedRequest)
+      returns (ModifyBlockedResponse); // 更新blocked
+
+  rpc DeleteBlocked(DeleteBlockedRequest)
+      returns (DeleteBlockedResponse); // 删除blocked
+
+  rpc SelectBlocked(SelectBlockedRequest)
+      returns (SelectBlockedResponse); // 查询blocked
+
+  rpc SelectBlockedByPage(SelectBlockedByPageRequest)
+      returns (SelectBlockedByPageResponse); // 根据分页查询blocked
+
+  // ================ whitelist ================
+  rpc CreateWhiteList(CreateWhiteListRequest)
+      returns (CreateWhiteListResponse); // 创建WhiteList
+
+  rpc ModifyWhiteList(ModifyWhiteListRequest)
+      returns (ModifyWhiteListResponse); // 更新WhiteList
+
+  rpc DeleteWhiteList(DeleteWhiteListRequest)
+      returns (DeleteWhiteListResponse); // 删除WhiteList
+
+  rpc SelectWhiteList(SelectWhiteListRequest)
+      returns (SelectWhiteListResponse); // 查询WhiteList
+
+  rpc SelectWhiteListByPage(SelectWhiteListByPageRequest)
+      returns (SelectWhiteListByPageResponse); // 根据分页查询WhiteList
 }
