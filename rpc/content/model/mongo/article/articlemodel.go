@@ -22,7 +22,7 @@ type (
 		FindByIds(ctx context.Context, ids []string) ([]Article, error)
 		FindByPage(
 			ctx context.Context,
-			pageSize, pageNum int64,
+			pageNum, pageSize int64,
 			hideShow bool,
 		) ([]Article, int64, error)
 		Search(ctx context.Context, search string) ([]Article, error)
@@ -58,7 +58,28 @@ func (m *customArticleModel) FindByTitle(ctx context.Context, title string) (*Ar
 }
 
 func (m *customArticleModel) FindByIds(ctx context.Context, ids []string) ([]Article, error) {
-	return nil, nil
+	articles := make([]Article, len(ids))
+
+	oids := make([]primitive.ObjectID, len(ids))
+	for _, v := range ids {
+		oid, err := primitive.ObjectIDFromHex(v)
+		if err != nil {
+			return nil, err
+		}
+		oids = append(oids, oid)
+	}
+
+	filter := bson.M{"_id": bson.M{"$in": oids}}
+	err := m.conn.Find(ctx, &articles, filter)
+
+	switch err {
+	case nil:
+		return articles, nil
+	case monc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }
 
 // FindByPage: 查看文章, 分页
@@ -66,7 +87,7 @@ func (m *customArticleModel) FindByIds(ctx context.Context, ids []string) ([]Art
 // 写入到缓存中
 func (m *customArticleModel) FindByPage(
 	ctx context.Context,
-	pageSize, pageNum int64,
+	pageNum, pageSize int64,
 	hideShow bool,
 ) ([]Article, int64, error) {
 	articles := make([]Article, pageNum)

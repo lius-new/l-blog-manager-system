@@ -12,7 +12,7 @@ import (
 // TestFindOneByHash: 根据hash查询指定Cover图片
 func TestFindOneByHash(t *testing.T) {
 	ctx := context.Background()
-	cover, err := tests.SVC_CONTEXT.ModelWithCover.FindOneByHash(ctx, "hash")
+	cover, err := tests.SVC_CONTEXT.ModelWithCover.FindOneByHash(ctx, "2")
 	if err != nil {
 		fmt.Println("错误信息: ", err)
 	}
@@ -22,9 +22,12 @@ func TestFindOneByHash(t *testing.T) {
 // TestFindOneByHash: 插入指定图片并返回指定id
 func TestCoverInsertReturnId(t *testing.T) {
 	ctx := context.Background()
-	coverId, err := tests.SVC_CONTEXT.ModelWithCover.InsertReturnId(ctx, &coverModel.Cover{})
+	coverId, err := tests.SVC_CONTEXT.ModelWithCover.InsertReturnId(ctx, &coverModel.Cover{
+		Content: "1",
+		Hash:    "2",
+	})
 	if err != nil {
 		fmt.Println("错误信息: ", err)
 	}
-	fmt.Println("查询结果: ", coverId)
+	fmt.Println("插入结果: ", coverId)
 }

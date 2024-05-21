@@ -22,7 +22,7 @@ type (
 		FindByName(ctx context.Context, name string) (*Tag, error)
 		FindByPage(
 			ctx context.Context,
-			pageSize, pageNum int64,
+			pageNum, pageSize int64,
 			hideShow bool,
 		) ([]Tag, int64, error)
 	}
@@ -72,7 +72,7 @@ func (m *customTagModel) FindByName(ctx context.Context, name string) (*Tag, err
 // 写入到缓存中
 func (m *customTagModel) FindByPage(
 	ctx context.Context,
-	pageSize, pageNum int64,
+	pageNum, pageSize int64,
 	hideShow bool,
 ) ([]Tag, int64, error) {
 	tags := make([]Tag, pageNum)

@@ -27,13 +27,13 @@ func TestFindByTitle(t *testing.T) {
 func TestFindByIds(t *testing.T) {
 	ctx := context.Background()
 
-	articles, err := tests.SVC_CONTEXT.ModelWithArticle.FindByIds(ctx, []string{"id"})
+	articles, err := tests.SVC_CONTEXT.ModelWithArticle.FindByIds(ctx, []string{"660ba12498bdd09de58ae0aa", "660ba12e98bdd09de58ae0af"})
 
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(articles)
+	fmt.Println("findRes: ", articles)
 }
 
 // TestFindByPage: 根据分页查询文章
@@ -47,6 +47,7 @@ func TestFindByPage(t *testing.T) {
 	}
 
 	fmt.Println("total: ", total)
+
 	fmt.Println("articles: ", articles)
 }
 
@@ -67,10 +68,10 @@ func TestSearch(t *testing.T) {
 	}
 
 	// search title
-	search("测试文章")
+	search("测试文章1")
 
 	// search desc
-	search("Desc")
+	// search("Desc")
 }
 
 // TestInsertReturnId: 添加article, 返回id

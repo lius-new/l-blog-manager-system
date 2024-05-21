@@ -21,9 +21,9 @@ type ServiceContext struct {
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:           c,
-		ModelWithArticle: articleModel.NewArticleModel(c.MongoURL, c.DBName, "article", c.Cache),
-		ModelWithTag:     tagModel.NewTagModel(c.MongoURL, c.DBName, "tag", c.Cache),
-		ModelWithCover:   coverModel.NewCoverModel(c.MongoURL, c.DBName, "cover", c.Cache),
+		ModelWithArticle: articleModel.NewArticleModel(c.MongoURL, c.DBName, "articles", c.Cache),
+		ModelWithTag:     tagModel.NewTagModel(c.MongoURL, c.DBName, "tags", c.Cache),
+		ModelWithCover:   coverModel.NewCoverModel(c.MongoURL, c.DBName, "covers", c.Cache),
 		Utiler:           utiler.NewUtiler(zrpc.MustNewClient(c.Utils)),
 	}
 }

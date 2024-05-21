@@ -13,7 +13,7 @@ import (
 // TestFindByName: 根据name查询tag
 func TestFindByName(t *testing.T) {
 	ctx := context.Background()
-	tag, err := tests.SVC_CONTEXT.ModelWithTag.FindByName(ctx, "name")
+	tag, err := tests.SVC_CONTEXT.ModelWithTag.FindByName(ctx, "eiusmod")
 	if err != nil {
 		fmt.Println("错误信息: ", err)
 	}
@@ -23,13 +23,13 @@ func TestFindByName(t *testing.T) {
 // TestTagFindByPage: 分页查询
 func TestTagFindByPage(t *testing.T) {
 	ctx := context.Background()
-	tags, total, err := tests.SVC_CONTEXT.ModelWithTag.FindByPage(ctx, 0, 2, true)
+	tags, total, err := tests.SVC_CONTEXT.ModelWithTag.FindByPage(ctx, 0, 20, true)
 	if err != nil {
 		fmt.Println("错误信息: ", err)
 	}
 
 	fmt.Println("total: ", total)
-	fmt.Println("articles: ", tags)
+	fmt.Println("tags: ", tags)
 }
 
 // TestTagInsertReturnId: 添加tag, 返回id

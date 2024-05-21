@@ -2,9 +2,12 @@ package model
 
 import (
 	"context"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/monc"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var _ CoverModel = (*customCoverModel)(nil)
@@ -33,9 +36,29 @@ func NewCoverModel(url, db, collection string, c cache.CacheConf) CoverModel {
 
 // FindOneByHash: 根据hash来查找
 func (m *customCoverModel) FindOneByHash(ctx context.Context, hash string) (*Cover, error) {
-	return nil, nil
+	key := prefixCoverCacheKey + hash
+
+	var data Cover
+	err := m.conn.FindOne(ctx, key, &data, bson.M{"hash": hash})
+
+	switch err {
+	case nil:
+		return &data, nil
+	case monc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }
 
 func (m *customCoverModel) InsertReturnId(ctx context.Context, data *Cover) (id string, err error) {
-	return "", nil
+	if data.ID.IsZero() {
+		data.ID = primitive.NewObjectID()
+		data.CreateAt = time.Now()
+		data.UpdateAt = time.Now()
+	}
+
+	key := prefixCoverCacheKey + data.ID.Hex()
+	_, err = m.conn.InsertOne(ctx, key, data)
+	return data.ID.Hex(), err
 }
