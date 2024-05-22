@@ -15,11 +15,15 @@ func TestSelectTagByPage(t *testing.T) {
 
 	selectTagByPageLogic := logic.NewSelectTagByPageLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := selectTagByPageLogic.SelectTagByPage(&content.SelectTagByPageRequest{})
+	resp, err := selectTagByPageLogic.SelectTagByPage(&content.SelectTagByPageRequest{
+		PageNum:  2,
+		PageSize: 3,
+		HideShow: true,
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println(resp)
 	}
-
-	fmt.Println(resp)
 }

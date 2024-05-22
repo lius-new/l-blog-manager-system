@@ -25,6 +25,7 @@ message SelectArticle {
   string content = 4;
   repeated string tags = 5;
   repeated string covers = 6;
+  int64 time = 7;
 }
 // 根据id查找文章的参数
 message SelectArticleByIdRequest { string id = 1; }
@@ -117,9 +118,8 @@ message ModifyArticleVisiableRequest {
 message ModifyArticleVisiableResponse {}
 // 根据tag修改文章visiable的参数
 message ModifyArticleVisiableByTagRequest {
-  string id = 1;
-  string tag = 2;    // tag ids
-  bool visiable = 3; // tag ids
+  string tagId = 1;  // tag ids
+  bool visiable = 2; // tag ids
 }
 // 根据tag修改文章visiable的响应
 message ModifyArticleVisiableByTagResponse {}
@@ -177,7 +177,7 @@ message SelectTagByPageRequest {
   int64 pageSize = 2;
   bool hideShow = 3;
 }
-message SelectTag{
+message SelectTag {
   string id = 1;
   string name = 2;
 }
@@ -216,6 +216,8 @@ message DeleteCoverResponse { int64 count = 1; }
 // 查询cover
 message SelectCoverRequest { string id = 1; }
 message SelectCoverResponse { Cover cover = 1; }
+message SelectCoverByHashRequest { string hash = 1; }
+message SelectCoverByHashResponse { Cover cover = 1; }
 
 service Content {
   //** article **
@@ -334,5 +336,7 @@ service Content {
   // 删除cover
   rpc DeleteCover(DeleteCoverRequest) returns (DeleteCoverResponse);
   // 查询cover
+  rpc SelectCoverByHash(SelectCoverByHashRequest)
+      returns (SelectCoverByHashResponse);
   rpc SelectCover(SelectCoverRequest) returns (SelectCoverResponse);
 }

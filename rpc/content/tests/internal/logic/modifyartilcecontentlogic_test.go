@@ -15,11 +15,14 @@ func TestModifyArtilceContent(t *testing.T) {
 
 	modifyArtilceContentLogic := logic.NewModifyArtilceContentLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := modifyArtilceContentLogic.ModifyArtilceContent(&content.ModifyArticleContentRequest{})
+	resp, err := modifyArtilceContentLogic.ModifyArtilceContent(&content.ModifyArticleContentRequest{
+		Id:      "664d6d1a04c15050fc092f72",
+		Content: "# 标题2",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println("resp: ", resp)
 	}
-
-	fmt.Println(resp)
 }

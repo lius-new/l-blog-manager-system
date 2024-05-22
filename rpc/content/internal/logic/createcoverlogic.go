@@ -30,8 +30,6 @@ func NewCreateCoverLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Creat
 func (l *CreateCoverLogic) CreateCover(
 	in *content.CreateCoverRequest,
 ) (*content.CreateCoverResponse, error) {
-	// TODO: 计算hash
-
 	hashResp, err := l.svcCtx.Utiler.HashWithString(l.ctx, &utiler.HashWithStringReqeust{
 		Content: in.Content,
 	})

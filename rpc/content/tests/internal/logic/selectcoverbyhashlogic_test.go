@@ -10,19 +10,19 @@ import (
 	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-func TestModifyArtilceTitle(t *testing.T) {
+func TestSelectCoverByHash(t *testing.T) {
 	ctx := context.Background()
 
-	modifyArtilceTitleLogic := logic.NewModifyArtilceTitleLogic(ctx, tests.SVC_CONTEXT)
+	selectCoverLogic := logic.NewSelectCoverByHashLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := modifyArtilceTitleLogic.ModifyArtilceTitle(&content.ModifyArticleTitleRequest{
-		Id:    "664d6d1a04c15050fc092f72",
-		Title: "测试文章1",
+	resp, err := selectCoverLogic.SelectCoverByHash(&content.SelectCoverByHashRequest{
+		Hash: "6643e9f2",
 	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
 	} else {
-		fmt.Println(resp)
+		fmt.Println("resp: ", len(resp.Cover.Content))
 	}
+
 }

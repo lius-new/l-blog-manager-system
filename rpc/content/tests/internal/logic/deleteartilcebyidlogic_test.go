@@ -15,11 +15,17 @@ func TestDeleteArtilceById(t *testing.T) {
 
 	deleteArtilceByIdLogic := logic.NewDeleteArtilceByIdLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := deleteArtilceByIdLogic.DeleteArtilceById(&content.DeleteArticleRequest{})
+	ids := []string{"664d6d0ad14d2fff3dee633a", "664d658c971fe3f0e74f5d15", "664d65e0901054b80054b089"}
 
-	if err != nil {
-		fmt.Println("error: ", err)
+	for _, id := range ids {
+		resp, err := deleteArtilceByIdLogic.DeleteArtilceById(&content.DeleteArticleRequest{
+			Id: id,
+		})
+
+		if err != nil {
+			fmt.Println("error: ", err)
+		} else {
+			fmt.Println("resp: ", resp)
+		}
 	}
-
-	fmt.Println(resp)
 }

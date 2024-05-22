@@ -66,6 +66,8 @@ type (
 	SelectArticleByTagRequest          = content.SelectArticleByTagRequest
 	SelectArticleByTagResponse         = content.SelectArticleByTagResponse
 	SelectArticles                     = content.SelectArticles
+	SelectCoverByHashRequest           = content.SelectCoverByHashRequest
+	SelectCoverByHashResponse          = content.SelectCoverByHashResponse
 	SelectCoverRequest                 = content.SelectCoverRequest
 	SelectCoverResponse                = content.SelectCoverResponse
 	SelectTag                          = content.SelectTag
@@ -129,6 +131,7 @@ type (
 		// 删除cover
 		DeleteCover(ctx context.Context, in *DeleteCoverRequest, opts ...grpc.CallOption) (*DeleteCoverResponse, error)
 		// 查询cover
+		SelectCoverByHash(ctx context.Context, in *SelectCoverByHashRequest, opts ...grpc.CallOption) (*SelectCoverByHashResponse, error)
 		SelectCover(ctx context.Context, in *SelectCoverRequest, opts ...grpc.CallOption) (*SelectCoverResponse, error)
 	}
 
@@ -305,6 +308,11 @@ func (m *defaultContent) DeleteCover(ctx context.Context, in *DeleteCoverRequest
 }
 
 // 查询cover
+func (m *defaultContent) SelectCoverByHash(ctx context.Context, in *SelectCoverByHashRequest, opts ...grpc.CallOption) (*SelectCoverByHashResponse, error) {
+	client := content.NewContentClient(m.cli.Conn())
+	return client.SelectCoverByHash(ctx, in, opts...)
+}
+
 func (m *defaultContent) SelectCover(ctx context.Context, in *SelectCoverRequest, opts ...grpc.CallOption) (*SelectCoverResponse, error) {
 	client := content.NewContentClient(m.cli.Conn())
 	return client.SelectCover(ctx, in, opts...)

@@ -15,11 +15,15 @@ func TestSelectArtilceByTag(t *testing.T) {
 
 	selectArtilceByTagLogic := logic.NewSelectArtilceByTagLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := selectArtilceByTagLogic.SelectArtilceByTag(&content.SelectArticleByTagRequest{})
+	resp, err := selectArtilceByTagLogic.SelectArtilceByTag(&content.SelectArticleByTagRequest{
+		Tag:      "test",
+		PageNum:  1,
+		PageSize: 3,
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println("resp: ", resp)
 	}
-
-	fmt.Println(resp)
 }

@@ -15,7 +15,10 @@ func TestModifyArtilceDesc(t *testing.T) {
 
 	modifyArtilceDescLogic := logic.NewModifyArtilceDescLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := modifyArtilceDescLogic.ModifyArtilceDesc(&content.ModifyArticleDescRequest{})
+	resp, err := modifyArtilceDescLogic.ModifyArtilceDesc(&content.ModifyArticleDescRequest{
+		Id:   "664d6d1a04c15050fc092f72",
+		Desc: "Hello world",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)

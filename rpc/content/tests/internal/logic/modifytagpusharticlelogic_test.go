@@ -15,7 +15,10 @@ func TestModifyTagPushArticle(t *testing.T) {
 
 	modifyTagPushArticleLogic := logic.NewModifyTagPushArticleLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := modifyTagPushArticleLogic.ModifyTagPushArticle(&content.ModifyTagPushArticleRequest{})
+	resp, err := modifyTagPushArticleLogic.ModifyTagPushArticle(&content.ModifyTagPushArticleRequest{
+		Id:      "664d725218b7418753fe7db8",
+		Article: "664d725218b7418753fe7db8",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)

@@ -38,8 +38,8 @@ func (l *SelectTagByPageLogic) SelectTagByPage(
 
 	tags, total, err := l.svcCtx.ModelWithTag.FindByPage(
 		l.ctx,
-		in.PageSize,
 		in.PageNum,
+		in.PageSize,
 		in.HideShow,
 	)
 	if err != nil {

@@ -8,6 +8,7 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/monc"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -25,6 +26,7 @@ type (
 			pageNum, pageSize int64,
 			hideShow bool,
 		) ([]Tag, int64, error)
+		UpdateVisiable(ctx context.Context, data *Tag) (*mongo.UpdateResult, error)
 	}
 	customTagModel struct {
 		*defaultTagModel
@@ -54,9 +56,9 @@ func (m *customTagModel) InsertReturnId(ctx context.Context, data *Tag) (id stri
 
 // FindByName: 根据tag name来查询
 func (m *customTagModel) FindByName(ctx context.Context, name string) (*Tag, error) {
-	key := prefixTagCacheKey + name
 	var tag Tag
-	err := m.conn.FindOne(ctx, key, &tag, bson.M{"name": name})
+	err := m.conn.FindOneNoCache(ctx, &tag, bson.M{"name": name})
+
 	switch err {
 	case nil:
 		return &tag, nil
@@ -106,4 +108,19 @@ func (m *customTagModel) FindByPage(
 	default:
 		return nil, 0, err
 	}
+}
+
+func (m *customTagModel) UpdateVisiable(ctx context.Context, data *Tag) (*mongo.UpdateResult, error) {
+
+	data.UpdateAt = time.Now()
+	key := prefixTagCacheKey + data.ID.Hex()
+
+	res, err := m.conn.UpdateOne(
+		ctx,
+		key,
+		bson.M{"_id": data.ID},
+		bson.M{"$set": bson.M{"visiable": data.Visiable}},
+	)
+
+	return res, err
 }

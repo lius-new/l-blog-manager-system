@@ -15,7 +15,7 @@ func TestDeleteCover(t *testing.T) {
 
 	deleteCoverLogic := logic.NewDeleteCoverLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := deleteCoverLogic.DeleteCover(&content.DeleteCoverRequest{})
+	resp, err := deleteCoverLogic.DeleteCover(&content.DeleteCoverRequest{Id: "664d72e3a6baa1344d7bb196"})
 
 	if err != nil {
 		fmt.Println("error: ", err)

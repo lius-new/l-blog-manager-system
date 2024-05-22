@@ -15,11 +15,13 @@ func TestExistTag(t *testing.T) {
 
 	existTagLogic := logic.NewExistTagLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := existTagLogic.ExistTag(&content.ExistTagRequest{})
+	resp, err := existTagLogic.ExistTag(&content.ExistTagRequest{
+		Id: "664d6385c2dea61294bd7141",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println(resp)
 	}
-
-	fmt.Println(resp)
 }

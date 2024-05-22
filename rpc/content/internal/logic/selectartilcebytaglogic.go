@@ -55,16 +55,29 @@ func (l *SelectArtilceByTagLogic) SelectArtilceByTag(
 		return nil, err
 	}
 
-	respArticles := make([]*content.SelectArticles, len(articleIds))
-	for _, v := range findArticles {
-		// TODO: 修改返回的tags & 修改返回的COVERS
-		respArticles = append(respArticles, &content.SelectArticles{
-			Id:     v.ID.Hex(),
-			Title:  v.Title,
-			Desc:   v.Desc,
-			Tags:   v.Tags,
-			Covers: v.Covers,
-		})
+	forLen := len(findArticles)
+	// 封装查询结果为[]*content.SelectArticles类型
+	respArticles := make([]*content.SelectArticles, forLen)
+
+	for i := 0; i < forLen; i++ {
+		currentArticle := findArticles[i]
+
+		// tags属性中原本包含的是tagid, 修改article中的tagid为tagname, 即根据id查询tag再获取tagName
+		selectTagByIdLogic := NewSelectTagByIdLogic(l.ctx, l.svcCtx)
+		for i := 0; i < len(currentArticle.Tags); i++ {
+			tag, _ := selectTagByIdLogic.SelectTagById(&content.SelectTagByIdRequest{
+				Id: currentArticle.Tags[i],
+			})
+
+			currentArticle.Tags[i] = tag.Name
+		}
+
+		respArticles[i] = &content.SelectArticles{
+			Id:    currentArticle.ID.Hex(),
+			Title: currentArticle.Title,
+			Desc:  currentArticle.Desc,
+			Tags:  currentArticle.Tags,
+		}
 	}
 
 	return &content.SelectArticleByTagResponse{

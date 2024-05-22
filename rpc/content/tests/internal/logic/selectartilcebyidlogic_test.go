@@ -15,7 +15,9 @@ func TestSelectArtilceById(t *testing.T) {
 
 	selectArtilceByIdLogic := logic.NewSelectArtilceByIdLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := selectArtilceByIdLogic.SelectArtilceById(&content.SelectArticleByIdRequest{})
+	resp, err := selectArtilceByIdLogic.SelectArtilceById(&content.SelectArticleByIdRequest{
+		Id: "664d6d1a04c15050fc092f72",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)

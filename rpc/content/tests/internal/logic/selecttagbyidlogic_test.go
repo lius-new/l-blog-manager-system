@@ -15,7 +15,9 @@ func TestSelectTagById(t *testing.T) {
 
 	selectTagByIdLogic := logic.NewSelectTagByIdLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := selectTagByIdLogic.SelectTagById(&content.SelectTagByIdRequest{})
+	resp, err := selectTagByIdLogic.SelectTagById(&content.SelectTagByIdRequest{
+		Id: "664d6385c2dea61294bd7141",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)

@@ -15,11 +15,13 @@ func TestSearchArtilce(t *testing.T) {
 
 	searchArtilceLogic := logic.NewSearchArtilceLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := searchArtilceLogic.SearchArtilce(&content.SearchArtilceRequest{})
+	resp, err := searchArtilceLogic.SearchArtilce(&content.SearchArtilceRequest{
+		Search: "测试文章1",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
 	}
 
-	fmt.Println(resp)
+	fmt.Println("resp: ", resp)
 }

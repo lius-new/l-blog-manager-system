@@ -4,12 +4,10 @@ import (
 	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
-	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/article"
 )
 
 type ModifyArtilceVisiableByTagLogic struct {
@@ -33,26 +31,31 @@ func NewModifyArtilceVisiableByTagLogic(
 func (l *ModifyArtilceVisiableByTagLogic) ModifyArtilceVisiableByTag(
 	in *content.ModifyArticleVisiableByTagRequest,
 ) (*content.ModifyArticleVisiableByTagResponse, error) {
-	if len(in.Id) == 0 {
+
+	if len(in.TagId) == 0 {
 		return nil, rpc.ErrRequestParam
 	}
+
 	// 判断文章是否存在
-	if _, err := NewExistArtilceLogic(l.ctx, l.svcCtx).ExistArtilce(&content.ExistArtilceRequest{
-		Id: in.Id,
-	}); err != nil {
+	currentTag, err := l.svcCtx.ModelWithTag.FindOne(l.ctx, in.TagId)
+	if err == rpc.ErrNotFound || currentTag == nil {
+		return nil, rpc.ErrNotFound
+	} else if err != nil {
 		return nil, err
 	}
 
-	id, err := primitive.ObjectIDFromHex(in.GetId())
-	if err != nil {
-		return nil, rpc.ErrInvalidObjectId
+	// 遍历指定tag下所有的article
+	modifyArtilceVisiableLogic := NewModifyArtilceVisiableLogic(l.ctx, l.svcCtx)
+	for _, v := range currentTag.Articles {
+		_, err := modifyArtilceVisiableLogic.ModifyArtilceVisiable(&content.ModifyArticleVisiableRequest{
+			Id:       v,
+			Visiable: in.Visiable,
+		})
+		// TODO: 感觉忽略错误更好
+		if err != nil {
+			return nil, err
+		}
 	}
-	_, err = l.svcCtx.ModelWithArticle.Update(l.ctx, &model.Article{
-		ID:       id,
-		Visiable: in.Visiable,
-	})
-	if err != nil {
-		return nil, err
-	}
+
 	return &content.ModifyArticleVisiableByTagResponse{}, nil
 }

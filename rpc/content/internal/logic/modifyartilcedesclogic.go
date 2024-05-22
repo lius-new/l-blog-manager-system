@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
@@ -37,18 +36,23 @@ func (l *ModifyArtilceDescLogic) ModifyArtilceDesc(
 		return nil, rpc.ErrRequestParam
 	}
 	// 判断文章是否存在
-	if _, err := NewExistArtilceLogic(l.ctx, l.svcCtx).ExistArtilce(&content.ExistArtilceRequest{
-		Id: in.Id,
-	}); err != nil {
+	currentArticle, err := l.svcCtx.ModelWithArticle.FindOne(l.ctx, in.Id)
+	if err == rpc.ErrNotFound || currentArticle == nil {
+		return nil, rpc.ErrNotFound
+	} else if err != nil {
 		return nil, err
 	}
-	id, err := primitive.ObjectIDFromHex(in.GetId())
-	if err != nil {
-		return nil, rpc.ErrInvalidObjectId
-	}
+
+	// TODO: 搞不懂为什么结果体只设置指定属性那么其他属性就会设置为对应零值，日志也显示只修改了指定属性而没有修改其他属性呀
+	// 更新
 	_, err = l.svcCtx.ModelWithArticle.Update(l.ctx, &model.Article{
-		ID:   id,
-		Desc: in.Desc,
+		ID:       currentArticle.ID,
+		Title:    currentArticle.Title,
+		Desc:     in.Desc,
+		Content:  currentArticle.Content,
+		Tags:     currentArticle.Tags,
+		Covers:   currentArticle.Covers,
+		Visiable: currentArticle.Visiable,
 	})
 	if err != nil {
 		return nil, err

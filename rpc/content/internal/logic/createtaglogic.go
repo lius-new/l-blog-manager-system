@@ -43,7 +43,8 @@ func (l *CreateTagLogic) CreateTag(
 	}
 
 	id, err := l.svcCtx.ModelWithTag.InsertReturnId(l.ctx, &model.Tag{
-		Name: in.Name,
+		Name:     in.Name,
+		Visiable: true,
 	})
 	if err != nil {
 		return nil, err

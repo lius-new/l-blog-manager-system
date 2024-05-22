@@ -15,11 +15,15 @@ func TestModifyTagName(t *testing.T) {
 
 	modifyTagNameLogic := logic.NewModifyTagNameLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := modifyTagNameLogic.ModifyTagName(&content.ModifyTagNameRequest{})
+	resp, err := modifyTagNameLogic.ModifyTagName(&content.ModifyTagNameRequest{
+		Id:   "664d6385c2dea61294bd7141",
+		Name: "Test",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println(resp)
 	}
 
-	fmt.Println(resp)
 }

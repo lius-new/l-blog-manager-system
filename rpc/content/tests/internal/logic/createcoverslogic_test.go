@@ -15,11 +15,14 @@ func TestCreateCovers(t *testing.T) {
 
 	createCoversLogic := logic.NewCreateCoversLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := createCoversLogic.CreateCovers(&content.CreateCoversRequest{})
+	resp, err := createCoversLogic.CreateCovers(&content.CreateCoversRequest{
+		Content: []string{tests.TEMP_IMAGE_BASE64, tests.TEMP_IMAGE_BASE64 + "sdfhj"},
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println(resp.Ids)
 	}
 
-	fmt.Println(resp)
 }

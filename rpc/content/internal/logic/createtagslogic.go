@@ -29,17 +29,19 @@ func (l *CreateTagsLogic) CreateTags(
 ) (*content.CreateTagsResponse, error) {
 	createTagLogic := NewCreateTagLogic(l.ctx, l.svcCtx)
 
-	ids := make([]string, len(in.Names))
-	for _, v := range in.Names {
+	forLen := len(in.Names)
+	ids := make([]string, forLen)
+
+	for i := 0; i < forLen; i++ {
 		createResp, err := createTagLogic.CreateTag(&content.CreateTagRequest{
-			Name: v,
+			Name: in.Names[i],
 		})
 		// TODO: 参考创建的逻辑好像一般不会出错, 如果出错后面再说吧^-^
 		if err != nil {
 			return nil, err
 		}
 
-		ids = append(ids, createResp.GetId())
+		ids[i] = createResp.GetId()
 	}
 
 	return &content.CreateTagsResponse{

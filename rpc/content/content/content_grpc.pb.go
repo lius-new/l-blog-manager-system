@@ -85,6 +85,7 @@ type ContentClient interface {
 	// 删除cover
 	DeleteCover(ctx context.Context, in *DeleteCoverRequest, opts ...grpc.CallOption) (*DeleteCoverResponse, error)
 	// 查询cover
+	SelectCoverByHash(ctx context.Context, in *SelectCoverByHashRequest, opts ...grpc.CallOption) (*SelectCoverByHashResponse, error)
 	SelectCover(ctx context.Context, in *SelectCoverRequest, opts ...grpc.CallOption) (*SelectCoverResponse, error)
 }
 
@@ -339,6 +340,15 @@ func (c *contentClient) DeleteCover(ctx context.Context, in *DeleteCoverRequest,
 	return out, nil
 }
 
+func (c *contentClient) SelectCoverByHash(ctx context.Context, in *SelectCoverByHashRequest, opts ...grpc.CallOption) (*SelectCoverByHashResponse, error) {
+	out := new(SelectCoverByHashResponse)
+	err := c.cc.Invoke(ctx, "/content.Content/SelectCoverByHash", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *contentClient) SelectCover(ctx context.Context, in *SelectCoverRequest, opts ...grpc.CallOption) (*SelectCoverResponse, error) {
 	out := new(SelectCoverResponse)
 	err := c.cc.Invoke(ctx, "/content.Content/SelectCover", in, out, opts...)
@@ -415,6 +425,7 @@ type ContentServer interface {
 	// 删除cover
 	DeleteCover(context.Context, *DeleteCoverRequest) (*DeleteCoverResponse, error)
 	// 查询cover
+	SelectCoverByHash(context.Context, *SelectCoverByHashRequest) (*SelectCoverByHashResponse, error)
 	SelectCover(context.Context, *SelectCoverRequest) (*SelectCoverResponse, error)
 	mustEmbedUnimplementedContentServer()
 }
@@ -503,6 +514,9 @@ func (UnimplementedContentServer) CreateCovers(context.Context, *CreateCoversReq
 }
 func (UnimplementedContentServer) DeleteCover(context.Context, *DeleteCoverRequest) (*DeleteCoverResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCover not implemented")
+}
+func (UnimplementedContentServer) SelectCoverByHash(context.Context, *SelectCoverByHashRequest) (*SelectCoverByHashResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SelectCoverByHash not implemented")
 }
 func (UnimplementedContentServer) SelectCover(context.Context, *SelectCoverRequest) (*SelectCoverResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SelectCover not implemented")
@@ -1006,6 +1020,24 @@ func _Content_DeleteCover_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Content_SelectCoverByHash_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SelectCoverByHashRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServer).SelectCoverByHash(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/content.Content/SelectCoverByHash",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServer).SelectCoverByHash(ctx, req.(*SelectCoverByHashRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Content_SelectCover_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SelectCoverRequest)
 	if err := dec(in); err != nil {
@@ -1138,6 +1170,10 @@ var Content_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteCover",
 			Handler:    _Content_DeleteCover_Handler,
+		},
+		{
+			MethodName: "SelectCoverByHash",
+			Handler:    _Content_SelectCoverByHash_Handler,
 		},
 		{
 			MethodName: "SelectCover",

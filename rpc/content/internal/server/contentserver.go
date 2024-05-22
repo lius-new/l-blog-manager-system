@@ -184,6 +184,11 @@ func (s *ContentServer) DeleteCover(ctx context.Context, in *content.DeleteCover
 }
 
 // 查询cover
+func (s *ContentServer) SelectCoverByHash(ctx context.Context, in *content.SelectCoverByHashRequest) (*content.SelectCoverByHashResponse, error) {
+	l := logic.NewSelectCoverByHashLogic(ctx, s.svcCtx)
+	return l.SelectCoverByHash(in)
+}
+
 func (s *ContentServer) SelectCover(ctx context.Context, in *content.SelectCoverRequest) (*content.SelectCoverResponse, error) {
 	l := logic.NewSelectCoverLogic(ctx, s.svcCtx)
 	return l.SelectCover(in)

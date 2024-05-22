@@ -15,11 +15,14 @@ func TestModifyArtilceVisiableByTag(t *testing.T) {
 
 	modifyArtilceVisiableByTagLogic := logic.NewModifyArtilceVisiableByTagLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := modifyArtilceVisiableByTagLogic.ModifyArtilceVisiableByTag(&content.ModifyArticleVisiableByTagRequest{})
+	resp, err := modifyArtilceVisiableByTagLogic.ModifyArtilceVisiableByTag(&content.ModifyArticleVisiableByTagRequest{
+		TagId:    "664d6385c2dea61294bd7141",
+		Visiable: false,
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println("resp: ", resp)
 	}
-
-	fmt.Println(resp)
 }

@@ -33,7 +33,6 @@ func (l *ModifyTagVisiableLogic) ModifyTagVisiable(
 	in *content.ModifyTagVisiableRequest,
 ) (*content.ModifyTagVisiableResponse, error) {
 	// 判断指定tag是否存在
-
 	currentTag, err := l.svcCtx.ModelWithTag.FindOne(l.ctx, in.Id)
 	if err == rpc.ErrNotFound || currentTag == nil {
 		return nil, rpc.ErrNotFound
@@ -41,7 +40,9 @@ func (l *ModifyTagVisiableLogic) ModifyTagVisiable(
 		return nil, err
 	}
 
-	_, err = l.svcCtx.ModelWithTag.Update(l.ctx, &model.Tag{
+	// TODO: 搞不懂为什么结果体只设置指定属性那么其他属性就会设置为对应零值，日志也显示只修改了指定属性而没有修改其他属性呀
+	// 更新
+	_, err = l.svcCtx.ModelWithTag.UpdateVisiable(l.ctx, &model.Tag{
 		ID:       currentTag.ID,
 		Visiable: in.Visiable,
 	})

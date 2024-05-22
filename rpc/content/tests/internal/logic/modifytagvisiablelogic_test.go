@@ -15,11 +15,15 @@ func TestModifyTagVisiable(t *testing.T) {
 
 	modifyTagVisiableLogic := logic.NewModifyTagVisiableLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := modifyTagVisiableLogic.ModifyTagVisiable(&content.ModifyTagVisiableRequest{})
+	resp, err := modifyTagVisiableLogic.ModifyTagVisiable(&content.ModifyTagVisiableRequest{
+		Id:       "664dad91b821007e111068d2",
+		Visiable: false,
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println(resp)
 	}
 
-	fmt.Println(resp)
 }

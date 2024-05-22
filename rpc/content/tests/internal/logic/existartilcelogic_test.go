@@ -15,11 +15,13 @@ func TestExistArtilce(t *testing.T) {
 
 	existArtilceLogic := logic.NewExistArtilceLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := existArtilceLogic.ExistArtilce(&content.ExistArtilceRequest{})
+	resp, err := existArtilceLogic.ExistArtilce(&content.ExistArtilceRequest{
+		Id: "664d6d1a04c15050fc092f72",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println(resp)
 	}
-
-	fmt.Println(resp)
 }

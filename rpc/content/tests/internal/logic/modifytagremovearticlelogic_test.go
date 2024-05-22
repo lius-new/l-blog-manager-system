@@ -15,7 +15,10 @@ func TestModifyTagRemoveArticle(t *testing.T) {
 
 	modifyTagRemoveArticleLogic := logic.NewModifyTagRemoveArticleLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := modifyTagRemoveArticleLogic.ModifyTagRemoveArticle(&content.ModifyTagRemoveArticleRequest{})
+	resp, err := modifyTagRemoveArticleLogic.ModifyTagRemoveArticle(&content.ModifyTagRemoveArticleRequest{
+		Id:      "664d725218b7418753fe7db8",
+		Article: "664d725218b7418753fe7db8",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)

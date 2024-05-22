@@ -60,6 +60,9 @@ func (l *CreateArtilceLogic) CreateArtilce(
 	).CreateCovers(&content.CreateCoversRequest{
 		Content: in.Covers,
 	})
+	if err != nil {
+		return nil, err
+	}
 
 	// 插入标签，判断标签是否存在如果存在就不添加新的到数据库
 	articleId, err := l.svcCtx.ModelWithArticle.InsertReturnId(l.ctx, &model.Article{

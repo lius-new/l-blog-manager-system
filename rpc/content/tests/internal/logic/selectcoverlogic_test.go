@@ -15,11 +15,14 @@ func TestSelectCover(t *testing.T) {
 
 	selectCoverLogic := logic.NewSelectCoverLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := selectCoverLogic.SelectCover(&content.SelectCoverRequest{})
+	resp, err := selectCoverLogic.SelectCover(&content.SelectCoverRequest{
+		Id: "664d8302e5da88b8d215f8e9",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println("resp: ", len(resp.Cover.Content))
 	}
 
-	fmt.Println(resp)
 }

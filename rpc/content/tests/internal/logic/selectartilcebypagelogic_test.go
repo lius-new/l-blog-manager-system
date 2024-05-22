@@ -15,11 +15,15 @@ func TestSelectArtilceByPage(t *testing.T) {
 
 	selectArtilceByPageLogic := logic.NewSelectArtilceByPageLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := selectArtilceByPageLogic.SelectArtilceByPage(&content.SelectArticleByPageRequest{})
+	resp, err := selectArtilceByPageLogic.SelectArtilceByPage(&content.SelectArticleByPageRequest{
+		PageNum:  1,
+		PageSize: 3,
+		HideShow: true,
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println(resp)
 	}
-
-	fmt.Println(resp)
 }

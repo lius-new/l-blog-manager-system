@@ -38,26 +38,37 @@ func (l *SelectArtilceByPageLogic) SelectArtilceByPage(
 	// 根据分页来查询
 	articles, total, err := l.svcCtx.ModelWithArticle.FindByPage(
 		l.ctx,
-		in.PageSize,
 		in.PageNum,
+		in.PageSize,
 		in.HideShow,
 	)
 	if err != nil {
 		return nil, err
 	}
 
+	forLen := len(articles)
 	// 封装查询结果为[]*content.SelectArticles类型
-	respArticles := make([]*content.SelectArticles, len(articles))
+	respArticles := make([]*content.SelectArticles, forLen)
 
-	for _, v := range articles {
-		// TODO: 修改返回的tags & 修改返回的COVERS
-		respArticles = append(respArticles, &content.SelectArticles{
-			Id:     v.ID.Hex(),
-			Title:  v.Title,
-			Desc:   v.Desc,
-			Tags:   v.Tags,
-			Covers: v.Covers,
-		})
+	for i := 0; i < forLen; i++ {
+		currentArticle := articles[i]
+
+		// tags属性中原本包含的是tagid, 修改article中的tagid为tagname, 即根据id查询tag再获取tagName
+		selectTagByIdLogic := NewSelectTagByIdLogic(l.ctx, l.svcCtx)
+		for i := 0; i < len(currentArticle.Tags); i++ {
+			tag, _ := selectTagByIdLogic.SelectTagById(&content.SelectTagByIdRequest{
+				Id: currentArticle.Tags[i],
+			})
+
+			currentArticle.Tags[i] = tag.Name
+		}
+
+		respArticles[i] = &content.SelectArticles{
+			Id:    currentArticle.ID.Hex(),
+			Title: currentArticle.Title,
+			Desc:  currentArticle.Desc,
+			Tags:  currentArticle.Tags,
+		}
 	}
 
 	return &content.SelectArticleByPageResponse{

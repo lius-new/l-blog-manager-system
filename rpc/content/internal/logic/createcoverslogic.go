@@ -29,18 +29,19 @@ func (l *CreateCoversLogic) CreateCovers(
 ) (*content.CreateCoversResponse, error) {
 	createCoverLogic := NewCreateCoverLogic(l.ctx, l.svcCtx)
 
-	ids := make([]string, len(in.Content))
+	forLen := len(in.Content)
+	ids := make([]string, forLen)
 
-	for _, v := range in.Content {
+	for i := 0; i < forLen; i++ {
 		createResp, err := createCoverLogic.CreateCover(&content.CreateCoverRequest{
-			Content: v,
+			Content: in.Content[i],
 		})
 		// TODO: 参考创建的逻辑好像一般不会出错, 如果出错后面再说吧^-^
 		if err != nil {
 			return nil, err
 		}
 
-		ids = append(ids, createResp.GetId())
+		ids[i] = createResp.GetId()
 	}
 
 	return &content.CreateCoversResponse{

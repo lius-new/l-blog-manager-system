@@ -15,11 +15,13 @@ func TestCreateTag(t *testing.T) {
 
 	createTagLogic := logic.NewCreateTagLogic(ctx, tests.SVC_CONTEXT)
 
-	resp, err := createTagLogic.CreateTag(&content.CreateTagRequest{})
+	resp, err := createTagLogic.CreateTag(&content.CreateTagRequest{
+		Name: "hello",
+	})
 
 	if err != nil {
 		fmt.Println("error: ", err)
+	} else {
+		fmt.Println(resp)
 	}
-
-	fmt.Println(resp)
 }
