@@ -2,34 +2,24 @@ package logic
 
 import (
 	"context"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"fmt"
+	"testing"
 
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type DeleteCoverLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestDeleteCover(t *testing.T) {
+	ctx := context.Background()
 
-func NewDeleteCoverLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteCoverLogic {
-	return &DeleteCoverLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	deleteCoverLogic := logic.NewDeleteCoverLogic(ctx, tests.SVC_CONTEXT)
 
-// 删除cover
-func (l *DeleteCoverLogic) DeleteCover(
-	in *content.DeleteCoverRequest,
-) (*content.DeleteCoverResponse, error) {
-	count, err := l.svcCtx.ModelWithCover.Delete(l.ctx, in.Id)
+	resp, err := deleteCoverLogic.DeleteCover(&content.DeleteCoverRequest{})
+
 	if err != nil {
-		return nil, err
+		fmt.Println("error: ", err)
 	}
-	return &content.DeleteCoverResponse{Count: count}, nil
+
+	fmt.Println(resp)
 }

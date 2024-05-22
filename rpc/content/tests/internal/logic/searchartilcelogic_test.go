@@ -1,47 +1,25 @@
-package logic
+package logic_test
 
 import (
 	"context"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"fmt"
+	"testing"
 
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type SearchArtilceLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestSearchArtilce(t *testing.T) {
+	ctx := context.Background()
 
-func NewSearchArtilceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchArtilceLogic {
-	return &SearchArtilceLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	searchArtilceLogic := logic.NewSearchArtilceLogic(ctx, tests.SVC_CONTEXT)
 
-// * article search *
-func (l *SearchArtilceLogic) SearchArtilce(
-	in *content.SearchArtilceRequest,
-) (*content.SearchArtilceResponse, error) {
-	articles, err := l.svcCtx.ModelWithArticle.Search(l.ctx, in.Search)
+	resp, err := searchArtilceLogic.SearchArtilce(&content.SearchArtilceRequest{})
+
 	if err != nil {
-		return nil, err
+		fmt.Println("error: ", err)
 	}
 
-	resp := make([]*content.SearchArtilce, 0)
-	for _, v := range articles {
-		resp = append(resp, &content.SearchArtilce{
-			Id:    v.ID.Hex(),
-			Title: v.Title,
-			Desc:  v.Desc,
-		})
-	}
-
-	return &content.SearchArtilceResponse{
-		Articles: resp,
-	}, nil
+	fmt.Println(resp)
 }

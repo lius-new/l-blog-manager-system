@@ -1,40 +1,25 @@
-package logic
+package logic_test
 
 import (
 	"context"
+	"fmt"
+	"testing"
 
-	"github.com/zeromicro/go-zero/core/logx"
-
-	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type ExistTagLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestExistTag(t *testing.T) {
+	ctx := context.Background()
 
-func NewExistTagLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ExistTagLogic {
-	return &ExistTagLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	existTagLogic := logic.NewExistTagLogic(ctx, tests.SVC_CONTEXT)
 
-// * tag exist *
-func (l *ExistTagLogic) ExistTag(in *content.ExistTagRequest) (*content.ExistTagResponse, error) {
-	findTag, err := l.svcCtx.ModelWithTag.FindOne(l.ctx, in.Id)
+	resp, err := existTagLogic.ExistTag(&content.ExistTagRequest{})
 
-	if err == rpc.ErrNotFound || findTag == nil {
-		return nil, rpc.ErrNotFound
-	} else if err != nil {
-		return nil, err
+	if err != nil {
+		fmt.Println("error: ", err)
 	}
 
-	return &content.ExistTagResponse{
-		Exist: true,
-	}, nil
+	fmt.Println(resp)
 }

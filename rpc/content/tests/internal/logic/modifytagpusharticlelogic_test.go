@@ -1,55 +1,25 @@
-package logic
+package logic_test
 
 import (
 	"context"
+	"fmt"
+	"testing"
 
-	"github.com/zeromicro/go-zero/core/logx"
-
-	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
-	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/tag"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type ModifyTagPushArticleLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestModifyTagPushArticle(t *testing.T) {
+	ctx := context.Background()
 
-func NewModifyTagPushArticleLogic(
-	ctx context.Context,
-	svcCtx *svc.ServiceContext,
-) *ModifyTagPushArticleLogic {
-	return &ModifyTagPushArticleLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	modifyTagPushArticleLogic := logic.NewModifyTagPushArticleLogic(ctx, tests.SVC_CONTEXT)
 
-// 添加article到tag
-func (l *ModifyTagPushArticleLogic) ModifyTagPushArticle(
-	in *content.ModifyTagPushArticleRequest,
-) (*content.ModifyTagPushArticleResponse, error) {
-	// 找到指定tag
-	currentTag, err := l.svcCtx.ModelWithTag.FindOne(l.ctx, in.Id)
+	resp, err := modifyTagPushArticleLogic.ModifyTagPushArticle(&content.ModifyTagPushArticleRequest{})
 
-	// 判断是否存在错误或者tag是否存在
-	if err == rpc.ErrNotFound || currentTag == nil {
-		return nil, rpc.ErrNotFound
-	} else if err != nil {
-		return nil, err
-	}
-
-	// 将articleId添加到currentTag.Articles中并更新数据
-	articles := append(currentTag.Articles, in.Article)
-	_, err = l.svcCtx.ModelWithTag.Update(l.ctx, &model.Tag{
-		ID:       currentTag.ID,
-		Articles: articles,
-	})
 	if err != nil {
-		return nil, err
+		fmt.Println("error: ", err)
 	}
-	return &content.ModifyTagPushArticleResponse{}, nil
+
+	fmt.Println(resp)
 }

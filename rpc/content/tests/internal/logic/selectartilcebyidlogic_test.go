@@ -2,50 +2,24 @@ package logic
 
 import (
 	"context"
+	"fmt"
+	"testing"
 
-	"github.com/zeromicro/go-zero/core/logx"
-
-	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type SelectArtilceByIdLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestSelectArtilceById(t *testing.T) {
+	ctx := context.Background()
 
-func NewSelectArtilceByIdLogic(
-	ctx context.Context,
-	svcCtx *svc.ServiceContext,
-) *SelectArtilceByIdLogic {
-	return &SelectArtilceByIdLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
+	selectArtilceByIdLogic := logic.NewSelectArtilceByIdLogic(ctx, tests.SVC_CONTEXT)
+
+	resp, err := selectArtilceByIdLogic.SelectArtilceById(&content.SelectArticleByIdRequest{})
+
+	if err != nil {
+		fmt.Println("error: ", err)
 	}
-}
 
-// * article select *
-func (l *SelectArtilceByIdLogic) SelectArtilceById(
-	in *content.SelectArticleByIdRequest,
-) (*content.SelectArticle, error) {
-	// 查询指定id的文章
-	findArticle, err := l.svcCtx.ModelWithArticle.FindOne(l.ctx, in.Id)
-	if err == rpc.ErrNotFound || findArticle == nil {
-		return nil, rpc.ErrNotFound
-	} else if err != nil {
-		return nil, err
-	}
-  // TODO: 修改返回的tags & 修改返回的COVERS
-
-	return &content.SelectArticle{
-		Id:      findArticle.ID.Hex(),
-		Title:   findArticle.Title,
-		Desc:    findArticle.Desc,
-		Content: findArticle.Content,
-		Tags:    findArticle.Tags,
-		Covers:  findArticle.Covers,
-	}, nil
+	fmt.Println(resp)
 }

@@ -1,39 +1,25 @@
-package logic
+package logic_test
 
 import (
 	"context"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"fmt"
+	"testing"
 
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type DeleteArtilceByIdLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestDeleteArtilceById(t *testing.T) {
+	ctx := context.Background()
 
-func NewDeleteArtilceByIdLogic(
-	ctx context.Context,
-	svcCtx *svc.ServiceContext,
-) *DeleteArtilceByIdLogic {
-	return &DeleteArtilceByIdLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	deleteArtilceByIdLogic := logic.NewDeleteArtilceByIdLogic(ctx, tests.SVC_CONTEXT)
 
-// 根据删除文章
-func (l *DeleteArtilceByIdLogic) DeleteArtilceById(
-	in *content.DeleteArticleRequest,
-) (*content.DeleteArticleResponse, error) {
-	count, err := l.svcCtx.ModelWithArticle.Delete(l.ctx, in.Id)
+	resp, err := deleteArtilceByIdLogic.DeleteArtilceById(&content.DeleteArticleRequest{})
+
 	if err != nil {
-		return nil, err
+		fmt.Println("error: ", err)
 	}
 
-	return &content.DeleteArticleResponse{Count: count}, nil
+	fmt.Println(resp)
 }

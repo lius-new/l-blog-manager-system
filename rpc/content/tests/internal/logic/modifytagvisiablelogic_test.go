@@ -1,52 +1,25 @@
-package logic
+package logic_test
 
 import (
 	"context"
+	"fmt"
+	"testing"
 
-	"github.com/zeromicro/go-zero/core/logx"
-
-	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
-	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/tag"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type ModifyTagVisiableLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestModifyTagVisiable(t *testing.T) {
+	ctx := context.Background()
 
-func NewModifyTagVisiableLogic(
-	ctx context.Context,
-	svcCtx *svc.ServiceContext,
-) *ModifyTagVisiableLogic {
-	return &ModifyTagVisiableLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	modifyTagVisiableLogic := logic.NewModifyTagVisiableLogic(ctx, tests.SVC_CONTEXT)
 
-// 修改tag可见性(visiable)
-func (l *ModifyTagVisiableLogic) ModifyTagVisiable(
-	in *content.ModifyTagVisiableRequest,
-) (*content.ModifyTagVisiableResponse, error) {
-	// 判断指定tag是否存在
+	resp, err := modifyTagVisiableLogic.ModifyTagVisiable(&content.ModifyTagVisiableRequest{})
 
-	currentTag, err := l.svcCtx.ModelWithTag.FindOne(l.ctx, in.Id)
-	if err == rpc.ErrNotFound || currentTag == nil {
-		return nil, rpc.ErrNotFound
-	} else if err != nil {
-		return nil, err
-	}
-
-	_, err = l.svcCtx.ModelWithTag.Update(l.ctx, &model.Tag{
-		ID:       currentTag.ID,
-		Visiable: in.Visiable,
-	})
 	if err != nil {
-		return nil, err
+		fmt.Println("error: ", err)
 	}
-	return &content.ModifyTagVisiableResponse{}, nil
+
+	fmt.Println(resp)
 }

@@ -1,55 +1,25 @@
-package logic
+package logic_test
 
 import (
 	"context"
+	"fmt"
+	"testing"
 
-	"github.com/zeromicro/go-zero/core/logx"
-
-	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
-	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/tag"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type CreateTagLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestCreateTag(t *testing.T) {
+	ctx := context.Background()
 
-func NewCreateTagLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateTagLogic {
-	return &CreateTagLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	createTagLogic := logic.NewCreateTagLogic(ctx, tests.SVC_CONTEXT)
 
-// ** tag **
-func (l *CreateTagLogic) CreateTag(
-	in *content.CreateTagRequest,
-) (*content.CreateTagResponse, error) {
-	t, err := l.svcCtx.ModelWithTag.FindByName(l.ctx, in.Name)
+	resp, err := createTagLogic.CreateTag(&content.CreateTagRequest{})
 
-	// 如果t不等nil就意味tag已经存在
-	if t != nil {
-		return &content.CreateTagResponse{
-			Id: t.ID.Hex(),
-		}, nil
-	}
-	// 如果存在错误且错误不是NotFound那么就抛出
-	if err != nil && err != rpc.ErrNotFound {
-		return nil, err
-	}
-
-	id, err := l.svcCtx.ModelWithTag.InsertReturnId(l.ctx, &model.Tag{
-		Name: in.Name,
-	})
 	if err != nil {
-		return nil, err
+		fmt.Println("error: ", err)
 	}
 
-	return &content.CreateTagResponse{
-		Id: id,
-	}, nil
+	fmt.Println(resp)
 }

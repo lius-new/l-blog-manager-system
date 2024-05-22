@@ -2,34 +2,24 @@ package logic
 
 import (
 	"context"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"fmt"
+	"testing"
 
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type DeleteTagLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestDeleteTag(t *testing.T) {
+	ctx := context.Background()
 
-func NewDeleteTagLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteTagLogic {
-	return &DeleteTagLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	deleteTagLogic := logic.NewDeleteTagLogic(ctx, tests.SVC_CONTEXT)
 
-// 删除tag
-func (l *DeleteTagLogic) DeleteTag(
-	in *content.DeleteTagRequest,
-) (*content.DeleteTagResponse, error) {
-	count, err := l.svcCtx.ModelWithTag.Delete(l.ctx, in.Id)
+	resp, err := deleteTagLogic.DeleteTag(&content.DeleteTagRequest{})
+
 	if err != nil {
-		return nil, err
+		fmt.Println("error: ", err)
 	}
-	return &content.DeleteTagResponse{Count: count}, nil
+
+	fmt.Println(resp)
 }

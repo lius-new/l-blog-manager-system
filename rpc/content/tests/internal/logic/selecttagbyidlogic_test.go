@@ -1,47 +1,25 @@
-package logic
+package logic_test
 
 import (
 	"context"
+	"fmt"
+	"testing"
 
-	"github.com/zeromicro/go-zero/core/logx"
-
-	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type SelectTagByIdLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestSelectTagById(t *testing.T) {
+	ctx := context.Background()
 
-func NewSelectTagByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SelectTagByIdLogic {
-	return &SelectTagByIdLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	selectTagByIdLogic := logic.NewSelectTagByIdLogic(ctx, tests.SVC_CONTEXT)
 
-// 根据id获取tag
-func (l *SelectTagByIdLogic) SelectTagById(
-	in *content.SelectTagByIdRequest,
-) (*content.SelectTagByIdResponse, error) {
-	// 找到指定tag
-	currentTag, err := l.svcCtx.ModelWithTag.FindOne(l.ctx, in.Id)
+	resp, err := selectTagByIdLogic.SelectTagById(&content.SelectTagByIdRequest{})
 
-	// 判断是否存在错误或者tag是否存在
-	if err == rpc.ErrNotFound || currentTag == nil {
-		return nil, rpc.ErrNotFound
-	} else if err != nil {
-		return nil, err
+	if err != nil {
+		fmt.Println("error: ", err)
 	}
 
-	return &content.SelectTagByIdResponse{
-		Id:       currentTag.ID.Hex(),
-		Name:     currentTag.Name,
-		Articles: currentTag.Articles,
-		Visiable: currentTag.Visiable,
-	}, nil
+	fmt.Println(resp)
 }

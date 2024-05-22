@@ -1,58 +1,25 @@
-package logic
+package logic_test
 
 import (
 	"context"
+	"fmt"
+	"testing"
 
-	"github.com/zeromicro/go-zero/core/logx"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-
-	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
-	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
-	model "github.com/lius-new/blog-backend/rpc/content/model/mongo/article"
+	"github.com/lius-new/blog-backend/rpc/content/internal/logic"
+	"github.com/lius-new/blog-backend/rpc/content/tests"
 )
 
-type ModifyArtilceCoverLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-	logx.Logger
-}
+func TestModifyArtilceCover(t *testing.T) {
+	ctx := context.Background()
 
-func NewModifyArtilceCoverLogic(
-	ctx context.Context,
-	svcCtx *svc.ServiceContext,
-) *ModifyArtilceCoverLogic {
-	return &ModifyArtilceCoverLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
-	}
-}
+	modifyArtilceCoverLogic := logic.NewModifyArtilceCoverLogic(ctx, tests.SVC_CONTEXT)
 
-// 修改文章Cover
-func (l *ModifyArtilceCoverLogic) ModifyArtilceCover(
-	in *content.ModifyArticleCoverRequest,
-) (*content.ModifyArticleCoverResponse, error) {
-	if len(in.Id) == 0 || len(in.Covers) == 0 {
-		return nil, rpc.ErrRequestParam
-	}
-	// 判断文章是否存在
-	if _, err := NewExistArtilceLogic(l.ctx, l.svcCtx).ExistArtilce(&content.ExistArtilceRequest{
-		Id: in.Id,
-	}); err != nil {
-		return nil, err
-	}
-	id, err := primitive.ObjectIDFromHex(in.GetId())
+	resp, err := modifyArtilceCoverLogic.ModifyArtilceCover(&content.ModifyArticleCoverRequest{})
+
 	if err != nil {
-		return nil, rpc.ErrInvalidObjectId
-	}
-	_, err = l.svcCtx.ModelWithArticle.Update(l.ctx, &model.Article{
-		ID:     id,
-		Covers: in.Covers,
-	})
-	if err != nil {
-		return nil, err
+		fmt.Println("error: ", err)
 	}
 
-	return &content.ModifyArticleCoverResponse{}, nil
+	fmt.Println(resp)
 }
