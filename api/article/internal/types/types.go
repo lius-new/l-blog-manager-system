@@ -16,7 +16,7 @@ type Data struct {
 	Description string   `json:"descritipn"` // 文章描述
 	Tags        []string `json:"tags"`       // 文章tag
 	Covers      []string `json:"covers"`     // 文章Cover图片
-	Status      bool     `json:"status"`     // 文章状态
+	Visiable    bool     `json:"visiable"`   // 文章状态
 	CreateAt    int64    `json:"createAt"`   // 文章创建时间
 	UpdateAt    int64    `json:"updateAt"`   // 文章更新时间
 	DeleteAt    int64    `json:"deleteAt"`   // 删除更新时间
@@ -28,11 +28,10 @@ type CreateArticleRequest struct {
 	Description string   `json:"descritipn"` // 文章描述
 	Tags        []string `json:"tags"`       // 文章tag
 	Covers      []string `json:"covers"`     // 文章Cover图片
-	Status      bool     `json:"status"`     // 文章状态
+	Visiable    bool     `json:"visiable"`   // 文章状态
 }
 
 type CreateArticleResponse struct {
-	Data []Data `json:"data"`
 }
 
 type DeleteArticleRequest struct {
@@ -48,7 +47,7 @@ type GetArticleByIdWithBackendRequest struct {
 }
 
 type GetArticleByIdWithBackendResponse struct {
-	Data
+	Data Data `json:"data"`
 }
 
 type GetArticleByIdWithViewRequest struct {
@@ -61,12 +60,13 @@ type GetArticleByIdWithViewResponse struct {
 	Description string   `json:"description"` // 文章描述
 	Content     string   `json:"content"`     // 文章内容
 	Tags        []string `json:"tags"`        // 文章tag
+	Covers      []string `json:"covers"`      // 文章tag
 	UpdateAt    int64    `json:"updateAt"`    // 文章更新时间
 }
 
-type GetArticleByPageRequest struct {
-	PageNum  int `json:"page_num"`  // 多少页
-	PageSize int `json:"page_size"` // 每页多少条数据
+type GetArticleByPageWithViewRequest struct {
+	PageNum  int64 `json:"page_num"`  // 多少页
+	PageSize int64 `json:"page_size"` // 每页多少条数据
 }
 
 type GetArticleByPageWithViewResponse struct {
@@ -74,27 +74,31 @@ type GetArticleByPageWithViewResponse struct {
 	Total int64     `json:"total"`
 }
 
-type GetArticleByTagIdWithBackendRequest struct {
-	TagId []string `json:"tags"` // 标签id
+type GetArticleByTagNameWithBackendRequest struct {
+	TagName  string `json:"tag_name"`  // 标签name
+	PageNum  int64  `json:"page_num"`  // 多少页
+	PageSize int64  `json:"page_size"` // 每页多少条数据
 }
 
-type GetArticleByTagIdWithBackendResponse struct {
+type GetArticleByTagNameWithBackendResponse struct {
 	Data  []Data `json:"data"` // 当前页的文章数据
 	Total int64  `json:"total"`
 }
 
-type GetArticleByTagIdWithViewRequest struct {
-	TagId []string `json:"tags"` // 标签id
+type GetArticleByTagNameWithViewRequest struct {
+	TagName  string `json:"tag_name"`  // 标签name
+	PageNum  int64  `json:"page_num"`  // 多少页
+	PageSize int64  `json:"page_size"` // 每页多少条数据
 }
 
-type GetArticleByTagIdWithViewResponse struct {
+type GetArticleByTagNameWithViewResponse struct {
 	Data  []Article `json:"data"` // 当前页的文章数据
 	Total int64     `json:"total"`
 }
 
 type GetArticlesByPageWithBackendRequest struct {
-	PageNum  int `json:"page_num"`  // 多少页
-	PageSize int `json:"page_size"` // 每页多少条数据
+	PageNum  int64 `json:"page_num"`  // 多少页
+	PageSize int64 `json:"page_size"` // 每页多少条数据
 }
 
 type GetArticlesByPageWithBackendResponse struct {
@@ -108,18 +112,14 @@ type ModifyArticleContentRequest struct {
 }
 
 type ModifyArticleContentResponse struct {
-	Id      string `json:"id"`      // 文章id
-	Content string `json:"content"` // 文章id
 }
 
 type ModifyArticleCoverRequest struct {
-	Id    string   `json:"id"`    // 文章id
-	Cover []string `json:"cover"` // 文章id
+	Id     string   `json:"id"`     // 文章id
+	Covers []string `json:"covers"` // 文章id
 }
 
 type ModifyArticleCoverResponse struct {
-	Id    string   `json:"id"`    // 文章id
-	Cover []string `json:"cover"` // 文章id
 }
 
 type ModifyArticleDescRequest struct {
@@ -128,8 +128,6 @@ type ModifyArticleDescRequest struct {
 }
 
 type ModifyArticleDescResponse struct {
-	Id   string `json:"id"`   // 文章id
-	Desc string `json:"desc"` // 文章id
 }
 
 type ModifyArticleTagRequest struct {
@@ -138,8 +136,6 @@ type ModifyArticleTagRequest struct {
 }
 
 type ModifyArticleTagResponse struct {
-	Id   string   `json:"id"`   // 文章id
-	Tags []string `json:"tags"` // 文章id
 }
 
 type ModifyArticleTitleRequest struct {
@@ -148,8 +144,6 @@ type ModifyArticleTitleRequest struct {
 }
 
 type ModifyArticleTitleResponse struct {
-	Id    string `json:"id"`    // 文章id
-	Title string `json:"title"` // 文章id
 }
 
 type ModifyArticleVisiableRequest struct {
@@ -158,8 +152,6 @@ type ModifyArticleVisiableRequest struct {
 }
 
 type ModifyArticleVisiableResponse struct {
-	Id       string `json:"id"`       // 文章id
-	Visiable bool   `json:"visiable"` // 文章id
 }
 
 type SearchArticleRequest struct {

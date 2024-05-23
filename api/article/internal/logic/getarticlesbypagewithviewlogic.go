@@ -13,21 +13,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetArticlesByPageWithBackendLogic struct {
+type GetArticlesByPageWithViewLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewGetArticlesByPageWithBackendLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetArticlesByPageWithBackendLogic {
-	return &GetArticlesByPageWithBackendLogic{
+func NewGetArticlesByPageWithViewLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetArticlesByPageWithViewLogic {
+	return &GetArticlesByPageWithViewLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *GetArticlesByPageWithBackendLogic) GetArticlesByPageWithBackend(req *types.GetArticlesByPageWithBackendRequest) (resp *types.GetArticlesByPageWithBackendResponse, err error) {
+func (l *GetArticlesByPageWithViewLogic) GetArticlesByPageWithView(req *types.GetArticleByPageWithViewRequest) (resp *types.GetArticleByPageWithViewResponse, err error) {
 	defer func() {
 		if catchErr := recover(); catchErr != nil {
 			var catchErr = catchErr.(error)
@@ -44,7 +44,7 @@ func (l *GetArticlesByPageWithBackendLogic) GetArticlesByPageWithBackend(req *ty
 	articlesResp, err := l.svcCtx.Content.SelectArtilceByPage(l.ctx, &content.SelectArticleByPageRequest{
 		PageNum:  req.PageNum,
 		PageSize: req.PageSize,
-		HideShow: true,
+		HideShow: false,
 	})
 	if err != nil {
 		panic(err)
@@ -52,22 +52,21 @@ func (l *GetArticlesByPageWithBackendLogic) GetArticlesByPageWithBackend(req *ty
 
 	// 封装数据
 	forLen := len(articlesResp.Articles)
-	data := make([]types.Data, forLen)
+	data := make([]types.Article, forLen)
 	for i := 0; i < forLen; i++ {
 		current := articlesResp.Articles[i]
-		data[i] = types.Data{
+		data[i] = types.Article{
 			Id:          current.Id,
 			Title:       current.Title,
 			Description: current.Desc,
 			Tags:        current.Tags,
-			Covers:      current.Covers,
-			Visiable:    current.Visiable,
 			UpdateAt:    current.Time,
 		}
 	}
 
-	return &types.GetArticlesByPageWithBackendResponse{
+	return &types.GetArticleByPageWithViewResponse{
 		Data:  data,
 		Total: articlesResp.Total,
 	}, nil
+
 }

@@ -46,8 +46,13 @@ func (l *ModifyArtilceTitleLogic) ModifyArtilceTitle(
 	// TODO: 搞不懂为什么结果体只设置指定属性那么其他属性就会设置为对应零值，日志也显示只修改了指定属性而没有修改其他属性呀
 	// 更新
 	_, err = l.svcCtx.ModelWithArticle.Update(l.ctx, &model.Article{
-		ID:    currentArticle.ID,
-		Title: in.Title,
+		ID:       currentArticle.ID,
+		Title:    in.Title,
+		Desc:     currentArticle.Desc,
+		Content:  currentArticle.Content,
+		Tags:     currentArticle.Tags,
+		Covers:   currentArticle.Covers,
+		Visiable: currentArticle.Visiable,
 	})
 	if err != nil {
 		return nil, err

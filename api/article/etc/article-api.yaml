@@ -7,3 +7,9 @@ Authorization:
     Hosts:
       - 127.0.0.1:2379
     Key: authorization.rpc
+
+Content:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: content.rpc

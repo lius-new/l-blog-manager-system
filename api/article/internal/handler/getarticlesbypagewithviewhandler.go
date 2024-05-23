@@ -10,16 +10,16 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func GetArticleByTagIdWithViewHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func GetArticlesByPageWithViewHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.GetArticleByTagIdWithViewRequest
+		var req types.GetArticleByPageWithViewRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.Error(w, err)
 			return
 		}
 
-		l := logic.NewGetArticleByTagIdWithViewLogic(r.Context(), svcCtx)
-		resp, err := l.GetArticleByTagIdWithView(&req)
+		l := logic.NewGetArticlesByPageWithViewLogic(r.Context(), svcCtx)
+		resp, err := l.GetArticlesByPageWithView(&req)
 		api.Response(w, resp, err)
 
 	}

@@ -15,7 +15,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/",
-				Handler: GetArticlesByPageHandler(serverCtx),
+				Handler: GetArticlesByPageWithViewHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
@@ -30,7 +30,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/tags",
-				Handler: GetArticleByTagIdWithViewHandler(serverCtx),
+				Handler: GetArticleByTagNameWithViewHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/articles"),
@@ -93,7 +93,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					Method:  http.MethodPost,
 					Path:    "/backend/tag",
-					Handler: GetArticleByTagIdWithBackendHandler(serverCtx),
+					Handler: GetArticleByTagNameWithBackendHandler(serverCtx),
 				},
 			}...,
 		),

@@ -64,10 +64,12 @@ func (l *SelectArtilceByPageLogic) SelectArtilceByPage(
 		}
 
 		respArticles[i] = &content.SelectArticles{
-			Id:    currentArticle.ID.Hex(),
-			Title: currentArticle.Title,
-			Desc:  currentArticle.Desc,
-			Tags:  currentArticle.Tags,
+			Id:       currentArticle.ID.Hex(),
+			Title:    currentArticle.Title,
+			Desc:     currentArticle.Desc,
+			Tags:     currentArticle.Tags,
+			Visiable: currentArticle.Visiable,
+			Time:     currentArticle.UpdateAt.Unix(),
 		}
 	}
 

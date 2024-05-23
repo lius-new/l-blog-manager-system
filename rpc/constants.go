@@ -15,6 +15,7 @@ var (
 	ErrInvalidDeleted  = errors.New("invalid delete")
 	ErrInvalidPassword = errors.New("invalid password")
 	ErrInvalidToken    = errors.New("invalid token")
+	ErrInvalidNotFound = errors.New("not found current resource")
 )
 
 // 请求相关的错误常量

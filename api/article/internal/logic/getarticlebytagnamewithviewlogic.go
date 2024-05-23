@@ -13,26 +13,27 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type SearchArticleLogic struct {
+type GetArticleByTagNameWithViewLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewSearchArticleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchArticleLogic {
-	return &SearchArticleLogic{
+func NewGetArticleByTagNameWithViewLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetArticleByTagNameWithViewLogic {
+	return &GetArticleByTagNameWithViewLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *SearchArticleLogic) SearchArticle(req *types.SearchArticleRequest) (resp *types.SearchArticleResponse, err error) {
-
+func (l *GetArticleByTagNameWithViewLogic) GetArticleByTagNameWithView(req *types.GetArticleByTagNameWithViewRequest) (resp *types.GetArticleByTagNameWithViewResponse, err error) {
 	defer func() {
 		if catchErr := recover(); catchErr != nil {
 			var catchErr = catchErr.(error)
 			switch {
+			case strings.Contains(catchErr.Error(), api.ErrRequestParam.Error()):
+				err = errors.New(api.ErrRequestParam.Error())
 			case strings.Contains(catchErr.Error(), api.ErrNotFound.Error()):
 				err = errors.New(api.ErrInvalidNotFound.Error())
 			}
@@ -40,23 +41,32 @@ func (l *SearchArticleLogic) SearchArticle(req *types.SearchArticleRequest) (res
 			err = errors.New(strings.Replace(err.Error(), "rpc error: code = Unknown desc = ", "", 1))
 		}
 	}()
-	searchResp, err := l.svcCtx.Content.SearchArtilce(l.ctx, &content.SearchArtilceRequest{
-		Search: req.Search,
+	articleResp, err := l.svcCtx.Content.SelectArtilceByTag(l.ctx, &content.SelectArticleByTagRequest{
+		Tag:      req.TagName,
+		PageNum:  req.PageNum,
+		PageSize: req.PageSize,
 	})
+	if err != nil {
+		panic(err)
+	}
 
-	forLen := len(searchResp.Articles)
+	// 封装数据
+	forLen := len(articleResp.Articles)
 	data := make([]types.Article, forLen)
 	for i := 0; i < forLen; i++ {
-		current := searchResp.Articles[i]
+		current := articleResp.Articles[i]
 		data[i] = types.Article{
 			Id:          current.Id,
 			Title:       current.Title,
 			Description: current.Desc,
+			Tags:        current.Tags,
+			UpdateAt:    current.Time,
 		}
 	}
 
-	return &types.SearchArticleResponse{
+	return &types.GetArticleByTagNameWithViewResponse{
 		Data:  data,
-		Total: int64(forLen),
+		Total: articleResp.Total,
 	}, nil
+
 }

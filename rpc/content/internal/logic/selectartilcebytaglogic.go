@@ -57,7 +57,7 @@ func (l *SelectArtilceByTagLogic) SelectArtilceByTag(
 
 	forLen := len(findArticles)
 	// 封装查询结果为[]*content.SelectArticles类型
-	respArticles := make([]*content.SelectArticles, forLen)
+	respArticles := make([]*content.SelectArticle, forLen)
 
 	for i := 0; i < forLen; i++ {
 		currentArticle := findArticles[i]
@@ -72,11 +72,13 @@ func (l *SelectArtilceByTagLogic) SelectArtilceByTag(
 			currentArticle.Tags[i] = tag.Name
 		}
 
-		respArticles[i] = &content.SelectArticles{
-			Id:    currentArticle.ID.Hex(),
-			Title: currentArticle.Title,
-			Desc:  currentArticle.Desc,
-			Tags:  currentArticle.Tags,
+		respArticles[i] = &content.SelectArticle{
+			Id:     currentArticle.ID.Hex(),
+			Title:  currentArticle.Title,
+			Desc:   currentArticle.Desc,
+			Tags:   currentArticle.Tags,
+			Covers: currentArticle.Covers,
+			Time:   currentArticle.UpdateAt.Unix(),
 		}
 	}
 

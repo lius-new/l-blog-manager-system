@@ -5,6 +5,7 @@ import (
 
 	"github.com/zeromicro/go-zero/core/logx"
 
+	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/lius-new/blog-backend/rpc/content/internal/svc"
 )
@@ -27,6 +28,11 @@ func NewSearchArtilceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Sea
 func (l *SearchArtilceLogic) SearchArtilce(
 	in *content.SearchArtilceRequest,
 ) (*content.SearchArtilceResponse, error) {
+
+	if len(in.Search) == 0 {
+		return nil, rpc.ErrRequestParam
+	}
+
 	articles, err := l.svcCtx.ModelWithArticle.Search(l.ctx, in.Search)
 	if err != nil {
 		return nil, err

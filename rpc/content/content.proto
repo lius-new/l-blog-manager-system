@@ -42,6 +42,8 @@ message SelectArticles {
   string desc = 3;
   repeated string tags = 5;
   repeated string covers = 6;
+  bool visiable = 7;
+  int64 time = 8;
 }
 // 分页获取文章响应
 message SelectArticleByPageResponse {
@@ -55,7 +57,7 @@ message SelectArticleByTagRequest {
   int64 pageSize = 3;
 }
 message SelectArticleByTagResponse {
-  repeated SelectArticles articles = 1;
+  repeated SelectArticle articles = 1;
   int64 total = 2;
 }
 //* article saerch *
