@@ -38,14 +38,14 @@ func (s *AnalyzerServer) MergeRecord(ctx context.Context, in *analyzer.MergeReco
 	return l.MergeRecord(in)
 }
 
-func (s *AnalyzerServer) DeleteRecord(ctx context.Context, in *analyzer.DeleteRecordRequest) (*analyzer.DeleteRecordResponse, error) {
-	l := logic.NewDeleteRecordLogic(ctx, s.svcCtx)
-	return l.DeleteRecord(in)
+func (s *AnalyzerServer) DeleteRecordById(ctx context.Context, in *analyzer.DeleteRecordByIdRequest) (*analyzer.DeleteRecordByIdResponse, error) {
+	l := logic.NewDeleteRecordByIdLogic(ctx, s.svcCtx)
+	return l.DeleteRecordById(in)
 }
 
-func (s *AnalyzerServer) SelectRecord(ctx context.Context, in *analyzer.SelectRecordRequest) (*analyzer.SelectRecordResponse, error) {
-	l := logic.NewSelectRecordLogic(ctx, s.svcCtx)
-	return l.SelectRecord(in)
+func (s *AnalyzerServer) SelectRecordById(ctx context.Context, in *analyzer.SelectRecordByIdRequest) (*analyzer.SelectRecordByIdResponse, error) {
+	l := logic.NewSelectRecordByIdLogic(ctx, s.svcCtx)
+	return l.SelectRecordById(in)
 }
 
 func (s *AnalyzerServer) SelectRecordByPage(ctx context.Context, in *analyzer.SelectRecordByPageRequest) (*analyzer.SelectRecordByPageResponse, error) {
@@ -59,48 +59,32 @@ func (s *AnalyzerServer) CreateBlocked(ctx context.Context, in *analyzer.CreateB
 	return l.CreateBlocked(in)
 }
 
-func (s *AnalyzerServer) ModifyBlocked(ctx context.Context, in *analyzer.ModifyBlockedRequest) (*analyzer.ModifyBlockedResponse, error) {
-	l := logic.NewModifyBlockedLogic(ctx, s.svcCtx)
-	return l.ModifyBlocked(in)
+func (s *AnalyzerServer) ModifyBlockedWithBlockEnd(ctx context.Context, in *analyzer.ModifyBlockedWithBlockEndRequest) (*analyzer.ModifyBlockedWithBlockEndResponse, error) {
+	l := logic.NewModifyBlockedWithBlockEndLogic(ctx, s.svcCtx)
+	return l.ModifyBlockedWithBlockEnd(in)
 }
 
-func (s *AnalyzerServer) DeleteBlocked(ctx context.Context, in *analyzer.DeleteBlockedRequest) (*analyzer.DeleteBlockedResponse, error) {
-	l := logic.NewDeleteBlockedLogic(ctx, s.svcCtx)
-	return l.DeleteBlocked(in)
+func (s *AnalyzerServer) ModifyBlockedWithBlockCountAdd(ctx context.Context, in *analyzer.ModifyBlockedWithBlockCountAddRequest) (*analyzer.ModifyBlockedWithBlockCountAddResponse, error) {
+	l := logic.NewModifyBlockedWithBlockCountAddLogic(ctx, s.svcCtx)
+	return l.ModifyBlockedWithBlockCountAdd(in)
 }
 
-func (s *AnalyzerServer) SelectBlocked(ctx context.Context, in *analyzer.SelectBlockedRequest) (*analyzer.SelectBlockedResponse, error) {
-	l := logic.NewSelectBlockedLogic(ctx, s.svcCtx)
-	return l.SelectBlocked(in)
+func (s *AnalyzerServer) DeleteBlockedWithBlockIP(ctx context.Context, in *analyzer.DeleteBlockedWithBlockIPRequest) (*analyzer.DeleteBlockedWithBlockIPResponse, error) {
+	l := logic.NewDeleteBlockedWithBlockIPLogic(ctx, s.svcCtx)
+	return l.DeleteBlockedWithBlockIP(in)
+}
+
+func (s *AnalyzerServer) SelectBlockedByBlockIP(ctx context.Context, in *analyzer.SelectBlockedByBlockIPRequest) (*analyzer.SelectBlockedByBlockIPResponse, error) {
+	l := logic.NewSelectBlockedByBlockIPLogic(ctx, s.svcCtx)
+	return l.SelectBlockedByBlockIP(in)
+}
+
+func (s *AnalyzerServer) SelectBlockedById(ctx context.Context, in *analyzer.SelectBlockedByIdRequest) (*analyzer.SelectBlockedByIdResponse, error) {
+	l := logic.NewSelectBlockedByIdLogic(ctx, s.svcCtx)
+	return l.SelectBlockedById(in)
 }
 
 func (s *AnalyzerServer) SelectBlockedByPage(ctx context.Context, in *analyzer.SelectBlockedByPageRequest) (*analyzer.SelectBlockedByPageResponse, error) {
 	l := logic.NewSelectBlockedByPageLogic(ctx, s.svcCtx)
 	return l.SelectBlockedByPage(in)
-}
-
-// ================ whitelist ================
-func (s *AnalyzerServer) CreateWhiteList(ctx context.Context, in *analyzer.CreateWhiteListRequest) (*analyzer.CreateWhiteListResponse, error) {
-	l := logic.NewCreateWhiteListLogic(ctx, s.svcCtx)
-	return l.CreateWhiteList(in)
-}
-
-func (s *AnalyzerServer) ModifyWhiteList(ctx context.Context, in *analyzer.ModifyWhiteListRequest) (*analyzer.ModifyWhiteListResponse, error) {
-	l := logic.NewModifyWhiteListLogic(ctx, s.svcCtx)
-	return l.ModifyWhiteList(in)
-}
-
-func (s *AnalyzerServer) DeleteWhiteList(ctx context.Context, in *analyzer.DeleteWhiteListRequest) (*analyzer.DeleteWhiteListResponse, error) {
-	l := logic.NewDeleteWhiteListLogic(ctx, s.svcCtx)
-	return l.DeleteWhiteList(in)
-}
-
-func (s *AnalyzerServer) SelectWhiteList(ctx context.Context, in *analyzer.SelectWhiteListRequest) (*analyzer.SelectWhiteListResponse, error) {
-	l := logic.NewSelectWhiteListLogic(ctx, s.svcCtx)
-	return l.SelectWhiteList(in)
-}
-
-func (s *AnalyzerServer) SelectWhiteListByPage(ctx context.Context, in *analyzer.SelectWhiteListByPageRequest) (*analyzer.SelectWhiteListByPageResponse, error) {
-	l := logic.NewSelectWhiteListByPageLogic(ctx, s.svcCtx)
-	return l.SelectWhiteListByPage(in)
 }

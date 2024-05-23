@@ -6,7 +6,11 @@ option go_package = "./analyzer";
 // ================ Record  ================
 // == 创建record ==
 // 创建record的请求参数
-message CreateRecordRequest {}
+message CreateRecordRequest {
+  string requestIp = 1;
+  string requestMethod = 2;
+  string requestPath = 3;
+}
 // 创建record的响应结果
 message CreateRecordResponse {}
 
@@ -24,83 +28,118 @@ message MergeRecordResponse {}
 
 // == 删除record ==
 // 删除record的请求参数
-message DeleteRecordRequest {}
+message DeleteRecordByIdRequest { string id = 1; }
 // 删除record的响应结果
-message DeleteRecordResponse {}
+message DeleteRecordByIdResponse {}
 
 // == 查询record ==
 // 查询record的请求参数
-message SelectRecordRequest {}
+message SelectRecordByIdRequest { string id = 1; }
 // 查询record的响应结果
-message SelectRecordResponse {}
+message SelectRecordByIdResponse {
+  string id = 1;
+  string requestIP = 2;
+  string requestMethod = 3;
+  string requestPath = 4;
+  int64 requestCount = 5;
+  int64 createAt = 6;
+  int64 updateAt = 7;
+}
 
 // == 查询record(分页) ==
+message SelectRecords {
+  string id = 1;
+  string requestIP = 2;
+  string requestMethod = 3;
+  string requestPath = 4;
+  int64 requestCount = 5;
+  int64 createAt = 6;
+  int64 updateAt = 7;
+}
 // 查询record的分页请求参数
-message SelectRecordByPageRequest {}
+message SelectRecordByPageRequest {
+  int64 pageNum = 1;
+  int64 pageSize = 2;
+}
 // 查询record的分页响应结果
-message SelectRecordByPageResponse {}
+message SelectRecordByPageResponse {
+  repeated SelectRecords records = 1;
+  int64 total = 2;
+}
 
 // ================ Blocked  ================
 // == 创建blocked ==
 // 创建blocked 的请求参数
-message CreateBlockedRequest {}
+message CreateBlockedRequest { string blockIp = 1; }
 // 创建blocked 的响应结果
 message CreateBlockedResponse {}
 
 // == 更新blocked ==
+// 更新blocked 的请求参数(禁止结束时间)
+message ModifyBlockedWithBlockEndRequest {
+  string blockIp = 1;
+  int64 blockEnd = 2;
+}
+// 更新blocked 的响应结果(禁止结束时间)
+message ModifyBlockedWithBlockEndResponse {}
+
+// == 更新blocked count ==
 // 更新blocked 的请求参数
-message ModifyBlockedRequest {}
+message ModifyBlockedWithBlockCountAddRequest { string blockIp = 1; }
 // 更新blocked 的响应结果
-message ModifyBlockedResponse {}
+message ModifyBlockedWithBlockCountAddResponse {}
 
 // == 删除blocked ==
 // 删除blocked 的请求参数
-message DeleteBlockedRequest {}
+message DeleteBlockedWithBlockIPRequest { string blockIp = 1; }
 // 删除blocked 的响应结果
-message DeleteBlockedResponse {}
+message DeleteBlockedWithBlockIPResponse {}
 
 // == 查询blocked ==
 // 查询blocked 的请求参数
-message SelectBlockedRequest {}
+message SelectBlockedByBlockIPRequest { string blockIp = 1; }
 // 查询blocked 的响应结果
-message SelectBlockedResponse {}
+message SelectBlockedByBlockIPResponse {
+  string id = 1;
+  string blockIP = 2;
+  int64 blockEnd = 3;
+  int64 blockCount = 4;
+  int64 createAt = 5;
+  int64 updateAt = 6;
+}
+
+// == 查询blocked(根据id查询) ==
+// 查询blocked 的请求参数
+message SelectBlockedByIdRequest { string id = 1; }
+// 查询blocked 的响应结果
+message SelectBlockedByIdResponse {
+  string id = 1;
+  string blockIP = 2;
+  int64 blockEnd = 3;
+  int64 blockCount = 4;
+  int64 createAt = 5;
+  int64 updateAt = 6;
+}
 
 // == 查询blocked(分页) ==
+message SelectBlockeds {
+  string id = 1;
+  string blockIP = 2;
+  int64 blockEnd = 3;
+  int64 blockCount = 4;
+  int64 createAt = 5;
+  int64 updateAt = 6;
+}
 // 查询blocked 的请求参数
-message SelectBlockedByPageRequest {}
+message SelectBlockedByPageRequest {
+  int64 pageNum = 1;
+  int64 pageSize = 2;
+}
 // 查询blocked 的响应结果
-message SelectBlockedByPageResponse {}
-
-// ================ WhiteList  ================
-// == 创建Whitelist ==
-// 创建whitelist 的请求参数
-message CreateWhiteListRequest {}
-// 创建whitelist 的响应结果
-message CreateWhiteListResponse {}
-
-// == 更新Whitelist ==
-// 更新whitelist 的请求参数
-message ModifyWhiteListRequest {}
-// 更新whitelist 的响应结果
-message ModifyWhiteListResponse {}
-
-// == 删除Whitelist ==
-// 删除whitelist 的请求参数
-message DeleteWhiteListRequest {}
-// 删除whitelist 的响应结果
-message DeleteWhiteListResponse {}
-
-// == 查询Whitelist ==
-// 查询whitelist 的请求参数
-message SelectWhiteListRequest {}
-// 查询whitelist 的响应结果
-message SelectWhiteListResponse {}
-
-// == 查询Whitelist(分页) ==
-// 查询whitelist 的请求参数
-message SelectWhiteListByPageRequest {}
-// 查询whitelist 的响应结果
-message SelectWhiteListByPageResponse {}
+message SelectBlockedByPageResponse {
+  repeated SelectBlockeds blockeds = 1;
+  int64 total = 2;
+}
 
 service Analyzer {
   // ================ Record  ================
@@ -113,11 +152,11 @@ service Analyzer {
   rpc MergeRecord(MergeRecordRequest)
       returns (MergeRecordResponse); // 合并record
 
-  rpc DeleteRecord(DeleteRecordRequest)
-      returns (DeleteRecordResponse); // 删除record
+  rpc DeleteRecordById(DeleteRecordByIdRequest)
+      returns (DeleteRecordByIdResponse); // 删除record
 
-  rpc SelectRecord(SelectRecordRequest)
-      returns (SelectRecordResponse); // 查询record
+  rpc SelectRecordById(SelectRecordByIdRequest)
+      returns (SelectRecordByIdResponse); // 查询record
 
   rpc SelectRecordByPage(SelectRecordByPageRequest)
       returns (SelectRecordByPageResponse); // 根据分页查询record
@@ -126,31 +165,22 @@ service Analyzer {
   rpc CreateBlocked(CreateBlockedRequest)
       returns (CreateBlockedResponse); // 创建blocked(黑名单)
 
-  rpc ModifyBlocked(ModifyBlockedRequest)
-      returns (ModifyBlockedResponse); // 更新blocked
+  rpc ModifyBlockedWithBlockEnd(ModifyBlockedWithBlockEndRequest)
+      returns (ModifyBlockedWithBlockEndResponse); // 更新blocked
 
-  rpc DeleteBlocked(DeleteBlockedRequest)
-      returns (DeleteBlockedResponse); // 删除blocked
+  rpc ModifyBlockedWithBlockCountAdd(ModifyBlockedWithBlockCountAddRequest)
+      returns (
+          ModifyBlockedWithBlockCountAddResponse); // 更新blocked的count数量
 
-  rpc SelectBlocked(SelectBlockedRequest)
-      returns (SelectBlockedResponse); // 查询blocked
+  rpc DeleteBlockedWithBlockIP(DeleteBlockedWithBlockIPRequest)
+      returns (DeleteBlockedWithBlockIPResponse); // 删除blocked
+
+  rpc SelectBlockedByBlockIP(SelectBlockedByBlockIPRequest)
+      returns (SelectBlockedByBlockIPResponse); // 查询blocked
+
+  rpc SelectBlockedById(SelectBlockedByIdRequest)
+      returns (SelectBlockedByIdResponse); // 查询blocked
 
   rpc SelectBlockedByPage(SelectBlockedByPageRequest)
       returns (SelectBlockedByPageResponse); // 根据分页查询blocked
-
-  // ================ whitelist ================
-  rpc CreateWhiteList(CreateWhiteListRequest)
-      returns (CreateWhiteListResponse); // 创建WhiteList
-
-  rpc ModifyWhiteList(ModifyWhiteListRequest)
-      returns (ModifyWhiteListResponse); // 更新WhiteList
-
-  rpc DeleteWhiteList(DeleteWhiteListRequest)
-      returns (DeleteWhiteListResponse); // 删除WhiteList
-
-  rpc SelectWhiteList(SelectWhiteListRequest)
-      returns (SelectWhiteListResponse); // 查询WhiteList
-
-  rpc SelectWhiteListByPage(SelectWhiteListByPageRequest)
-      returns (SelectWhiteListByPageResponse); // 根据分页查询WhiteList
 }

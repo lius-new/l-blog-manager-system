@@ -24,7 +24,7 @@ func NewMergeRecordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Merge
 }
 
 func (l *MergeRecordLogic) MergeRecord(in *analyzer.MergeRecordRequest) (*analyzer.MergeRecordResponse, error) {
-	// todo: add your logic here and delete this line
+	// TODO: 考虑这个接口是否应该实现
 
 	return &analyzer.MergeRecordResponse{}, nil
 }

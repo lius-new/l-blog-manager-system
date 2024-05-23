@@ -13,59 +13,51 @@ import (
 )
 
 type (
-	CreateBlockedRequest          = analyzer.CreateBlockedRequest
-	CreateBlockedResponse         = analyzer.CreateBlockedResponse
-	CreateRecordRequest           = analyzer.CreateRecordRequest
-	CreateRecordResponse          = analyzer.CreateRecordResponse
-	CreateWhiteListRequest        = analyzer.CreateWhiteListRequest
-	CreateWhiteListResponse       = analyzer.CreateWhiteListResponse
-	DeleteBlockedRequest          = analyzer.DeleteBlockedRequest
-	DeleteBlockedResponse         = analyzer.DeleteBlockedResponse
-	DeleteRecordRequest           = analyzer.DeleteRecordRequest
-	DeleteRecordResponse          = analyzer.DeleteRecordResponse
-	DeleteWhiteListRequest        = analyzer.DeleteWhiteListRequest
-	DeleteWhiteListResponse       = analyzer.DeleteWhiteListResponse
-	MergeRecordRequest            = analyzer.MergeRecordRequest
-	MergeRecordResponse           = analyzer.MergeRecordResponse
-	ModifyBlockedRequest          = analyzer.ModifyBlockedRequest
-	ModifyBlockedResponse         = analyzer.ModifyBlockedResponse
-	ModifyRecordRequest           = analyzer.ModifyRecordRequest
-	ModifyRecordResponse          = analyzer.ModifyRecordResponse
-	ModifyWhiteListRequest        = analyzer.ModifyWhiteListRequest
-	ModifyWhiteListResponse       = analyzer.ModifyWhiteListResponse
-	SelectBlockedByPageRequest    = analyzer.SelectBlockedByPageRequest
-	SelectBlockedByPageResponse   = analyzer.SelectBlockedByPageResponse
-	SelectBlockedRequest          = analyzer.SelectBlockedRequest
-	SelectBlockedResponse         = analyzer.SelectBlockedResponse
-	SelectRecordByPageRequest     = analyzer.SelectRecordByPageRequest
-	SelectRecordByPageResponse    = analyzer.SelectRecordByPageResponse
-	SelectRecordRequest           = analyzer.SelectRecordRequest
-	SelectRecordResponse          = analyzer.SelectRecordResponse
-	SelectWhiteListByPageRequest  = analyzer.SelectWhiteListByPageRequest
-	SelectWhiteListByPageResponse = analyzer.SelectWhiteListByPageResponse
-	SelectWhiteListRequest        = analyzer.SelectWhiteListRequest
-	SelectWhiteListResponse       = analyzer.SelectWhiteListResponse
+	CreateBlockedRequest                   = analyzer.CreateBlockedRequest
+	CreateBlockedResponse                  = analyzer.CreateBlockedResponse
+	CreateRecordRequest                    = analyzer.CreateRecordRequest
+	CreateRecordResponse                   = analyzer.CreateRecordResponse
+	DeleteBlockedWithBlockIPRequest        = analyzer.DeleteBlockedWithBlockIPRequest
+	DeleteBlockedWithBlockIPResponse       = analyzer.DeleteBlockedWithBlockIPResponse
+	DeleteRecordByIdRequest                = analyzer.DeleteRecordByIdRequest
+	DeleteRecordByIdResponse               = analyzer.DeleteRecordByIdResponse
+	MergeRecordRequest                     = analyzer.MergeRecordRequest
+	MergeRecordResponse                    = analyzer.MergeRecordResponse
+	ModifyBlockedWithBlockCountAddRequest  = analyzer.ModifyBlockedWithBlockCountAddRequest
+	ModifyBlockedWithBlockCountAddResponse = analyzer.ModifyBlockedWithBlockCountAddResponse
+	ModifyBlockedWithBlockEndRequest       = analyzer.ModifyBlockedWithBlockEndRequest
+	ModifyBlockedWithBlockEndResponse      = analyzer.ModifyBlockedWithBlockEndResponse
+	ModifyRecordRequest                    = analyzer.ModifyRecordRequest
+	ModifyRecordResponse                   = analyzer.ModifyRecordResponse
+	SelectBlockedByBlockIPRequest          = analyzer.SelectBlockedByBlockIPRequest
+	SelectBlockedByBlockIPResponse         = analyzer.SelectBlockedByBlockIPResponse
+	SelectBlockedByIdRequest               = analyzer.SelectBlockedByIdRequest
+	SelectBlockedByIdResponse              = analyzer.SelectBlockedByIdResponse
+	SelectBlockedByPageRequest             = analyzer.SelectBlockedByPageRequest
+	SelectBlockedByPageResponse            = analyzer.SelectBlockedByPageResponse
+	SelectBlockeds                         = analyzer.SelectBlockeds
+	SelectRecordByIdRequest                = analyzer.SelectRecordByIdRequest
+	SelectRecordByIdResponse               = analyzer.SelectRecordByIdResponse
+	SelectRecordByPageRequest              = analyzer.SelectRecordByPageRequest
+	SelectRecordByPageResponse             = analyzer.SelectRecordByPageResponse
+	SelectRecords                          = analyzer.SelectRecords
 
 	Analyzer interface {
 		// ================ Record  ================
 		CreateRecord(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*CreateRecordResponse, error)
 		ModifyRecord(ctx context.Context, in *ModifyRecordRequest, opts ...grpc.CallOption) (*ModifyRecordResponse, error)
 		MergeRecord(ctx context.Context, in *MergeRecordRequest, opts ...grpc.CallOption) (*MergeRecordResponse, error)
-		DeleteRecord(ctx context.Context, in *DeleteRecordRequest, opts ...grpc.CallOption) (*DeleteRecordResponse, error)
-		SelectRecord(ctx context.Context, in *SelectRecordRequest, opts ...grpc.CallOption) (*SelectRecordResponse, error)
+		DeleteRecordById(ctx context.Context, in *DeleteRecordByIdRequest, opts ...grpc.CallOption) (*DeleteRecordByIdResponse, error)
+		SelectRecordById(ctx context.Context, in *SelectRecordByIdRequest, opts ...grpc.CallOption) (*SelectRecordByIdResponse, error)
 		SelectRecordByPage(ctx context.Context, in *SelectRecordByPageRequest, opts ...grpc.CallOption) (*SelectRecordByPageResponse, error)
 		// ================ Blocked  ================
 		CreateBlocked(ctx context.Context, in *CreateBlockedRequest, opts ...grpc.CallOption) (*CreateBlockedResponse, error)
-		ModifyBlocked(ctx context.Context, in *ModifyBlockedRequest, opts ...grpc.CallOption) (*ModifyBlockedResponse, error)
-		DeleteBlocked(ctx context.Context, in *DeleteBlockedRequest, opts ...grpc.CallOption) (*DeleteBlockedResponse, error)
-		SelectBlocked(ctx context.Context, in *SelectBlockedRequest, opts ...grpc.CallOption) (*SelectBlockedResponse, error)
+		ModifyBlockedWithBlockEnd(ctx context.Context, in *ModifyBlockedWithBlockEndRequest, opts ...grpc.CallOption) (*ModifyBlockedWithBlockEndResponse, error)
+		ModifyBlockedWithBlockCountAdd(ctx context.Context, in *ModifyBlockedWithBlockCountAddRequest, opts ...grpc.CallOption) (*ModifyBlockedWithBlockCountAddResponse, error)
+		DeleteBlockedWithBlockIP(ctx context.Context, in *DeleteBlockedWithBlockIPRequest, opts ...grpc.CallOption) (*DeleteBlockedWithBlockIPResponse, error)
+		SelectBlockedByBlockIP(ctx context.Context, in *SelectBlockedByBlockIPRequest, opts ...grpc.CallOption) (*SelectBlockedByBlockIPResponse, error)
+		SelectBlockedById(ctx context.Context, in *SelectBlockedByIdRequest, opts ...grpc.CallOption) (*SelectBlockedByIdResponse, error)
 		SelectBlockedByPage(ctx context.Context, in *SelectBlockedByPageRequest, opts ...grpc.CallOption) (*SelectBlockedByPageResponse, error)
-		// ================ whitelist ================
-		CreateWhiteList(ctx context.Context, in *CreateWhiteListRequest, opts ...grpc.CallOption) (*CreateWhiteListResponse, error)
-		ModifyWhiteList(ctx context.Context, in *ModifyWhiteListRequest, opts ...grpc.CallOption) (*ModifyWhiteListResponse, error)
-		DeleteWhiteList(ctx context.Context, in *DeleteWhiteListRequest, opts ...grpc.CallOption) (*DeleteWhiteListResponse, error)
-		SelectWhiteList(ctx context.Context, in *SelectWhiteListRequest, opts ...grpc.CallOption) (*SelectWhiteListResponse, error)
-		SelectWhiteListByPage(ctx context.Context, in *SelectWhiteListByPageRequest, opts ...grpc.CallOption) (*SelectWhiteListByPageResponse, error)
 	}
 
 	defaultAnalyzer struct {
@@ -95,14 +87,14 @@ func (m *defaultAnalyzer) MergeRecord(ctx context.Context, in *MergeRecordReques
 	return client.MergeRecord(ctx, in, opts...)
 }
 
-func (m *defaultAnalyzer) DeleteRecord(ctx context.Context, in *DeleteRecordRequest, opts ...grpc.CallOption) (*DeleteRecordResponse, error) {
+func (m *defaultAnalyzer) DeleteRecordById(ctx context.Context, in *DeleteRecordByIdRequest, opts ...grpc.CallOption) (*DeleteRecordByIdResponse, error) {
 	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.DeleteRecord(ctx, in, opts...)
+	return client.DeleteRecordById(ctx, in, opts...)
 }
 
-func (m *defaultAnalyzer) SelectRecord(ctx context.Context, in *SelectRecordRequest, opts ...grpc.CallOption) (*SelectRecordResponse, error) {
+func (m *defaultAnalyzer) SelectRecordById(ctx context.Context, in *SelectRecordByIdRequest, opts ...grpc.CallOption) (*SelectRecordByIdResponse, error) {
 	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.SelectRecord(ctx, in, opts...)
+	return client.SelectRecordById(ctx, in, opts...)
 }
 
 func (m *defaultAnalyzer) SelectRecordByPage(ctx context.Context, in *SelectRecordByPageRequest, opts ...grpc.CallOption) (*SelectRecordByPageResponse, error) {
@@ -116,48 +108,32 @@ func (m *defaultAnalyzer) CreateBlocked(ctx context.Context, in *CreateBlockedRe
 	return client.CreateBlocked(ctx, in, opts...)
 }
 
-func (m *defaultAnalyzer) ModifyBlocked(ctx context.Context, in *ModifyBlockedRequest, opts ...grpc.CallOption) (*ModifyBlockedResponse, error) {
+func (m *defaultAnalyzer) ModifyBlockedWithBlockEnd(ctx context.Context, in *ModifyBlockedWithBlockEndRequest, opts ...grpc.CallOption) (*ModifyBlockedWithBlockEndResponse, error) {
 	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.ModifyBlocked(ctx, in, opts...)
+	return client.ModifyBlockedWithBlockEnd(ctx, in, opts...)
 }
 
-func (m *defaultAnalyzer) DeleteBlocked(ctx context.Context, in *DeleteBlockedRequest, opts ...grpc.CallOption) (*DeleteBlockedResponse, error) {
+func (m *defaultAnalyzer) ModifyBlockedWithBlockCountAdd(ctx context.Context, in *ModifyBlockedWithBlockCountAddRequest, opts ...grpc.CallOption) (*ModifyBlockedWithBlockCountAddResponse, error) {
 	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.DeleteBlocked(ctx, in, opts...)
+	return client.ModifyBlockedWithBlockCountAdd(ctx, in, opts...)
 }
 
-func (m *defaultAnalyzer) SelectBlocked(ctx context.Context, in *SelectBlockedRequest, opts ...grpc.CallOption) (*SelectBlockedResponse, error) {
+func (m *defaultAnalyzer) DeleteBlockedWithBlockIP(ctx context.Context, in *DeleteBlockedWithBlockIPRequest, opts ...grpc.CallOption) (*DeleteBlockedWithBlockIPResponse, error) {
 	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.SelectBlocked(ctx, in, opts...)
+	return client.DeleteBlockedWithBlockIP(ctx, in, opts...)
+}
+
+func (m *defaultAnalyzer) SelectBlockedByBlockIP(ctx context.Context, in *SelectBlockedByBlockIPRequest, opts ...grpc.CallOption) (*SelectBlockedByBlockIPResponse, error) {
+	client := analyzer.NewAnalyzerClient(m.cli.Conn())
+	return client.SelectBlockedByBlockIP(ctx, in, opts...)
+}
+
+func (m *defaultAnalyzer) SelectBlockedById(ctx context.Context, in *SelectBlockedByIdRequest, opts ...grpc.CallOption) (*SelectBlockedByIdResponse, error) {
+	client := analyzer.NewAnalyzerClient(m.cli.Conn())
+	return client.SelectBlockedById(ctx, in, opts...)
 }
 
 func (m *defaultAnalyzer) SelectBlockedByPage(ctx context.Context, in *SelectBlockedByPageRequest, opts ...grpc.CallOption) (*SelectBlockedByPageResponse, error) {
 	client := analyzer.NewAnalyzerClient(m.cli.Conn())
 	return client.SelectBlockedByPage(ctx, in, opts...)
-}
-
-// ================ whitelist ================
-func (m *defaultAnalyzer) CreateWhiteList(ctx context.Context, in *CreateWhiteListRequest, opts ...grpc.CallOption) (*CreateWhiteListResponse, error) {
-	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.CreateWhiteList(ctx, in, opts...)
-}
-
-func (m *defaultAnalyzer) ModifyWhiteList(ctx context.Context, in *ModifyWhiteListRequest, opts ...grpc.CallOption) (*ModifyWhiteListResponse, error) {
-	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.ModifyWhiteList(ctx, in, opts...)
-}
-
-func (m *defaultAnalyzer) DeleteWhiteList(ctx context.Context, in *DeleteWhiteListRequest, opts ...grpc.CallOption) (*DeleteWhiteListResponse, error) {
-	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.DeleteWhiteList(ctx, in, opts...)
-}
-
-func (m *defaultAnalyzer) SelectWhiteList(ctx context.Context, in *SelectWhiteListRequest, opts ...grpc.CallOption) (*SelectWhiteListResponse, error) {
-	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.SelectWhiteList(ctx, in, opts...)
-}
-
-func (m *defaultAnalyzer) SelectWhiteListByPage(ctx context.Context, in *SelectWhiteListByPageRequest, opts ...grpc.CallOption) (*SelectWhiteListByPageResponse, error) {
-	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.SelectWhiteListByPage(ctx, in, opts...)
 }

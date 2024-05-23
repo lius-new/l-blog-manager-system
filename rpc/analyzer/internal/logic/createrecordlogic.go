@@ -3,8 +3,10 @@ package logic
 import (
 	"context"
 
+	"github.com/lius-new/blog-backend/rpc"
 	"github.com/lius-new/blog-backend/rpc/analyzer/analyzer"
 	"github.com/lius-new/blog-backend/rpc/analyzer/internal/svc"
+	model "github.com/lius-new/blog-backend/rpc/analyzer/model/mongo/record"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,7 +27,20 @@ func NewCreateRecordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Crea
 
 // ================ Record  ================
 func (l *CreateRecordLogic) CreateRecord(in *analyzer.CreateRecordRequest) (*analyzer.CreateRecordResponse, error) {
-	// todo: add your logic here and delete this line
+	if len(in.RequestIp) == 0 || len(in.RequestMethod) == 0 || len(in.RequestPath) == 0 {
+		return nil, rpc.ErrRequestParam
+	}
+
+	err := l.svcCtx.ModelWithRecord.Insert(l.ctx, &model.Record{
+		RequestIP:     in.RequestIp,
+		RequestMethod: in.RequestMethod,
+		RequestPath:   in.RequestPath,
+		RequestCount:  1,
+	})
+
+	if err != nil {
+		return nil, err
+	}
 
 	return &analyzer.CreateRecordResponse{}, nil
 }

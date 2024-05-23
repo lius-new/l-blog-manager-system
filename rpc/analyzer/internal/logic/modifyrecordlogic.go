@@ -24,7 +24,7 @@ func NewModifyRecordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Modi
 }
 
 func (l *ModifyRecordLogic) ModifyRecord(in *analyzer.ModifyRecordRequest) (*analyzer.ModifyRecordResponse, error) {
-	// todo: add your logic here and delete this line
+	// TODO: 考虑这个接口是否应该实现
 
 	return &analyzer.ModifyRecordResponse{}, nil
 }

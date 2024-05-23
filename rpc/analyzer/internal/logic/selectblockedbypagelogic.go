@@ -24,7 +24,28 @@ func NewSelectBlockedByPageLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 func (l *SelectBlockedByPageLogic) SelectBlockedByPage(in *analyzer.SelectBlockedByPageRequest) (*analyzer.SelectBlockedByPageResponse, error) {
-	// todo: add your logic here and delete this line
+	blockeds, total, err := l.svcCtx.ModelWithBlocked.FindByPage(l.ctx, in.PageNum, in.PageSize)
+	if err != nil {
+		return nil, err
+	}
 
-	return &analyzer.SelectBlockedByPageResponse{}, nil
+	// 封装数据
+	forLen := len(blockeds)
+	data := make([]*analyzer.SelectBlockeds, forLen)
+	for i := 0; i < forLen; i++ {
+		currentBlocked := blockeds[i]
+		data[i] = &analyzer.SelectBlockeds{
+			Id:         currentBlocked.ID.Hex(),
+			BlockIP:    currentBlocked.BlockIP,
+			BlockEnd:   currentBlocked.BlockEnd.Unix(),
+			BlockCount: currentBlocked.BlockCount,
+			CreateAt:   currentBlocked.CreateAt.Unix(),
+			UpdateAt:   currentBlocked.UpdateAt.Unix(),
+		}
+	}
+
+	return &analyzer.SelectBlockedByPageResponse{
+		Blockeds: data,
+		Total:    total,
+	}, nil
 }

@@ -24,7 +24,30 @@ func NewSelectRecordByPageLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *SelectRecordByPageLogic) SelectRecordByPage(in *analyzer.SelectRecordByPageRequest) (*analyzer.SelectRecordByPageResponse, error) {
-	// todo: add your logic here and delete this line
 
-	return &analyzer.SelectRecordByPageResponse{}, nil
+	records, total, err := l.svcCtx.ModelWithRecord.FindByPage(l.ctx, in.PageNum, in.PageSize)
+	if err != nil {
+		return nil, err
+	}
+
+	// 封装数据
+	forLen := len(records)
+	data := make([]*analyzer.SelectRecords, forLen)
+	for i := 0; i < forLen; i++ {
+		currentRecord := records[i]
+		data[i] = &analyzer.SelectRecords{
+			Id:            currentRecord.ID.Hex(),
+			RequestIP:     currentRecord.RequestIP,
+			RequestMethod: currentRecord.RequestMethod,
+			RequestPath:   currentRecord.RequestPath,
+			RequestCount:  currentRecord.RequestCount,
+			CreateAt:      currentRecord.CreateAt.Unix(),
+			UpdateAt:      currentRecord.UpdateAt.Unix(),
+		}
+	}
+
+	return &analyzer.SelectRecordByPageResponse{
+		Records: data,
+		Total:   total,
+	}, nil
 }

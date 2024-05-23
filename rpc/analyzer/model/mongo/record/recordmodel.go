@@ -1,6 +1,8 @@
 package model
 
 import (
+	"context"
+
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/monc"
 )
@@ -12,6 +14,8 @@ type (
 	// and implement the added methods in customRecordModel.
 	RecordModel interface {
 		recordModel
+		CountDayRecordNumber(ctx context.Context) (int64, error)
+		FindByPage(ctx context.Context, pageNum, pageSize int64) ([]Record, int64, error)
 	}
 
 	customRecordModel struct {
@@ -25,4 +29,12 @@ func NewRecordModel(url, db, collection string, c cache.CacheConf) RecordModel {
 	return &customRecordModel{
 		defaultRecordModel: newDefaultRecordModel(conn),
 	}
+}
+
+func (m *customRecordModel) CountDayRecordNumber(ctx context.Context) (int64, error) {
+	return 0, nil
+}
+
+func (m *customRecordModel) FindByPage(ctx context.Context, pageNum, pageSize int64) ([]Record, int64, error) {
+	return nil, 0, nil
 }
