@@ -1,10 +1,13 @@
 package middleware
 
 import (
-	"fmt"
+	"context"
 	"net/http"
+	"strings"
+	"time"
 
 	"github.com/lius-new/blog-backend/rpc/authorization/auther"
+	"github.com/lius-new/blog-backend/rpc/authorization/authorization"
 )
 
 type AuthMiddleware struct {
@@ -23,27 +26,28 @@ func authMiddlewareError(w http.ResponseWriter) {
 func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
-			if err := recover(); err != nil {
+			if catchErr := recover(); catchErr != nil {
 				authMiddlewareError(w)
 			}
 		}()
-		authorizationHeaderItem := r.Header.Get("Authorization")
-		fmt.Println(authorizationHeaderItem)
 
-		// secret, err := r.Cookie("secret")
-		// if err != nil || len(secret.Value) == 0 {
-		// 	panic(err)
-		// }
+		authorizationString := r.Header.Get("Authorization")
 
-		// judgeResp, err := m.auther.JudgeToken(context.Background(), &authorization.JudgeJwtRequestWithJwt{
-		// 	Token: secret.Value,
-		// })
+		if len(authorizationString) == 0 || !strings.Contains(authorizationString, "Bearer") {
+			panic("authorization failed!")
+		}
+		authorizationString = strings.Replace(authorizationString, "Bearer ", "", -1)
 
-		// if err != nil {
-		// 	panic(err)
-		// } else if len(judgeResp.Id) == 0 {
-		// 	panic(mon.ErrNotFound)
-		// }
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+		defer cancel()
+
+		judgeResp, err := m.auther.JudgeToken(ctx, &authorization.JudgeJwtRequestWithJwt{
+			Token: authorizationString,
+		})
+
+		if err != nil || len(judgeResp.Id) == 0 {
+			panic(err)
+		}
 		next(w, r)
 	}
 }
