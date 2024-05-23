@@ -10,7 +10,7 @@ import (
 var SVC_CONTEXT *svc.ServiceContext
 
 func init() {
-	configFile := "../../../etc/content.yaml"
+	configFile := "../../../etc/analyzer.yaml"
 
 	var c config.Config
 	conf.MustLoad(configFile, &c)
