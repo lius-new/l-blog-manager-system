@@ -16,7 +16,7 @@ message CreateRecordResponse {}
 
 // == 合并record ==
 // 合并record的请求参数
-message MergeRecordRequest {}
+message MergeRecordRequest { string requestIp = 1; }
 // 合并record的响应结果
 message MergeRecordResponse {}
 

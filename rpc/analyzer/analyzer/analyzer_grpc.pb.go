@@ -36,7 +36,7 @@ type AnalyzerClient interface {
 	SelectBlockedByBlockIP(ctx context.Context, in *SelectBlockedByBlockIPRequest, opts ...grpc.CallOption) (*SelectBlockedByBlockIPResponse, error)
 	SelectBlockedById(ctx context.Context, in *SelectBlockedByIdRequest, opts ...grpc.CallOption) (*SelectBlockedByIdResponse, error)
 	SelectBlockedByPage(ctx context.Context, in *SelectBlockedByPageRequest, opts ...grpc.CallOption) (*SelectBlockedByPageResponse, error)
-	// 根据分页查询blocked
+	// 判断是否被封禁
 	JudgeBlockedByIP(ctx context.Context, in *JudgeBlockedByIPRequest, opts ...grpc.CallOption) (*JudgeBlockedByIPResponse, error)
 }
 
@@ -183,7 +183,7 @@ type AnalyzerServer interface {
 	SelectBlockedByBlockIP(context.Context, *SelectBlockedByBlockIPRequest) (*SelectBlockedByBlockIPResponse, error)
 	SelectBlockedById(context.Context, *SelectBlockedByIdRequest) (*SelectBlockedByIdResponse, error)
 	SelectBlockedByPage(context.Context, *SelectBlockedByPageRequest) (*SelectBlockedByPageResponse, error)
-	// 根据分页查询blocked
+	// 判断是否被封禁
 	JudgeBlockedByIP(context.Context, *JudgeBlockedByIPRequest) (*JudgeBlockedByIPResponse, error)
 	mustEmbedUnimplementedAnalyzerServer()
 }

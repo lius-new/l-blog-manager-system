@@ -17,8 +17,9 @@ type (
 	// and implement the added methods in customRecordModel.
 	RecordModel interface {
 		recordModel
-		CountDayRecordNumber(ctx context.Context, requestIP string) (int64, error)
+		CountScopeTimeRecordNumber(ctx context.Context, requestIP string, scope time.Duration) (int64, error)
 		FindByPage(ctx context.Context, pageNum, pageSize int64) ([]Record, int64, error)
+		DeleteScopeTimeRecord(ctx context.Context, requestIP string, scope time.Duration) (int64, error) // 删除指定时间范围内的日志
 	}
 
 	customRecordModel struct {
@@ -34,15 +35,18 @@ func NewRecordModel(url, db, collection string, c cache.CacheConf) RecordModel {
 	}
 }
 
-func (m *customRecordModel) CountDayRecordNumber(ctx context.Context, requestIP string) (int64, error) {
+// 统计指定时间间隔的record信息
+func (m *customRecordModel) CountScopeTimeRecordNumber(ctx context.Context, requestIP string, scope time.Duration) (int64, error) {
 	// 获取现在时间和过去一天时间
-	now, dayAgo := getNowAndOldDayTime()
+	// 事实上存本地时间是CST时间, 而数据库是UTC时间，所以如果要比较那么就需要转换为UTC时间。
+	now := time.Now().UTC()
+	past := now.Add(-1 * scope).UTC()
 
 	countCondition := bson.M{
 		"requestIP": bson.M{"$regex": requestIP, "$options": "i"},
 		"createAt": bson.M{
-			"$gte": dayAgo, // 大于或等于dayAgo的时间戳(昨天)
-			"$lte": now,    // 小于或等于当前时间戳(现在)
+			"$gte": past, // 大于或等于past的时间戳(指定时间间隔之前的时间)
+			"$lte": now,  // 小于或等于当前时间戳(现在)
 		},
 	}
 
@@ -51,6 +55,7 @@ func (m *customRecordModel) CountDayRecordNumber(ctx context.Context, requestIP 
 	return count, err
 }
 
+// 分页查询
 func (m *customRecordModel) FindByPage(ctx context.Context, pageNum, pageSize int64) ([]Record, int64, error) {
 	findOptions := options.Find()
 	// 如果传入参数小于等于0那么就设置为1
@@ -77,10 +82,18 @@ func (m *customRecordModel) FindByPage(ctx context.Context, pageNum, pageSize in
 	}
 }
 
-// getNowAndOldDayTime: 获取当前时间和前一天的时间
-// 事实上存本地时间是CST时间, 而数据库是UTC时间，所以如果要比较那么就需要转换为UTC时间。
-func getNowAndOldDayTime() (time.Time, time.Time) {
+func (m *customRecordModel) DeleteScopeTimeRecord(ctx context.Context, requestIP string, scope time.Duration) (int64, error) {
 	now := time.Now().UTC()
-	dayAgo := now.Add(-24 * time.Hour).UTC()
-	return now, dayAgo
+	past := now.Add(-1 * scope).UTC()
+
+	deleteCondition := bson.M{
+		"requestIP": bson.M{"$regex": requestIP, "$options": "i"},
+		"createAt": bson.M{
+			"$gte": past, // 大于或等于past的时间戳(指定时间间隔之前的时间)
+			"$lte": now,  // 小于或等于当前时间戳(现在)
+		},
+	}
+
+	count, err := m.conn.DeleteMany(ctx, deleteCondition)
+	return count, err
 }

@@ -38,9 +38,17 @@ func (l *CreateBlockedLogic) CreateBlocked(in *analyzer.CreateBlockedRequest) (*
 		return nil, err
 	}
 
-	// 设置结束时间
-	// TODO: 过期时间可存储至数据库中
-	endTime := time.Now().Add(time.Hour * 24)
+	// 设置封禁结束时间
+	setting, err := l.svcCtx.ModelWithSetting.FindLastSetting(l.ctx)
+	if err != nil && err != rpc.ErrNotFound {
+		return nil, err
+	}
+
+	// 如果没有添加设置，那么就使用默认封禁时间
+	if err == rpc.ErrNotFound {
+		setting.RecordMergeInterval = time.Hour * 12
+	}
+	endTime := time.Now().Add(setting.RecordMergeInterval)
 
 	// 判断是否是notfound, 那么就是创建新的
 	if err == rpc.ErrNotFound {

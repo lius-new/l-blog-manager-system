@@ -57,7 +57,7 @@ type (
 		SelectBlockedByBlockIP(ctx context.Context, in *SelectBlockedByBlockIPRequest, opts ...grpc.CallOption) (*SelectBlockedByBlockIPResponse, error)
 		SelectBlockedById(ctx context.Context, in *SelectBlockedByIdRequest, opts ...grpc.CallOption) (*SelectBlockedByIdResponse, error)
 		SelectBlockedByPage(ctx context.Context, in *SelectBlockedByPageRequest, opts ...grpc.CallOption) (*SelectBlockedByPageResponse, error)
-		// 根据分页查询blocked
+		// 判断是否被封禁
 		JudgeBlockedByIP(ctx context.Context, in *JudgeBlockedByIPRequest, opts ...grpc.CallOption) (*JudgeBlockedByIPResponse, error)
 	}
 
@@ -134,7 +134,7 @@ func (m *defaultAnalyzer) SelectBlockedByPage(ctx context.Context, in *SelectBlo
 	return client.SelectBlockedByPage(ctx, in, opts...)
 }
 
-// 根据分页查询blocked
+// 判断是否被封禁
 func (m *defaultAnalyzer) JudgeBlockedByIP(ctx context.Context, in *JudgeBlockedByIPRequest, opts ...grpc.CallOption) (*JudgeBlockedByIPResponse, error) {
 	client := analyzer.NewAnalyzerClient(m.cli.Conn())
 	return client.JudgeBlockedByIP(ctx, in, opts...)

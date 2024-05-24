@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	model "github.com/lius-new/blog-backend/rpc/analyzer/model/mongo/record"
 	"github.com/lius-new/blog-backend/rpc/analyzer/tests"
@@ -84,7 +85,7 @@ func TestFindByPageWithRecord(t *testing.T) {
 // TestCountDayRecordNumber: 统计一天内访问次数
 func TestCountDayRecordNumber(t *testing.T) {
 	ctx := context.Background()
-	total, err := tests.SVC_CONTEXT.ModelWithRecord.CountDayRecordNumber(ctx, "127.0.0.1:8080")
+	total, err := tests.SVC_CONTEXT.ModelWithRecord.CountScopeTimeRecordNumber(ctx, "127.0.0.1:8080", time.Hour)
 	if err != nil {
 		fmt.Println("err: ", err)
 	} else {

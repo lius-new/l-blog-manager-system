@@ -84,7 +84,7 @@ func (s *AnalyzerServer) SelectBlockedByPage(ctx context.Context, in *analyzer.S
 	return l.SelectBlockedByPage(in)
 }
 
-// 根据分页查询blocked
+// 判断是否被封禁
 func (s *AnalyzerServer) JudgeBlockedByIP(ctx context.Context, in *analyzer.JudgeBlockedByIPRequest) (*analyzer.JudgeBlockedByIPResponse, error) {
 	l := logic.NewJudgeBlockedByIPLogic(ctx, s.svcCtx)
 	return l.JudgeBlockedByIP(in)
