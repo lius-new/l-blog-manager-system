@@ -21,14 +21,14 @@ type (
 	DeleteBlockedWithBlockIPResponse       = analyzer.DeleteBlockedWithBlockIPResponse
 	DeleteRecordByIdRequest                = analyzer.DeleteRecordByIdRequest
 	DeleteRecordByIdResponse               = analyzer.DeleteRecordByIdResponse
+	JudgeBlockedByIPRequest                = analyzer.JudgeBlockedByIPRequest
+	JudgeBlockedByIPResponse               = analyzer.JudgeBlockedByIPResponse
 	MergeRecordRequest                     = analyzer.MergeRecordRequest
 	MergeRecordResponse                    = analyzer.MergeRecordResponse
 	ModifyBlockedWithBlockCountAddRequest  = analyzer.ModifyBlockedWithBlockCountAddRequest
 	ModifyBlockedWithBlockCountAddResponse = analyzer.ModifyBlockedWithBlockCountAddResponse
 	ModifyBlockedWithBlockEndRequest       = analyzer.ModifyBlockedWithBlockEndRequest
 	ModifyBlockedWithBlockEndResponse      = analyzer.ModifyBlockedWithBlockEndResponse
-	ModifyRecordRequest                    = analyzer.ModifyRecordRequest
-	ModifyRecordResponse                   = analyzer.ModifyRecordResponse
 	SelectBlockedByBlockIPRequest          = analyzer.SelectBlockedByBlockIPRequest
 	SelectBlockedByBlockIPResponse         = analyzer.SelectBlockedByBlockIPResponse
 	SelectBlockedByIdRequest               = analyzer.SelectBlockedByIdRequest
@@ -45,7 +45,6 @@ type (
 	Analyzer interface {
 		// ================ Record  ================
 		CreateRecord(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*CreateRecordResponse, error)
-		ModifyRecord(ctx context.Context, in *ModifyRecordRequest, opts ...grpc.CallOption) (*ModifyRecordResponse, error)
 		MergeRecord(ctx context.Context, in *MergeRecordRequest, opts ...grpc.CallOption) (*MergeRecordResponse, error)
 		DeleteRecordById(ctx context.Context, in *DeleteRecordByIdRequest, opts ...grpc.CallOption) (*DeleteRecordByIdResponse, error)
 		SelectRecordById(ctx context.Context, in *SelectRecordByIdRequest, opts ...grpc.CallOption) (*SelectRecordByIdResponse, error)
@@ -58,6 +57,8 @@ type (
 		SelectBlockedByBlockIP(ctx context.Context, in *SelectBlockedByBlockIPRequest, opts ...grpc.CallOption) (*SelectBlockedByBlockIPResponse, error)
 		SelectBlockedById(ctx context.Context, in *SelectBlockedByIdRequest, opts ...grpc.CallOption) (*SelectBlockedByIdResponse, error)
 		SelectBlockedByPage(ctx context.Context, in *SelectBlockedByPageRequest, opts ...grpc.CallOption) (*SelectBlockedByPageResponse, error)
+		// 根据分页查询blocked
+		JudgeBlockedByIP(ctx context.Context, in *JudgeBlockedByIPRequest, opts ...grpc.CallOption) (*JudgeBlockedByIPResponse, error)
 	}
 
 	defaultAnalyzer struct {
@@ -75,11 +76,6 @@ func NewAnalyzer(cli zrpc.Client) Analyzer {
 func (m *defaultAnalyzer) CreateRecord(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*CreateRecordResponse, error) {
 	client := analyzer.NewAnalyzerClient(m.cli.Conn())
 	return client.CreateRecord(ctx, in, opts...)
-}
-
-func (m *defaultAnalyzer) ModifyRecord(ctx context.Context, in *ModifyRecordRequest, opts ...grpc.CallOption) (*ModifyRecordResponse, error) {
-	client := analyzer.NewAnalyzerClient(m.cli.Conn())
-	return client.ModifyRecord(ctx, in, opts...)
 }
 
 func (m *defaultAnalyzer) MergeRecord(ctx context.Context, in *MergeRecordRequest, opts ...grpc.CallOption) (*MergeRecordResponse, error) {
@@ -136,4 +132,10 @@ func (m *defaultAnalyzer) SelectBlockedById(ctx context.Context, in *SelectBlock
 func (m *defaultAnalyzer) SelectBlockedByPage(ctx context.Context, in *SelectBlockedByPageRequest, opts ...grpc.CallOption) (*SelectBlockedByPageResponse, error) {
 	client := analyzer.NewAnalyzerClient(m.cli.Conn())
 	return client.SelectBlockedByPage(ctx, in, opts...)
+}
+
+// 根据分页查询blocked
+func (m *defaultAnalyzer) JudgeBlockedByIP(ctx context.Context, in *JudgeBlockedByIPRequest, opts ...grpc.CallOption) (*JudgeBlockedByIPResponse, error) {
+	client := analyzer.NewAnalyzerClient(m.cli.Conn())
+	return client.JudgeBlockedByIP(ctx, in, opts...)
 }

@@ -1,19 +1,16 @@
 package svc
 
 import (
-	"github.com/zeromicro/go-zero/zrpc"
-
 	"github.com/lius-new/blog-backend/rpc/analyzer/internal/config"
 	blockedModel "github.com/lius-new/blog-backend/rpc/analyzer/model/mongo/blocked"
 	recordModel "github.com/lius-new/blog-backend/rpc/analyzer/model/mongo/record"
-	"github.com/lius-new/blog-backend/rpc/utils/utiler"
 )
 
 type ServiceContext struct {
 	Config           config.Config
 	ModelWithRecord  recordModel.RecordModel
 	ModelWithBlocked blockedModel.BlockedModel
-	Utiler           utiler.Utiler
+	// Utiler           utiler.Utiler
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -21,6 +18,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config:           c,
 		ModelWithRecord:  recordModel.NewRecordModel(c.MongoURL, c.DBName, "record", c.Cache),
 		ModelWithBlocked: blockedModel.NewBlockedModel(c.MongoURL, c.DBName, "blocked", c.Cache),
-		Utiler:           utiler.NewUtiler(zrpc.MustNewClient(c.Utils)),
+		// Utiler:           utiler.NewUtiler(zrpc.MustNewClient(c.Utils)),
 	}
 }

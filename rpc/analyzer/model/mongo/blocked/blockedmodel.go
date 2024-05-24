@@ -4,10 +4,12 @@ import (
 	"context"
 	"time"
 
+	"github.com/lius-new/blog-backend/rpc"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/monc"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var _ BlockedModel = (*customBlockedModel)(nil)
@@ -51,21 +53,64 @@ func (m *customBlockedModel) FindByBlockIP(ctx context.Context, blockIp string) 
 	}
 }
 func (m *customBlockedModel) FindByPage(ctx context.Context, pageNum, pageSize int64) ([]Blocked, int64, error) {
-	return nil, 0, nil
+	findOptions := options.Find()
+	// 如果传入参数小于等于0那么就设置为1
+	if pageNum <= 0 {
+		pageNum = 1
+	}
+
+	findOptions.SetLimit(pageSize)
+	findOptions.SetSkip(pageSize * (pageNum - 1))
+	findOptions.SetSort(bson.M{"updateAt": -1}) // 根据时间降序排序
+
+	blockeds := make([]Blocked, pageNum)
+
+	// 查询
+	err := m.conn.Find(ctx, &blockeds, bson.M{}, findOptions)
+	switch err {
+	case nil:
+		total, _ := m.conn.CountDocuments(ctx, bson.M{})
+		return blockeds, total, nil
+	case monc.ErrNotFound:
+		return nil, 0, ErrNotFound
+	default:
+		return nil, 0, err
+	}
 }
 
 func (m *customBlockedModel) ModifyBlockByBlockIPWithCount(ctx context.Context, blockIp string, count int64) error {
+	updateResp, err := m.conn.UpdateOneNoCache(ctx, bson.M{"blockIp": blockIp}, bson.M{"$set": bson.M{"blockCount": count}})
+	if err != nil {
+		return err
+	}
+	if updateResp.MatchedCount == 0 {
+		return rpc.ErrNotFound
+	}
 	return nil
 }
 func (m *customBlockedModel) ModifyBlockByBlockIPWithBlockend(ctx context.Context, blockIp string, endTime time.Time) error {
+	updateResp, err := m.conn.UpdateOneNoCache(ctx, bson.M{"blockIp": blockIp}, bson.M{"$set": bson.M{"blockEnd": endTime}})
+	if err != nil {
+		return err
+	}
+	if updateResp.MatchedCount == 0 {
+		return rpc.ErrNotFound
+	}
 	return nil
 }
 func (m *customBlockedModel) ModifyBlockByBlockIPWithCountAndBlockend(ctx context.Context, blockIp string, endTime time.Time, count int64) error {
+	updateResp, err := m.conn.UpdateOneNoCache(ctx, bson.M{"blockIp": blockIp}, bson.M{"$set": bson.M{"blockEnd": endTime, "blockCount": count}})
+	if err != nil {
+		return err
+	}
+	if updateResp.MatchedCount == 0 {
+		return rpc.ErrNotFound
+	}
 	return nil
 }
 
 func (m *customBlockedModel) DeleteBlockByBlockIP(ctx context.Context, blockIp string) (*mongo.UpdateResult, error) {
 	updateAt := time.Now()
-	res, err := m.conn.UpdateOneNoCache(ctx, bson.M{"blockIp": blockIp}, bson.M{"blockEnd": 0, "updateAt": updateAt})
+	res, err := m.conn.UpdateOneNoCache(ctx, bson.M{"blockIp": blockIp}, bson.M{"$set": bson.M{"blockEnd": time.Unix(0, 0), "updateAt": updateAt}})
 	return res, err
 }

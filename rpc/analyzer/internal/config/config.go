@@ -10,5 +10,5 @@ type Config struct {
 	MongoURL string
 	DBName   string
 	Cache    cache.CacheConf
-	Utils    zrpc.RpcClientConf
+	// Utils    zrpc.RpcClientConf
 }

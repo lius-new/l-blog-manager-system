@@ -9,7 +9,7 @@ import (
 type Blocked struct {
 	ID primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 
-	BlockIP    string    `bson:"requestIP,omitempty"  json:"requestIP,omitempty"`  // 禁用的IP
+	BlockIP    string    `bson:"blockIp,omitempty"  json:"blockIp,omitempty"`      // 禁用的IP
 	BlockEnd   time.Time `bson:"blockEnd,omitempty"   json:"blockEnd,omitempty"`   // 禁用的截止时间
 	BlockCount int64     `bson:"blockCount,omitempty" json:"blockCount,omitempty"` // 禁用的次数
 

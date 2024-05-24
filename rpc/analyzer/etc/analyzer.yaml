@@ -10,8 +10,8 @@ DBName: liusnew-blog
 Cache:
   - Host: 127.0.0.1:6379
 
-Utils:
-  Etcd:
-    Hosts:
-      - localhost:2379
-    Key: utils.rpc
+# utils:
+#   Etcd:
+#     Hosts:
+#       - localhost:2379
+#     Key: utils.rpc

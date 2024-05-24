@@ -28,11 +28,6 @@ func (s *AnalyzerServer) CreateRecord(ctx context.Context, in *analyzer.CreateRe
 	return l.CreateRecord(in)
 }
 
-func (s *AnalyzerServer) ModifyRecord(ctx context.Context, in *analyzer.ModifyRecordRequest) (*analyzer.ModifyRecordResponse, error) {
-	l := logic.NewModifyRecordLogic(ctx, s.svcCtx)
-	return l.ModifyRecord(in)
-}
-
 func (s *AnalyzerServer) MergeRecord(ctx context.Context, in *analyzer.MergeRecordRequest) (*analyzer.MergeRecordResponse, error) {
 	l := logic.NewMergeRecordLogic(ctx, s.svcCtx)
 	return l.MergeRecord(in)
@@ -87,4 +82,10 @@ func (s *AnalyzerServer) SelectBlockedById(ctx context.Context, in *analyzer.Sel
 func (s *AnalyzerServer) SelectBlockedByPage(ctx context.Context, in *analyzer.SelectBlockedByPageRequest) (*analyzer.SelectBlockedByPageResponse, error) {
 	l := logic.NewSelectBlockedByPageLogic(ctx, s.svcCtx)
 	return l.SelectBlockedByPage(in)
+}
+
+// 根据分页查询blocked
+func (s *AnalyzerServer) JudgeBlockedByIP(ctx context.Context, in *analyzer.JudgeBlockedByIPRequest) (*analyzer.JudgeBlockedByIPResponse, error) {
+	l := logic.NewJudgeBlockedByIPLogic(ctx, s.svcCtx)
+	return l.JudgeBlockedByIP(in)
 }

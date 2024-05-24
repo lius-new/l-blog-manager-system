@@ -90,7 +90,6 @@ func (m *customArticleModel) FindByPage(
 	pageNum, pageSize int64,
 	hideShow bool,
 ) ([]Article, int64, error) {
-	articles := make([]Article, pageNum)
 
 	findOptions := options.Find()
 	// 如果传入参数小于等于0那么就设置为1
@@ -102,6 +101,7 @@ func (m *customArticleModel) FindByPage(
 	findOptions.SetSkip(pageSize * (pageNum - 1))
 	findOptions.SetSort(bson.M{"updateAt": -1}) // 根据时间降序排序
 
+	articles := make([]Article, pageNum)
 	// 查询
 	var err error
 	if hideShow {

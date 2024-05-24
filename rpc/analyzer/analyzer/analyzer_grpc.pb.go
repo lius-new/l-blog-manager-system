@@ -24,7 +24,6 @@ const _ = grpc.SupportPackageIsVersion7
 type AnalyzerClient interface {
 	// ================ Record  ================
 	CreateRecord(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*CreateRecordResponse, error)
-	ModifyRecord(ctx context.Context, in *ModifyRecordRequest, opts ...grpc.CallOption) (*ModifyRecordResponse, error)
 	MergeRecord(ctx context.Context, in *MergeRecordRequest, opts ...grpc.CallOption) (*MergeRecordResponse, error)
 	DeleteRecordById(ctx context.Context, in *DeleteRecordByIdRequest, opts ...grpc.CallOption) (*DeleteRecordByIdResponse, error)
 	SelectRecordById(ctx context.Context, in *SelectRecordByIdRequest, opts ...grpc.CallOption) (*SelectRecordByIdResponse, error)
@@ -37,6 +36,8 @@ type AnalyzerClient interface {
 	SelectBlockedByBlockIP(ctx context.Context, in *SelectBlockedByBlockIPRequest, opts ...grpc.CallOption) (*SelectBlockedByBlockIPResponse, error)
 	SelectBlockedById(ctx context.Context, in *SelectBlockedByIdRequest, opts ...grpc.CallOption) (*SelectBlockedByIdResponse, error)
 	SelectBlockedByPage(ctx context.Context, in *SelectBlockedByPageRequest, opts ...grpc.CallOption) (*SelectBlockedByPageResponse, error)
+	// 根据分页查询blocked
+	JudgeBlockedByIP(ctx context.Context, in *JudgeBlockedByIPRequest, opts ...grpc.CallOption) (*JudgeBlockedByIPResponse, error)
 }
 
 type analyzerClient struct {
@@ -50,15 +51,6 @@ func NewAnalyzerClient(cc grpc.ClientConnInterface) AnalyzerClient {
 func (c *analyzerClient) CreateRecord(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*CreateRecordResponse, error) {
 	out := new(CreateRecordResponse)
 	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/CreateRecord", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *analyzerClient) ModifyRecord(ctx context.Context, in *ModifyRecordRequest, opts ...grpc.CallOption) (*ModifyRecordResponse, error) {
-	out := new(ModifyRecordResponse)
-	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/ModifyRecord", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -164,13 +156,21 @@ func (c *analyzerClient) SelectBlockedByPage(ctx context.Context, in *SelectBloc
 	return out, nil
 }
 
+func (c *analyzerClient) JudgeBlockedByIP(ctx context.Context, in *JudgeBlockedByIPRequest, opts ...grpc.CallOption) (*JudgeBlockedByIPResponse, error) {
+	out := new(JudgeBlockedByIPResponse)
+	err := c.cc.Invoke(ctx, "/analyzer.Analyzer/JudgeBlockedByIP", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AnalyzerServer is the server API for Analyzer service.
 // All implementations must embed UnimplementedAnalyzerServer
 // for forward compatibility
 type AnalyzerServer interface {
 	// ================ Record  ================
 	CreateRecord(context.Context, *CreateRecordRequest) (*CreateRecordResponse, error)
-	ModifyRecord(context.Context, *ModifyRecordRequest) (*ModifyRecordResponse, error)
 	MergeRecord(context.Context, *MergeRecordRequest) (*MergeRecordResponse, error)
 	DeleteRecordById(context.Context, *DeleteRecordByIdRequest) (*DeleteRecordByIdResponse, error)
 	SelectRecordById(context.Context, *SelectRecordByIdRequest) (*SelectRecordByIdResponse, error)
@@ -183,6 +183,8 @@ type AnalyzerServer interface {
 	SelectBlockedByBlockIP(context.Context, *SelectBlockedByBlockIPRequest) (*SelectBlockedByBlockIPResponse, error)
 	SelectBlockedById(context.Context, *SelectBlockedByIdRequest) (*SelectBlockedByIdResponse, error)
 	SelectBlockedByPage(context.Context, *SelectBlockedByPageRequest) (*SelectBlockedByPageResponse, error)
+	// 根据分页查询blocked
+	JudgeBlockedByIP(context.Context, *JudgeBlockedByIPRequest) (*JudgeBlockedByIPResponse, error)
 	mustEmbedUnimplementedAnalyzerServer()
 }
 
@@ -192,9 +194,6 @@ type UnimplementedAnalyzerServer struct {
 
 func (UnimplementedAnalyzerServer) CreateRecord(context.Context, *CreateRecordRequest) (*CreateRecordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRecord not implemented")
-}
-func (UnimplementedAnalyzerServer) ModifyRecord(context.Context, *ModifyRecordRequest) (*ModifyRecordResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ModifyRecord not implemented")
 }
 func (UnimplementedAnalyzerServer) MergeRecord(context.Context, *MergeRecordRequest) (*MergeRecordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MergeRecord not implemented")
@@ -229,6 +228,9 @@ func (UnimplementedAnalyzerServer) SelectBlockedById(context.Context, *SelectBlo
 func (UnimplementedAnalyzerServer) SelectBlockedByPage(context.Context, *SelectBlockedByPageRequest) (*SelectBlockedByPageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SelectBlockedByPage not implemented")
 }
+func (UnimplementedAnalyzerServer) JudgeBlockedByIP(context.Context, *JudgeBlockedByIPRequest) (*JudgeBlockedByIPResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JudgeBlockedByIP not implemented")
+}
 func (UnimplementedAnalyzerServer) mustEmbedUnimplementedAnalyzerServer() {}
 
 // UnsafeAnalyzerServer may be embedded to opt out of forward compatibility for this service.
@@ -256,24 +258,6 @@ func _Analyzer_CreateRecord_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AnalyzerServer).CreateRecord(ctx, req.(*CreateRecordRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Analyzer_ModifyRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ModifyRecordRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AnalyzerServer).ModifyRecord(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/analyzer.Analyzer/ModifyRecord",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AnalyzerServer).ModifyRecord(ctx, req.(*ModifyRecordRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -476,6 +460,24 @@ func _Analyzer_SelectBlockedByPage_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Analyzer_JudgeBlockedByIP_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JudgeBlockedByIPRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyzerServer).JudgeBlockedByIP(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/analyzer.Analyzer/JudgeBlockedByIP",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyzerServer).JudgeBlockedByIP(ctx, req.(*JudgeBlockedByIPRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Analyzer_ServiceDesc is the grpc.ServiceDesc for Analyzer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -486,10 +488,6 @@ var Analyzer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateRecord",
 			Handler:    _Analyzer_CreateRecord_Handler,
-		},
-		{
-			MethodName: "ModifyRecord",
-			Handler:    _Analyzer_ModifyRecord_Handler,
 		},
 		{
 			MethodName: "MergeRecord",
@@ -534,6 +532,10 @@ var Analyzer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SelectBlockedByPage",
 			Handler:    _Analyzer_SelectBlockedByPage_Handler,
+		},
+		{
+			MethodName: "JudgeBlockedByIP",
+			Handler:    _Analyzer_JudgeBlockedByIP_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

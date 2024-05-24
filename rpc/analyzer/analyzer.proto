@@ -14,12 +14,6 @@ message CreateRecordRequest {
 // 创建record的响应结果
 message CreateRecordResponse {}
 
-// == 更新record ==
-// 更新record的请求参数
-message ModifyRecordRequest {}
-// 更新record的响应结果
-message ModifyRecordResponse {}
-
 // == 合并record ==
 // 合并record的请求参数
 message MergeRecordRequest {}
@@ -141,13 +135,14 @@ message SelectBlockedByPageResponse {
   int64 total = 2;
 }
 
+// == 查询blocked(分页) ==
+message JudgeBlockedByIPRequest { string blockIP = 1; }
+message JudgeBlockedByIPResponse { bool block = 1; }
+
 service Analyzer {
   // ================ Record  ================
   rpc CreateRecord(CreateRecordRequest)
       returns (CreateRecordResponse); // 创建record(记录)
-
-  rpc ModifyRecord(ModifyRecordRequest)
-      returns (ModifyRecordResponse); // 更改record
 
   rpc MergeRecord(MergeRecordRequest)
       returns (MergeRecordResponse); // 合并record
@@ -183,4 +178,8 @@ service Analyzer {
 
   rpc SelectBlockedByPage(SelectBlockedByPageRequest)
       returns (SelectBlockedByPageResponse); // 根据分页查询blocked
+
+  // 判断是否被封禁
+  rpc JudgeBlockedByIP(JudgeBlockedByIPRequest)
+      returns (JudgeBlockedByIPResponse);
 }
