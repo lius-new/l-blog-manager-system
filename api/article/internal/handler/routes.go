@@ -11,34 +11,37 @@ import (
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/",
-				Handler: GetArticlesByPageWithViewHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/:search",
-				Handler: SearchArticleHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/id",
-				Handler: GetArticleByIdWithViewHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/tags",
-				Handler: GetArticleByTagNameWithViewHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.AnalyzerMiddleware},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/",
+					Handler: GetArticlesByPageWithViewHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/:search",
+					Handler: SearchArticleHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/id",
+					Handler: GetArticleByIdWithViewHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/tags",
+					Handler: GetArticleByTagNameWithViewHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/articles"),
 	)
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.AuthMiddleware},
+			[]rest.Middleware{serverCtx.AnalyzerMiddleware, serverCtx.AuthMiddleware},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,

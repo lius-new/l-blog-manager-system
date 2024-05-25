@@ -63,7 +63,8 @@ type (
 )
 
 @server (
-	prefix: /articles
+	prefix:     /articles
+	middleware: AnalyzerMiddleware
 )
 service article-api {
 	// view
@@ -188,7 +189,7 @@ type (
 
 @server (
 	prefix:     /articles
-	middleware: AuthMiddleware
+	middleware: AnalyzerMiddleware,AuthMiddleware
 )
 service article-api {
 	// view

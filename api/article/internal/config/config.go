@@ -9,4 +9,5 @@ type Config struct {
 	rest.RestConf
 	Authorization zrpc.RpcClientConf
 	Content       zrpc.RpcClientConf
+	Analyzer      zrpc.RpcClientConf
 }

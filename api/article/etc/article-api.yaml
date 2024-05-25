@@ -13,3 +13,9 @@ Content:
     Hosts:
       - localhost:2379
     Key: content.rpc
+
+Analyzer:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: analyzer.rpc
