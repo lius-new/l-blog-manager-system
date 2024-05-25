@@ -19,3 +19,9 @@ Utils:
     Hosts:
       - localhost:2379
     Key: utils.rpc
+
+Analyzer:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: analyzer.rpc

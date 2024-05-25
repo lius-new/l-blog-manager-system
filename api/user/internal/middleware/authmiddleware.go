@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/lius-new/blog-backend/api"
 	"github.com/lius-new/blog-backend/rpc/authorization/auther"
 	"github.com/lius-new/blog-backend/rpc/authorization/authorization"
 )
@@ -21,7 +22,7 @@ func NewAuthMiddleware(auther auther.Auther) *AuthMiddleware {
 
 func authMiddlewareError(w http.ResponseWriter) {
 	w.WriteHeader(http.StatusUnauthorized)
-	w.Write([]byte("authorization failed!"))
+	w.Write([]byte(api.ErrFailedAuthorization.Error()))
 }
 
 func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
@@ -35,7 +36,7 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		authorizationString := r.Header.Get("Authorization")
 
 		if len(authorizationString) == 0 || !strings.Contains(authorizationString, "Bearer") {
-			panic("authorization failed!")
+			panic(api.ErrFailedAuthorization)
 		}
 		authorizationString = strings.Replace(authorizationString, "Bearer ", "", -1)
 

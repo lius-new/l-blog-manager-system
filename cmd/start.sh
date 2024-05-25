@@ -9,7 +9,7 @@ go run $PROJECT_POSITION_PATH/rpc/utils/utils.go -f $PROJECT_POSITION_PATH/rpc/u
 # 执行content rpc service
 go run $PROJECT_POSITION_PATH/rpc/content/content.go -f $PROJECT_POSITION_PATH/rpc/content/etc/content.yaml &
 # 执行analyzer rpc service
-# go run $PROJECT_POSITION_PATH/rpc/analyzer/analyzer.go -f $PROJECT_POSITION_PATH/rpc/authorization/etc/analyzer.yaml &
+go run $PROJECT_POSITION_PATH/rpc/analyzer/analyzer.go -f $PROJECT_POSITION_PATH/rpc/analyzer/etc/analyzer.yaml &
 # 执行user rpc  service
 go run $PROJECT_POSITION_PATH/rpc/user/user.go -f $PROJECT_POSITION_PATH/rpc/user/etc/user.yaml &
 # 执行authorization rpc service

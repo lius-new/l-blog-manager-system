@@ -42,5 +42,13 @@ func (l *CreateRecordLogic) CreateRecord(in *analyzer.CreateRecordRequest) (*ana
 		return nil, err
 	}
 
+	// 检查是否需要合并日志，（合并会伴随block）
+	_, err = NewMergeRecordLogic(l.ctx, l.svcCtx).MergeRecord(&analyzer.MergeRecordRequest{
+		RequestIp: in.RequestIp,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	return &analyzer.CreateRecordResponse{}, nil
 }

@@ -10,4 +10,5 @@ type Config struct {
 	Authorization zrpc.RpcClientConf
 	User          zrpc.RpcClientConf
 	Utils         zrpc.RpcClientConf
+	Analyzer      zrpc.RpcClientConf
 }

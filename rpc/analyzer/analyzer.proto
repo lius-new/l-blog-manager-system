@@ -141,44 +141,44 @@ message JudgeBlockedByIPResponse { bool block = 1; }
 
 service Analyzer {
   // ================ Record  ================
-  rpc CreateRecord(CreateRecordRequest)
-      returns (CreateRecordResponse); // 创建record(记录)
+  // 创建record(记录)
+  rpc CreateRecord(CreateRecordRequest) returns (CreateRecordResponse);
+  // 合并record
+  rpc MergeRecord(MergeRecordRequest) returns (MergeRecordResponse);
 
-  rpc MergeRecord(MergeRecordRequest)
-      returns (MergeRecordResponse); // 合并record
-
+  // 删除record
   rpc DeleteRecordById(DeleteRecordByIdRequest)
-      returns (DeleteRecordByIdResponse); // 删除record
+      returns (DeleteRecordByIdResponse);
 
+  // 查询record
   rpc SelectRecordById(SelectRecordByIdRequest)
-      returns (SelectRecordByIdResponse); // 查询record
+      returns (SelectRecordByIdResponse);
 
+  // 根据分页查询record
   rpc SelectRecordByPage(SelectRecordByPageRequest)
-      returns (SelectRecordByPageResponse); // 根据分页查询record
+      returns (SelectRecordByPageResponse);
 
   // ================ Blocked  ================
-  rpc CreateBlocked(CreateBlockedRequest)
-      returns (CreateBlockedResponse); // 创建blocked(黑名单)
-
+  // 创建blocked(黑名单)
+  rpc CreateBlocked(CreateBlockedRequest) returns (CreateBlockedResponse);
+  // 更新blocked
   rpc ModifyBlockedWithBlockEnd(ModifyBlockedWithBlockEndRequest)
-      returns (ModifyBlockedWithBlockEndResponse); // 更新blocked
-
+      returns (ModifyBlockedWithBlockEndResponse);
+  // 更新blocked的count数量
   rpc ModifyBlockedWithBlockCountAdd(ModifyBlockedWithBlockCountAddRequest)
-      returns (
-          ModifyBlockedWithBlockCountAddResponse); // 更新blocked的count数量
-
+      returns (ModifyBlockedWithBlockCountAddResponse);
+  // 删除blocked
   rpc DeleteBlockedWithBlockIP(DeleteBlockedWithBlockIPRequest)
-      returns (DeleteBlockedWithBlockIPResponse); // 删除blocked
-
+      returns (DeleteBlockedWithBlockIPResponse);
+  // 查询blocked
   rpc SelectBlockedByBlockIP(SelectBlockedByBlockIPRequest)
-      returns (SelectBlockedByBlockIPResponse); // 查询blocked
-
+      returns (SelectBlockedByBlockIPResponse);
+  // 查询blocked
   rpc SelectBlockedById(SelectBlockedByIdRequest)
-      returns (SelectBlockedByIdResponse); // 查询blocked
-
+      returns (SelectBlockedByIdResponse);
+  // 根据分页查询blocked
   rpc SelectBlockedByPage(SelectBlockedByPageRequest)
-      returns (SelectBlockedByPageResponse); // 根据分页查询blocked
-
+      returns (SelectBlockedByPageResponse);
   // 判断是否被封禁
   rpc JudgeBlockedByIP(JudgeBlockedByIPRequest)
       returns (JudgeBlockedByIPResponse);
