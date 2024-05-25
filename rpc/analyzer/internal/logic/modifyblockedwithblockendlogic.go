@@ -27,7 +27,7 @@ func NewModifyBlockedWithBlockEndLogic(ctx context.Context, svcCtx *svc.ServiceC
 func (l *ModifyBlockedWithBlockEndLogic) ModifyBlockedWithBlockEnd(in *analyzer.ModifyBlockedWithBlockEndRequest) (*analyzer.ModifyBlockedWithBlockEndResponse, error) {
 	// 先查询到指定的blocked
 	selectBlockedByBlockIPLogic := NewSelectBlockedByBlockIPLogic(l.ctx, l.svcCtx)
-	_, err := selectBlockedByBlockIPLogic.SelectBlockedByBlockIP(&analyzer.SelectBlockedByBlockIPRequest{
+	selectResp, err := selectBlockedByBlockIPLogic.SelectBlockedByBlockIP(&analyzer.SelectBlockedByBlockIPRequest{
 		BlockIp: in.BlockIp,
 	})
 
@@ -35,8 +35,11 @@ func (l *ModifyBlockedWithBlockEndLogic) ModifyBlockedWithBlockEnd(in *analyzer.
 		return nil, err
 	}
 
+	// 以秒为单位
+	endTime := time.Unix(selectResp.BlockEnd+in.BlockEnd, 0)
+
 	// 在指定的blocked上加一
-	err = l.svcCtx.ModelWithBlocked.ModifyBlockByBlockIPWithBlockend(l.ctx, in.BlockIp, time.Unix(in.BlockEnd, 0))
+	err = l.svcCtx.ModelWithBlocked.ModifyBlockByBlockIPWithBlockend(l.ctx, in.BlockIp, endTime)
 	if err != nil {
 		return nil, err
 	}

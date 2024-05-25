@@ -10,18 +10,16 @@ import (
 	"github.com/lius-new/blog-backend/rpc/analyzer/tests"
 )
 
-func TestSelectRecordByPage(t *testing.T) {
-
+func TestSelectRecordById(t *testing.T) {
 	ctx := context.Background()
 
-	selectRecordByPageResp, err := logic.NewSelectRecordByPageLogic(ctx, tests.SVC_CONTEXT).SelectRecordByPage(&analyzer.SelectRecordByPageRequest{
-		PageNum:  1,
-		PageSize: 2,
+	selectRecordByIdResp, err := logic.NewSelectRecordByIdLogic(ctx, tests.SVC_CONTEXT).SelectRecordById(&analyzer.SelectRecordByIdRequest{
+		Id: "6651dd67628f8c4c59f2138e",
 	})
 
 	if err != nil {
 		fmt.Println("error :", err)
 	} else {
-		fmt.Println(selectRecordByPageResp)
+		fmt.Println(selectRecordByIdResp)
 	}
 }

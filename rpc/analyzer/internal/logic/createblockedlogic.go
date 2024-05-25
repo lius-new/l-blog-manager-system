@@ -28,6 +28,7 @@ func NewCreateBlockedLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cre
 
 // ================ Blocked  ================
 func (l *CreateBlockedLogic) CreateBlocked(in *analyzer.CreateBlockedRequest) (*analyzer.CreateBlockedResponse, error) {
+
 	// 查询指定ip是否存在
 	selectBlockedByBlockIPLogic := NewSelectBlockedByBlockIPLogic(l.ctx, l.svcCtx)
 	selectResp, err := selectBlockedByBlockIPLogic.SelectBlockedByBlockIP(&analyzer.SelectBlockedByBlockIPRequest{
@@ -48,10 +49,11 @@ func (l *CreateBlockedLogic) CreateBlocked(in *analyzer.CreateBlockedRequest) (*
 	if err == rpc.ErrNotFound {
 		setting.RecordMergeInterval = time.Hour * 12
 	}
+
 	endTime := time.Now().Add(setting.RecordMergeInterval)
 
 	// 判断是否是notfound, 那么就是创建新的
-	if err == rpc.ErrNotFound {
+	if selectResp == nil {
 		err = l.svcCtx.ModelWithBlocked.Insert(l.ctx, &model.Blocked{
 			BlockIP:    in.BlockIp,
 			BlockCount: 1,

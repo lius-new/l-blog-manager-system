@@ -10,18 +10,17 @@ import (
 	"github.com/lius-new/blog-backend/rpc/analyzer/tests"
 )
 
-func TestSelectRecordByPage(t *testing.T) {
+func TestSelectBlockedByBlockIP(t *testing.T) {
 
 	ctx := context.Background()
 
-	selectRecordByPageResp, err := logic.NewSelectRecordByPageLogic(ctx, tests.SVC_CONTEXT).SelectRecordByPage(&analyzer.SelectRecordByPageRequest{
-		PageNum:  1,
-		PageSize: 2,
+	selectBlockedByBlockIP, err := logic.NewSelectBlockedByBlockIPLogic(ctx, tests.SVC_CONTEXT).SelectBlockedByBlockIP(&analyzer.SelectBlockedByBlockIPRequest{
+		BlockIp: "127.0.0.1",
 	})
 
 	if err != nil {
 		fmt.Println("error :", err)
 	} else {
-		fmt.Println(selectRecordByPageResp)
+		fmt.Println(selectBlockedByBlockIP)
 	}
 }

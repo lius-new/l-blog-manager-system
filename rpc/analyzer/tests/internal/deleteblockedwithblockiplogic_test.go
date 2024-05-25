@@ -10,18 +10,14 @@ import (
 	"github.com/lius-new/blog-backend/rpc/analyzer/tests"
 )
 
-func TestSelectRecordByPage(t *testing.T) {
-
+func TestDeleteBlocked(t *testing.T) {
 	ctx := context.Background()
-
-	selectRecordByPageResp, err := logic.NewSelectRecordByPageLogic(ctx, tests.SVC_CONTEXT).SelectRecordByPage(&analyzer.SelectRecordByPageRequest{
-		PageNum:  1,
-		PageSize: 2,
+	deleteRecordResp, err := logic.NewDeleteBlockedWithBlockIPLogic(ctx, tests.SVC_CONTEXT).DeleteBlockedWithBlockIP(&analyzer.DeleteBlockedWithBlockIPRequest{
+		BlockIp: "127.0.0.1",
 	})
-
 	if err != nil {
 		fmt.Println("error :", err)
 	} else {
-		fmt.Println(selectRecordByPageResp)
+		fmt.Println(deleteRecordResp)
 	}
 }

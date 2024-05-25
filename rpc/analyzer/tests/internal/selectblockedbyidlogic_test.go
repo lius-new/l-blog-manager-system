@@ -10,18 +10,19 @@ import (
 	"github.com/lius-new/blog-backend/rpc/analyzer/tests"
 )
 
-func TestSelectRecordByPage(t *testing.T) {
+func TestSelectBlockedById(t *testing.T) {
 
 	ctx := context.Background()
 
-	selectRecordByPageResp, err := logic.NewSelectRecordByPageLogic(ctx, tests.SVC_CONTEXT).SelectRecordByPage(&analyzer.SelectRecordByPageRequest{
-		PageNum:  1,
-		PageSize: 2,
-	})
+	selectBlockedByIdResp, err := logic.NewSelectBlockedByIdLogic(ctx, tests.SVC_CONTEXT).SelectBlockedById(
+		&analyzer.SelectBlockedByIdRequest{
+			Id: "665012f940afee8fcbbdba19",
+		},
+	)
 
 	if err != nil {
 		fmt.Println("error :", err)
 	} else {
-		fmt.Println(selectRecordByPageResp)
+		fmt.Println(selectBlockedByIdResp)
 	}
 }
