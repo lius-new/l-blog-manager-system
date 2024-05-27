@@ -126,8 +126,8 @@ export function Editor() {
       });
     }
 
-    let description = contentInfo.content.match(/--!\s*\w+/g)
-    description = description.length > 0 ? description[0] : ""
+    let description = contentInfo.content.match(/--!\s*.+/g)
+    description = description && description.length > 0 ? description[0] : ""
 
     try {
       const res = id
@@ -162,7 +162,6 @@ export function Editor() {
         .then((res) => {
           if (!res.status) setResourceNotFound(true);
           const { Id, Title, Content, Description, Covers, Tags } = res.data;
-          console.log(Covers);
           setContentInfo({ title: Title, content: "--!" + Description + "\n" + Content });
           setImageUploads(Covers);
           setImageShowUploads(Covers);
