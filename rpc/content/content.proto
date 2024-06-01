@@ -123,6 +123,17 @@ message ModifyArticleVisiableByTagRequest {
   string tagId = 1;  // tag ids
   bool visiable = 2; // tag ids
 }
+message ModifyArticleRequest {
+  string id = 1;              // 文章id
+  string title = 2;           // 文章内容
+  string content = 3;         // 文章内容
+  string description = 4;     // 文章描述
+  repeated string tags = 5;   // 文章tag
+  repeated string covers = 6; // 文章Cover图片
+  bool visiable = 7;          // 文章visibale
+}
+message ModifyArticleResponse {}
+
 // 根据tag修改文章visiable的响应
 message ModifyArticleVisiableByTagResponse {}
 
@@ -208,10 +219,16 @@ message Cover {
 }
 // 创建 cover
 message CreateCoverRequest { string content = 1; }
-message CreateCoverResponse { string id = 1; }
+message CreateCoverResponse {
+  string id = 1;
+  string hash = 2;
+}
 // 创建多个Cover
 message CreateCoversRequest { repeated string content = 1; }
-message CreateCoversResponse { repeated string ids = 1; }
+message CreateCoversResponse {
+  repeated string ids = 1;
+  repeated string hashs = 2;
+}
 // 删除cover
 message DeleteCoverRequest { string id = 1; }
 message DeleteCoverResponse { int64 count = 1; }
@@ -268,6 +285,7 @@ service Content {
   // 根据tag修改文章的可见性
   rpc ModifyArtilceVisiableByTag(ModifyArticleVisiableByTagRequest)
       returns (ModifyArticleVisiableByTagResponse);
+  rpc ModifyArtilce(ModifyArticleRequest) returns (ModifyArticleResponse);
   // 根据删除文章
   rpc DeleteArtilceById(DeleteArticleRequest) returns (DeleteArticleResponse);
 

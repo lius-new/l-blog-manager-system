@@ -40,6 +40,8 @@ type (
 	ModifyArticleCoverResponse         = content.ModifyArticleCoverResponse
 	ModifyArticleDescRequest           = content.ModifyArticleDescRequest
 	ModifyArticleDescResponse          = content.ModifyArticleDescResponse
+	ModifyArticleRequest               = content.ModifyArticleRequest
+	ModifyArticleResponse              = content.ModifyArticleResponse
 	ModifyArticleTagRequest            = content.ModifyArticleTagRequest
 	ModifyArticleTagResponse           = content.ModifyArticleTagResponse
 	ModifyArticleTitleRequest          = content.ModifyArticleTitleRequest
@@ -103,6 +105,7 @@ type (
 		ModifyArtilceVisiable(ctx context.Context, in *ModifyArticleVisiableRequest, opts ...grpc.CallOption) (*ModifyArticleVisiableResponse, error)
 		// 根据tag修改文章的可见性
 		ModifyArtilceVisiableByTag(ctx context.Context, in *ModifyArticleVisiableByTagRequest, opts ...grpc.CallOption) (*ModifyArticleVisiableByTagResponse, error)
+		ModifyArtilce(ctx context.Context, in *ModifyArticleRequest, opts ...grpc.CallOption) (*ModifyArticleResponse, error)
 		// 根据删除文章
 		DeleteArtilceById(ctx context.Context, in *DeleteArticleRequest, opts ...grpc.CallOption) (*DeleteArticleResponse, error)
 		// ** tag **
@@ -222,6 +225,11 @@ func (m *defaultContent) ModifyArtilceVisiable(ctx context.Context, in *ModifyAr
 func (m *defaultContent) ModifyArtilceVisiableByTag(ctx context.Context, in *ModifyArticleVisiableByTagRequest, opts ...grpc.CallOption) (*ModifyArticleVisiableByTagResponse, error) {
 	client := content.NewContentClient(m.cli.Conn())
 	return client.ModifyArtilceVisiableByTag(ctx, in, opts...)
+}
+
+func (m *defaultContent) ModifyArtilce(ctx context.Context, in *ModifyArticleRequest, opts ...grpc.CallOption) (*ModifyArticleResponse, error) {
+	client := content.NewContentClient(m.cli.Conn())
+	return client.ModifyArtilce(ctx, in, opts...)
 }
 
 // 根据删除文章

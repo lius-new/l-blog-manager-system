@@ -19,7 +19,6 @@ func TestCreateArticle(t *testing.T) {
 		Description: "Desc",
 		Content:     "this is cotnent",
 		Tags:        []string{"hello"},
-		Visiable:    true,
 	})
 
 	if err != nil {

@@ -20,7 +20,8 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf)
+  // TODO: 开发阶段设置跨域
+  server := rest.MustNewServer(c.RestConf, rest.WithCors("http://localhost:5173"))
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)

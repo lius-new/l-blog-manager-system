@@ -41,7 +41,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 				err = errors.New("用户被禁用")
 			case strings.Contains(catchErr.Error(), api.ErrInvalidObjectId.Error()):
 				err = api.ErrInvalidObjectId
-			case strings.Contains(catchErr.Error(), "password error"):
+			case strings.Contains(catchErr.Error(), api.ErrInvalidPassword.Error()):
 				err = errors.New("用户密码错误")
 			}
 		} else if err != nil {

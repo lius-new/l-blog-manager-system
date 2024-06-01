@@ -10,28 +10,40 @@ type Article struct {
 }
 
 type Data struct {
-	Id          string   `json:"id"`         // 文章id
-	Title       string   `json:"title"`      // 文章标题
-	Content     string   `json:"content"`    // 文章内容
-	Description string   `json:"descritipn"` // 文章描述
-	Tags        []string `json:"tags"`       // 文章tag
-	Covers      []string `json:"covers"`     // 文章Cover图片
-	Visiable    bool     `json:"visiable"`   // 文章状态
-	CreateAt    int64    `json:"createAt"`   // 文章创建时间
-	UpdateAt    int64    `json:"updateAt"`   // 文章更新时间
-	DeleteAt    int64    `json:"deleteAt"`   // 删除更新时间
+	Id          string   `json:"id"`          // 文章id
+	Title       string   `json:"title"`       // 文章标题
+	Content     string   `json:"content"`     // 文章内容
+	Description string   `json:"description"` // 文章描述
+	Tags        []string `json:"tags"`        // 文章tag
+	Covers      []string `json:"covers"`      // 文章Cover图片
+	Visiable    bool     `json:"visiable"`    // 文章状态
+	CreateAt    int64    `json:"createAt"`    // 文章创建时间
+	UpdateAt    int64    `json:"updateAt"`    // 文章更新时间
+	DeleteAt    int64    `json:"deleteAt"`    // 删除更新时间
+}
+
+type TagResponse struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type CreateArticleRequest struct {
-	Title       string   `json:"title"`      // 文章标题
-	Content     string   `json:"content"`    // 文章内容
-	Description string   `json:"descritipn"` // 文章描述
-	Tags        []string `json:"tags"`       // 文章tag
-	Covers      []string `json:"covers"`     // 文章Cover图片
-	Visiable    bool     `json:"visiable"`   // 文章状态
+	Title       string   `json:"title"`       // 文章标题
+	Content     string   `json:"content"`     // 文章内容
+	Description string   `json:"description"` // 文章描述
+	Tags        []string `json:"tags"`        // 文章tag
+	Covers      []string `json:"covers"`      // 文章Cover图片
 }
 
 type CreateArticleResponse struct {
+}
+
+type CreateImageWithArticleRequest struct {
+	Contents []string `json:"contents"`
+}
+
+type CreateImageWithArticleResponse struct {
+	Hashs []string `json:"hashs"` // hash
 }
 
 type DeleteArticleRequest struct {
@@ -40,6 +52,13 @@ type DeleteArticleRequest struct {
 
 type DeleteArticleResponse struct {
 	Id string `json:"id"` // 文章id
+}
+
+type GetAllTagRequest struct {
+}
+
+type GetAllTagResponse struct {
+	Data []TagResponse `json:"data"` // 返回的标签
 }
 
 type GetArticleByIdWithBackendRequest struct {
@@ -130,6 +149,19 @@ type ModifyArticleDescRequest struct {
 type ModifyArticleDescResponse struct {
 }
 
+type ModifyArticleRequest struct {
+	Id          string   `json:"id"`          // 文章id
+	Title       string   `json:"title"`       // 文章标题
+	Content     string   `json:"content"`     // 文章内容
+	Description string   `json:"description"` // 文章描述
+	Tags        []string `json:"tags"`        // 文章tag
+	Covers      []string `json:"covers"`      // 文章Cover图片
+	Visiable    bool     `json:"visiable"`    // 文章visibale
+}
+
+type ModifyArticleResponse struct {
+}
+
 type ModifyArticleTagRequest struct {
 	Id   string   `json:"id"`   // 文章id
 	Tags []string `json:"tags"` // 文章id
@@ -161,4 +193,12 @@ type SearchArticleRequest struct {
 type SearchArticleResponse struct {
 	Data  []Article `json:"data"` // 当前页的文章数据
 	Total int64     `json:"total"`
+}
+
+type ViewImageRequest struct {
+	Hash string `path:"hash"` // 搜素内容: 标题, 描述, 内容
+}
+
+type ViewImageResponse struct {
+	Base64 string `json:"base64"` // 当前页的文章数据
 }

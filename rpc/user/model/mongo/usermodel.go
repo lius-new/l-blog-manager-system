@@ -62,7 +62,7 @@ func (m *defaultUserModel) FindByPage(
 	}
 	findOptions.SetLimit(pageSize)
 	findOptions.SetSkip(pageSize * (pageNum - 1))
-	findOptions.SetSort(bson.M{"time": -11})
+	findOptions.SetSort(bson.M{"time": -1})
 
 	data := make([]User, 0)
 	err := m.conn.Find(ctx, &data, bson.M{}, findOptions)

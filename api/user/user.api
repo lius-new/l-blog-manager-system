@@ -36,6 +36,8 @@ service user-api {
 }
 
 type (
+	authRequest  {}
+	authResponse  {}
 	// 用户存储在后台的信息.
 	UserBackend {
 		Id       string `json:"id"`
@@ -98,6 +100,10 @@ type (
 	middleware: AnalyzerMiddleware,AuthMiddleware
 )
 service user-api {
+	// 检验用户是是否是登录状态
+	@handler Auth
+	get /auth (authRequest) returns (authResponse)
+
 	// 修改用户接口(用户名和密码)
 	@handler ModifyUserNameAndPassword
 	put / (modifyUserNameAndPasswordRequest) returns (createResponse)

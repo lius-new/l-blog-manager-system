@@ -85,8 +85,13 @@ func (m *customTagModel) FindByPage(
 		pageNum = 1
 	}
 
-	findOptions.SetLimit(pageSize)
-	findOptions.SetSkip(pageSize * (pageNum - 1))
+  // 如果pageSize==-1意味查询所有，那么limit和skip就不用执行了。
+  // 分页只有在pageSize != -1的情况下有效
+  if pageSize != -1 {
+    findOptions.SetLimit(pageSize)
+    findOptions.SetSkip(pageSize * (pageNum - 1))
+  }
+
 	findOptions.SetSort(bson.M{"updateAt": -1}) // 根据时间降序排序
 
 	// 查询

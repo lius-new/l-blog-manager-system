@@ -13,21 +13,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type CreateArticleLogic struct {
+type ModifyArticleLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewCreateArticleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateArticleLogic {
-	return &CreateArticleLogic{
+func NewModifyArticleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ModifyArticleLogic {
+	return &ModifyArticleLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *CreateArticleLogic) CreateArticle(req *types.CreateArticleRequest) (resp *types.CreateArticleResponse, err error) {
+func (l *ModifyArticleLogic) ModifyArticle(req *types.ModifyArticleRequest) (resp *types.ModifyArticleResponse, err error) {
 	// defer recover错误信息
 	defer func() {
 		if catchErr := recover(); catchErr != nil {
@@ -35,24 +35,23 @@ func (l *CreateArticleLogic) CreateArticle(req *types.CreateArticleRequest) (res
 			switch {
 			case strings.Contains(catchErr.Error(), api.ErrRequestParam.Error()):
 				err = errors.New(api.ErrRequestParam.Error())
-			case strings.Contains(catchErr.Error(), api.ErrInvalidExist.Error()):
-				err = errors.New(api.ErrInvalidExist.Error())
+			case strings.Contains(catchErr.Error(), api.ErrNotFound.Error()):
+				err = errors.New(api.ErrInvalidNotFound.Error())
 			}
 		} else if err != nil {
 			err = errors.New(strings.Replace(err.Error(), "rpc error: code = Unknown desc = ", "", 1))
 		}
 	}()
 
-	// 校验参数
-	_, err = l.svcCtx.Content.CreateArtilce(l.ctx, &content.CreateArticleRequest{
-		Title:    req.Title,
-		Desc:     req.Description,
-		Content:  req.Content,
-		Tags:     req.Tags,
-		Covers:   req.Covers,
-		Visiable: true, // 默认可见
+	_, err = l.svcCtx.Content.ModifyArtilce(l.ctx, &content.ModifyArticleRequest{
+		Id:          req.Id,
+		Title:       req.Title,
+		Description: req.Description,
+		Content:     req.Content,
+		Tags:        req.Tags,
+		Covers:      req.Covers,
+		Visiable:    req.Visiable,
 	})
-
 	if err != nil {
 		panic(err)
 	}

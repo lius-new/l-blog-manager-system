@@ -7,6 +7,12 @@ type UserBackend struct {
 	Status   bool   `json:"status"`
 }
 
+type AuthRequest struct {
+}
+
+type AuthResponse struct {
+}
+
 type CreateRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`

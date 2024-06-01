@@ -36,10 +36,9 @@ func NewCoverModel(url, db, collection string, c cache.CacheConf) CoverModel {
 
 // FindOneByHash: 根据hash来查找
 func (m *customCoverModel) FindOneByHash(ctx context.Context, hash string) (*Cover, error) {
-	key := prefixCoverCacheKey + hash
 
 	var data Cover
-	err := m.conn.FindOne(ctx, key, &data, bson.M{"hash": hash})
+	err := m.conn.FindOneNoCache(ctx, &data, bson.M{"hash": hash})
 
 	switch err {
 	case nil:
@@ -58,7 +57,6 @@ func (m *customCoverModel) InsertReturnId(ctx context.Context, data *Cover) (id 
 		data.UpdateAt = time.Now()
 	}
 
-	key := prefixCoverCacheKey + data.ID.Hex()
-	_, err = m.conn.InsertOne(ctx, key, data)
+	_, err = m.conn.InsertOneNoCache(ctx, data)
 	return data.ID.Hex(), err
 }

@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/lius-new/blog-backend/api"
@@ -13,22 +14,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type SearchArticleLogic struct {
+type GetAllTagLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewSearchArticleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchArticleLogic {
-	return &SearchArticleLogic{
+func NewGetAllTagLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetAllTagLogic {
+	return &GetAllTagLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *SearchArticleLogic) SearchArticle(req *types.SearchArticleRequest) (resp *types.SearchArticleResponse, err error) {
-
+func (l *GetAllTagLogic) GetAllTag(req *types.GetAllTagRequest) (resp *types.GetAllTagResponse, err error) {
 	defer func() {
 		if catchErr := recover(); catchErr != nil {
 			var catchErr = catchErr.(error)
@@ -40,27 +40,31 @@ func (l *SearchArticleLogic) SearchArticle(req *types.SearchArticleRequest) (res
 			err = errors.New(strings.Replace(err.Error(), "rpc error: code = Unknown desc = ", "", 1))
 		}
 	}()
-	searchResp, err := l.svcCtx.Content.SearchArtilce(l.ctx, &content.SearchArtilceRequest{
-		Search: req.Search,
+
+	tagResp, err := l.svcCtx.Content.SelectTagByPage(l.ctx, &content.SelectTagByPageRequest{
+		PageNum:  1,
+		PageSize: -1,
+		HideShow: true,
 	})
 
 	if err != nil {
 		panic(err)
 	}
 
-	forLen := len(searchResp.Articles)
-	data := make([]types.Article, forLen)
+	forLen := len(tagResp.Tags)
+
+	respData := make([]types.TagResponse, forLen)
+
 	for i := 0; i < forLen; i++ {
-		current := searchResp.Articles[i]
-		data[i] = types.Article{
-			Id:          current.Id,
-			Title:       current.Title,
-			Description: current.Desc,
+		currentTag := tagResp.Tags[i]
+		fmt.Println(currentTag)
+		respData[i] = types.TagResponse{
+			Id:   currentTag.Id,
+			Name: currentTag.Name,
 		}
 	}
 
-	return &types.SearchArticleResponse{
-		Data:  data,
-		Total: int64(forLen),
+	return &types.GetAllTagResponse{
+		Data: respData,
 	}, nil
 }

@@ -16,8 +16,8 @@ func TestSelectTagByPage(t *testing.T) {
 	selectTagByPageLogic := logic.NewSelectTagByPageLogic(ctx, tests.SVC_CONTEXT)
 
 	resp, err := selectTagByPageLogic.SelectTagByPage(&content.SelectTagByPageRequest{
-		PageNum:  2,
-		PageSize: 3,
+		PageNum:  1,
+		PageSize: -1,
 		HideShow: true,
 	})
 

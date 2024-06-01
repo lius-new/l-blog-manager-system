@@ -59,6 +59,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: SelectHandler(serverCtx),
 				},
 				{
+					Method:  http.MethodGet,
+					Path:    "/auth",
+					Handler: AuthHandler(serverCtx),
+				},
+				{
 					Method:  http.MethodPut,
 					Path:    "/password",
 					Handler: ModifyPasswordHandler(serverCtx),

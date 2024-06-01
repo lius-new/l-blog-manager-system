@@ -30,6 +30,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: GetArticleByIdWithViewHandler(serverCtx),
 				},
 				{
+					Method:  http.MethodGet,
+					Path:    "/image/:hash",
+					Handler: ViewImageHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/image/base64/:hash",
+					Handler: ViewImageWithBase64Handler(serverCtx),
+				},
+				{
 					Method:  http.MethodPost,
 					Path:    "/tags",
 					Handler: GetArticleByTagNameWithViewHandler(serverCtx),
@@ -65,6 +75,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/backend/image/create",
+					Handler: CreateImageWithArticleHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/backend/modify",
+					Handler: ModifyArticleHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/backend/modify/content",
 					Handler: ModifyArticleContentHandler(serverCtx),
 				},
@@ -97,6 +117,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/backend/tag",
 					Handler: GetArticleByTagNameWithBackendHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/backend/tag",
+					Handler: GetAllTagHandler(serverCtx),
 				},
 			}...,
 		),

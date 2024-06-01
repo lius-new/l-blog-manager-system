@@ -46,13 +46,15 @@ func (l *SelectTagByPageLogic) SelectTagByPage(
 		return nil, err
 	}
 
-	resptags := make([]*content.SelectTag, len(tags))
+	forLen := len(tags)
+	resptags := make([]*content.SelectTag, forLen)
 
-	for _, v := range tags {
-		resptags = append(resptags, &content.SelectTag{
-			Id:   v.ID.Hex(),
-			Name: v.Name,
-		})
+	for i := 0; i < forLen; i++ {
+		currentTag := tags[i]
+		resptags[i] = &content.SelectTag{
+			Id:   currentTag.ID.Hex(),
+			Name: currentTag.Name,
+		}
 	}
 
 	return &content.SelectTagByPageResponse{

@@ -8,26 +8,28 @@ import (
 	"github.com/lius-new/blog-backend/api"
 	"github.com/lius-new/blog-backend/api/article/internal/svc"
 	"github.com/lius-new/blog-backend/api/article/internal/types"
-	"github.com/lius-new/blog-backend/rpc/content/content"
 
+	"github.com/lius-new/blog-backend/rpc/content/content"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type CreateArticleLogic struct {
+type CreateImageWithArticleLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewCreateArticleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateArticleLogic {
-	return &CreateArticleLogic{
+func NewCreateImageWithArticleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateImageWithArticleLogic {
+	return &CreateImageWithArticleLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *CreateArticleLogic) CreateArticle(req *types.CreateArticleRequest) (resp *types.CreateArticleResponse, err error) {
+// 添加文章中的图片，有些文章内部会包含图片. TODO: 这个接口会将数据放到covers数据集合中(mongodb), 事实上cover并不是存放这些图片的地方现在是图省事。
+func (l *CreateImageWithArticleLogic) CreateImageWithArticle(req *types.CreateImageWithArticleRequest) (resp *types.CreateImageWithArticleResponse, err error) {
+
 	// defer recover错误信息
 	defer func() {
 		if catchErr := recover(); catchErr != nil {
@@ -43,19 +45,14 @@ func (l *CreateArticleLogic) CreateArticle(req *types.CreateArticleRequest) (res
 		}
 	}()
 
-	// 校验参数
-	_, err = l.svcCtx.Content.CreateArtilce(l.ctx, &content.CreateArticleRequest{
-		Title:    req.Title,
-		Desc:     req.Description,
-		Content:  req.Content,
-		Tags:     req.Tags,
-		Covers:   req.Covers,
-		Visiable: true, // 默认可见
+	createResp, err := l.svcCtx.Content.CreateCovers(l.ctx, &content.CreateCoversRequest{
+		Content: req.Contents,
 	})
-
 	if err != nil {
 		panic(err)
 	}
 
-	return
+	return &types.CreateImageWithArticleResponse{
+		Hashs: createResp.Hashs,
+	}, nil
 }

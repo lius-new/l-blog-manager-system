@@ -53,6 +53,7 @@ type ContentClient interface {
 	ModifyArtilceVisiable(ctx context.Context, in *ModifyArticleVisiableRequest, opts ...grpc.CallOption) (*ModifyArticleVisiableResponse, error)
 	// 根据tag修改文章的可见性
 	ModifyArtilceVisiableByTag(ctx context.Context, in *ModifyArticleVisiableByTagRequest, opts ...grpc.CallOption) (*ModifyArticleVisiableByTagResponse, error)
+	ModifyArtilce(ctx context.Context, in *ModifyArticleRequest, opts ...grpc.CallOption) (*ModifyArticleResponse, error)
 	// 根据删除文章
 	DeleteArtilceById(ctx context.Context, in *DeleteArticleRequest, opts ...grpc.CallOption) (*DeleteArticleResponse, error)
 	// ** tag **
@@ -208,6 +209,15 @@ func (c *contentClient) ModifyArtilceVisiable(ctx context.Context, in *ModifyArt
 func (c *contentClient) ModifyArtilceVisiableByTag(ctx context.Context, in *ModifyArticleVisiableByTagRequest, opts ...grpc.CallOption) (*ModifyArticleVisiableByTagResponse, error) {
 	out := new(ModifyArticleVisiableByTagResponse)
 	err := c.cc.Invoke(ctx, "/content.Content/ModifyArtilceVisiableByTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contentClient) ModifyArtilce(ctx context.Context, in *ModifyArticleRequest, opts ...grpc.CallOption) (*ModifyArticleResponse, error) {
+	out := new(ModifyArticleResponse)
+	err := c.cc.Invoke(ctx, "/content.Content/ModifyArtilce", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -393,6 +403,7 @@ type ContentServer interface {
 	ModifyArtilceVisiable(context.Context, *ModifyArticleVisiableRequest) (*ModifyArticleVisiableResponse, error)
 	// 根据tag修改文章的可见性
 	ModifyArtilceVisiableByTag(context.Context, *ModifyArticleVisiableByTagRequest) (*ModifyArticleVisiableByTagResponse, error)
+	ModifyArtilce(context.Context, *ModifyArticleRequest) (*ModifyArticleResponse, error)
 	// 根据删除文章
 	DeleteArtilceById(context.Context, *DeleteArticleRequest) (*DeleteArticleResponse, error)
 	// ** tag **
@@ -472,6 +483,9 @@ func (UnimplementedContentServer) ModifyArtilceVisiable(context.Context, *Modify
 }
 func (UnimplementedContentServer) ModifyArtilceVisiableByTag(context.Context, *ModifyArticleVisiableByTagRequest) (*ModifyArticleVisiableByTagResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModifyArtilceVisiableByTag not implemented")
+}
+func (UnimplementedContentServer) ModifyArtilce(context.Context, *ModifyArticleRequest) (*ModifyArticleResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifyArtilce not implemented")
 }
 func (UnimplementedContentServer) DeleteArtilceById(context.Context, *DeleteArticleRequest) (*DeleteArticleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteArtilceById not implemented")
@@ -764,6 +778,24 @@ func _Content_ModifyArtilceVisiableByTag_Handler(srv interface{}, ctx context.Co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ContentServer).ModifyArtilceVisiableByTag(ctx, req.(*ModifyArticleVisiableByTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Content_ModifyArtilce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifyArticleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContentServer).ModifyArtilce(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/content.Content/ModifyArtilce",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContentServer).ModifyArtilce(ctx, req.(*ModifyArticleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1114,6 +1146,10 @@ var Content_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ModifyArtilceVisiableByTag",
 			Handler:    _Content_ModifyArtilceVisiableByTag_Handler,
+		},
+		{
+			MethodName: "ModifyArtilce",
+			Handler:    _Content_ModifyArtilce_Handler,
 		},
 		{
 			MethodName: "DeleteArtilceById",

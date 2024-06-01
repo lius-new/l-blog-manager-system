@@ -54,20 +54,35 @@ func (l *SelectArtilceByPageLogic) SelectArtilceByPage(
 		currentArticle := articles[i]
 
 		// tags属性中原本包含的是tagid, 修改article中的tagid为tagname, 即根据id查询tag再获取tagName
+		tempTag := make([]string, 0)
 		selectTagByIdLogic := NewSelectTagByIdLogic(l.ctx, l.svcCtx)
 		for i := 0; i < len(currentArticle.Tags); i++ {
 			tag, _ := selectTagByIdLogic.SelectTagById(&content.SelectTagByIdRequest{
 				Id: currentArticle.Tags[i],
 			})
+			if tag != nil {
+				tempTag = append(tempTag, tag.Name)
+			}
+		}
 
-			currentArticle.Tags[i] = tag.Name
+		// covers属性中原本包含的是coverId, 修改article中的coverId为cover hash, 即根据id查询cover再获取hash
+		tempCovers := make([]string, 0)
+		selectCoverLogic := NewSelectCoverLogic(l.ctx, l.svcCtx)
+		for i := 0; i < len(currentArticle.Covers); i++ {
+			cover, _ := selectCoverLogic.SelectCover(&content.SelectCoverRequest{
+				Id: currentArticle.Covers[i],
+			})
+			if cover != nil {
+				tempCovers = append(tempCovers, cover.Cover.Hash)
+			}
 		}
 
 		respArticles[i] = &content.SelectArticles{
 			Id:       currentArticle.ID.Hex(),
 			Title:    currentArticle.Title,
 			Desc:     currentArticle.Desc,
-			Tags:     currentArticle.Tags,
+			Tags:     tempTag,
+			Covers:   tempCovers,
 			Visiable: currentArticle.Visiable,
 			Time:     currentArticle.UpdateAt.Unix(),
 		}

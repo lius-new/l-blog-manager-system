@@ -30,6 +30,10 @@ func NewCreateCoverLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Creat
 func (l *CreateCoverLogic) CreateCover(
 	in *content.CreateCoverRequest,
 ) (*content.CreateCoverResponse, error) {
+	if len(in.Content) == 0 {
+		return nil, rpc.ErrRequestParam
+	}
+
 	hashResp, err := l.svcCtx.Utiler.HashWithString(l.ctx, &utiler.HashWithStringReqeust{
 		Content: in.Content,
 	})
@@ -42,7 +46,8 @@ func (l *CreateCoverLogic) CreateCover(
 	// 存在就返回id
 	if c != nil {
 		return &content.CreateCoverResponse{
-			Id: c.ID.Hex(),
+			Id:   c.ID.Hex(),
+			Hash: c.Hash,
 		}, nil
 	}
 	// 如果存在错误且错误不是NotFound那么就抛出
@@ -60,6 +65,7 @@ func (l *CreateCoverLogic) CreateCover(
 	}
 	// 保存到数据库后再返回id
 	return &content.CreateCoverResponse{
-		Id: id,
+		Id:   id,
+		Hash: hashResp.Content,
 	}, nil
 }

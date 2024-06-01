@@ -31,6 +31,7 @@ func (l *CreateCoversLogic) CreateCovers(
 
 	forLen := len(in.Content)
 	ids := make([]string, forLen)
+	hashs := make([]string, forLen)
 
 	for i := 0; i < forLen; i++ {
 		createResp, err := createCoverLogic.CreateCover(&content.CreateCoverRequest{
@@ -42,9 +43,11 @@ func (l *CreateCoversLogic) CreateCovers(
 		}
 
 		ids[i] = createResp.GetId()
+		hashs[i] = createResp.Hash
 	}
 
 	return &content.CreateCoversResponse{
-		Ids: ids,
+		Ids:   ids,
+		Hashs: hashs,
 	}, nil
 }

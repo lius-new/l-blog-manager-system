@@ -100,6 +100,11 @@ func (s *ContentServer) ModifyArtilceVisiableByTag(ctx context.Context, in *cont
 	return l.ModifyArtilceVisiableByTag(in)
 }
 
+func (s *ContentServer) ModifyArtilce(ctx context.Context, in *content.ModifyArticleRequest) (*content.ModifyArticleResponse, error) {
+	l := logic.NewModifyArtilceLogic(ctx, s.svcCtx)
+	return l.ModifyArtilce(in)
+}
+
 // 根据删除文章
 func (s *ContentServer) DeleteArtilceById(ctx context.Context, in *content.DeleteArticleRequest) (*content.DeleteArticleResponse, error) {
 	l := logic.NewDeleteArtilceByIdLogic(ctx, s.svcCtx)

@@ -28,3 +28,8 @@ var (
 	ErrInvalidToken        = errors.New("invalid token")
 	ErrFailedAuthorization = errors.New("authorization failed")
 )
+
+// 运行时的错误
+var (
+	ErrInvalidMemoryNil = errors.New("nil pointer dereference")
+)

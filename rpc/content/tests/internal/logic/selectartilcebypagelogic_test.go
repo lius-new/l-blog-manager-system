@@ -22,7 +22,7 @@ func TestSelectArtilceByPage(t *testing.T) {
 	})
 
 	if err != nil {
-		fmt.Println("error: ", err)
+		fmt.Println("error:", err)
 	} else {
 		fmt.Println(resp)
 	}
