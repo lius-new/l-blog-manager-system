@@ -8,30 +8,48 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function SignIn() {
   const navigate = useNavigate();
-  const [errOpen, setErrOpen] = useState(false);
+  const [errOpen, setErrOpen] = useState("");
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
   });
 
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   const loginHandle = async () => {
     try {
       const res = await login(loginForm.username, loginForm.password);
-      if (res.status) navigate("/dashboard/home");
-      else errOpenHandle();
+      if (res.code == 0 && res.message == "Ok") {
+        localStorage.setItem("token", res.data.token);
+        navigate("/dashboard/home");
+      } else {
+        errOpenHandle(res.message);
+      }
     } catch (err) {
-      errOpenHandle();
+      errOpenHandle(err);
     }
   };
 
-  const errOpenHandle = () => {
+  const errOpenHandle = (message) => {
     document.cookie = "secret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    setErrOpen(!errOpen);
+    setErrOpen(message);
+  };
+
+  const inputEnter = (e) => {
+    // 如果不是回车事件
+    if (e.code != "Enter") return;
+    // 如果回车登录时数据还不存在
+    if (!loginForm.username || !loginForm.password) return;
+
+    // 调用登录
+    loginHandle();
   };
 
   return (
@@ -62,6 +80,7 @@ export function SignIn() {
                 onChange={(e) =>
                   setLoginForm({ ...loginForm, username: e.target.value })
                 }
+                onKeyUp={inputEnter}
               />
               <Typography
                 variant="small"
@@ -81,6 +100,7 @@ export function SignIn() {
                 onChange={(e) =>
                   setLoginForm({ ...loginForm, password: e.target.value })
                 }
+                onKeyUp={inputEnter}
               />
             </div>
             <Button
@@ -103,9 +123,13 @@ export function SignIn() {
           />
         </div>
       </section>
-      <Dialog open={errOpen} size="xs" handler={errOpenHandle}>
+      <Dialog open={errOpen.length > 0} size="xs" handler={errOpenHandle}>
         <DialogHeader>登录失败</DialogHeader>
-        <DialogBody>因为某些原因登录失败, 请联系管理查看服务器日志</DialogBody>
+        <DialogBody>
+          {errOpen.length > 0
+            ? errOpen
+            : "因为某些原因登录失败, 请联系管理查看服务器日志"}
+        </DialogBody>
         <DialogFooter>
           <Button variant="gradient" color="green" onClick={errOpenHandle}>
             <span>知晓</span>

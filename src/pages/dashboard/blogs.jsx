@@ -16,14 +16,18 @@ import {
 } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { useState } from "react";
-import { articleModify, articleModifyStatus, articlesViews } from "@/libs/action";
+import {
+  articleModify,
+  articleModifyVisiable,
+  articlesViews,
+} from "@/libs/action";
 import { useSearchParams } from "react-router-dom";
 import ArticlesTableSkeletions from "@/widgets/skeletons/articles-table";
 import { useNavigate } from "react-router-dom";
 
 const dateFormat = (time) => {
-  time = time + "";
-  let date = new Date(parseInt(time.substring(0, time.length - 6)));
+  time = time + "000";
+  let date = new Date(parseInt(time));
 
   return (
     date.getFullYear() +
@@ -51,7 +55,10 @@ export function Blogs() {
   const geneartePageList = (n) => {
     let tempList = [];
 
-    for (let index = 1; index <= n; index++) {
+    // n 是一共有多少条数据
+    let pageCount = parseInt(n / 12) + 1;
+
+    for (let index = 1; index <= pageCount; index++) {
       tempList.push(index);
     }
     return tempList;
@@ -60,15 +67,15 @@ export function Blogs() {
   const update = (n = 0) => {
     let pn = 1;
     if (n != 0) pn = n;
-    else if (typeof pageNum == "string")
-      pn = navigate(`/dashboard/blogs?page=1`);
+    else if (typeof pageNum == "string") navigate(`/dashboard/blogs?page=1`);
     else if (pageNum) pn = parseInt(pageNum[0]);
 
+    // pageSize=12
     articlesViews(12, pn).then((res) => {
-      if (res.status) {
-        setArticless(res.data);
-        setTotal(res.total);
-        setPageList([...geneartePageList(res.total)]);
+      if (res.code == 0 && res.message == "Ok") {
+        setArticless(res.data.data);
+        setTotal(res.data.total);
+        setPageList([...geneartePageList(res.data.total)]);
       }
     });
   };
@@ -77,9 +84,9 @@ export function Blogs() {
     update();
   }, []);
 
-  const modifyHandle = (id, status) => {
-    articleModifyStatus(id, status).then((res) => {
-      if (res.status) {
+  const modifyHandle = (id, visiable) => {
+    articleModifyVisiable(id, visiable).then((res) => {
+      if (res.code == 0 && res.message == "Ok") {
         update();
       }
     });
@@ -105,8 +112,8 @@ export function Blogs() {
           ) : (
             <table className="w-full min-w-[640px] table-auto ">
               <thead>
-                <tr>
-                  {["图片", "标题", "内容", "标签", "状态", "时间", "操作"].map(
+                <tr className="grid grid-cols-7 ">
+                  {["编号", "图片", "标题", "标签", "状态", "时间", "操作"].map(
                     (el) => (
                       <th
                         key={el}
@@ -126,84 +133,82 @@ export function Blogs() {
               <tbody>
                 {articles.length > 0 ? (
                   articles.map(
-                    ({ Id, Title, Content, Description, Tags, Status, Time, Covers }) => {
+                    ({ id, title, tags, visiable, updateAt, covers }) => {
                       const className = `py-3 px-5 border-b border-blue-gray-50"`;
                       return (
-                        <tr key={Id}>
-                          <td className={className}>
+                        <tr key={id} className="grid grid-cols-7 ">
+                          <td className={`${className} col-span-1`}>
+                            <div className="flex items-center gap-4">{id}</div>
+                          </td>
+                          <td className={`${className} col-span-1`}>
                             <div className="flex items-center gap-4">
-                              {Covers.map((item) => (
-                                <Avatar
+                              {covers &&
+                                covers.map((item) => (
+                                  <Avatar
+                                    key={item}
+                                    src={`${
+                                      import.meta.env
+                                        .VITE_CONTENT_API_SERVER_URI
+                                    }/articles/image/${item}`}
+                                    alt={item}
+                                    size="sm"
+                                    variant="rounded"
+                                  />
+                                ))}
+                            </div>
+                          </td>
+                          <td className={`${className} col-span-1`}>
+                            <div>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-semibold"
+                              >
+                                {title}
+                              </Typography>
+                            </div>
+                          </td>
+                          <td className={className}>
+                            {tags &&
+                              tags.map((item) => (
+                                <span
+                                  className="text-xs font-semibold text-blue-gray-800 bg-gray-300 px-2 py-1 rounded-md"
                                   key={item}
-                                  src={`${import.meta.env.VITE_API_SERVER_URI}/api/file/${item}`}
-                                  alt={item}
-                                  size="sm"
-                                  variant="rounded"
-                                />
+                                >
+                                  {item}
+                                </span>
                               ))}
-                            </div>
-                          </td>
-                          <td className={className}>
-                            <div>
-                              <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-semibold"
-                              >
-                                {Title}
-                              </Typography>
-                            </div>
-                          </td>
-                          <td className={className}>
-                            <div>
-                              <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-semibold"
-                              >
-                                {Description}
-                              </Typography>
-                            </div>
-                          </td>
-                          <td className={className}>
-                            {Tags.map((item) => (
-                              <Typography
-                                className="text-xs font-semibold text-blue-gray-600"
-                                key={item}
-                              >
-                                {item}
-                              </Typography>
-                            ))}
                           </td>
                           <td className={className}>
                             <Chip
                               variant="gradient"
-                              color={Status ? "green" : "blue-gray"}
-                              value={Status ? "online" : "offline"}
-                              className="py-0.5 px-2 text-[11px] font-medium w-fit"
+                              color={visiable ? "green" : "blue-gray"}
+                              value={visiable ? "online" : "offline"}
+                              className="py-0.5 px-2 text-[11px] h-8 font-medium w-20 text-center"
                             />
                           </td>
-                          <td className={className}>
+                          <td className={`${className} `}>
                             <Typography className="text-xs font-semibold text-blue-gray-600">
-                              {dateFormat(Time)}
+                              {dateFormat(updateAt)}
                             </Typography>
                           </td>
                           {/* TODO:  w-32 和 w-64: 该库当我设置w-32时会使button被隐藏 , 当我设置内部为64外部32就不会了*/}
-                          <td className={`${className} w-32`}>
-                            <div className="w-64 flex gap-x-2">
+                          <td className={`${className}`}>
+                            <div className="flex gap-x-2 ">
                               <Button
                                 size="sm"
                                 color="amber"
-                                onClick={() => editorHandle(Id)}
+                                onClick={() => editorHandle(id)}
                               >
                                 Edit
                               </Button>
                               <Button
                                 size="sm"
-                                color={Status ? "red" : "green"}
-                                onClick={() => modifyHandle(Id, !Status)}
+                                color={visiable ? "red" : "green"}
+                                className="w-20"
+                                onClick={() => modifyHandle(id, !visiable)}
                               >
-                                {Status ? "Disable" : "Enable"}
+                                {visiable ? "Disable" : "Enable"}
                               </Button>
                             </div>
                           </td>
@@ -235,10 +240,11 @@ export function Blogs() {
             <div className="flex items-center gap-2">
               {pageList.map((item) => (
                 <IconButton
-                  className={`${pageNum == item || (!pageNum && item == 1)
-                    ? "bg-blue-gray-600"
-                    : "bg-blue-gray-300"
-                    }`}
+                  className={`${
+                    pageNum == item || (!pageNum && item == 1)
+                      ? "bg-blue-gray-600"
+                      : "bg-blue-gray-300"
+                  }`}
                   key={item}
                   onClick={() => {
                     navigate(`/dashboard/blogs?page=${item}`);

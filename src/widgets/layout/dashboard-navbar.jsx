@@ -69,7 +69,7 @@ export function DashboardNavbar() {
           </Breadcrumbs>
         </div>
         <div className="flex items-center">
-          <div className="mr-auto md:mr-4 md:w-56">
+          <div className="mr-auto md:mr-4 ">
             <Input label="Search" />
           </div>
           <IconButton
@@ -80,7 +80,6 @@ export function DashboardNavbar() {
           >
             <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
           </IconButton>
-          {/* TODO:  */}
           <Link to="/auth/sign-out">
             <Button
               variant="text"

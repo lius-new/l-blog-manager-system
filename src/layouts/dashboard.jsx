@@ -19,9 +19,15 @@ export function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    auth().catch((err) => {
-      navigate("/auth/sign-in");
-    });
+    auth()
+      .then((res) => {
+        if (res.code != 0 || res.message != "Ok") {
+          navigate("/auth/sign-in");
+        }
+      })
+      .catch((err) => {
+        navigate("/auth/sign-in");
+      });
   }, []);
 
   return (
